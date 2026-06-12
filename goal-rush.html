@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚽ World Cup Goal Rush 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a1628; color: #e8f4e8; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #0d4a1a, #1a6b2e, #0d4a1a); padding: 20px 16px 0; text-align: center; border-bottom: 3px solid #2d8a3e; }
+  .header .sub { font-size: 12px; color: #7ec98c; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+  .header h1 { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .header .desc { font-size: 12px; color: #a8d5b0; margin-bottom: 16px; }
+
+  .tabs { display: flex; justify-content: center; }
+  .tab { padding: 8px 18px; background: transparent; color: #a8d5b0; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 400; font-size: 13px; transition: all 0.2s; }
+  .tab.active { background: #fff; color: #0d4a1a; font-weight: 700; }
+
+  .content { padding: 16px; max-width: 640px; margin: 0 auto; }
+
+  .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 11px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10; }
+  .card.top { background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02)); border-color: rgba(255,215,0,0.2); }
+  .rank { width: 28px; text-align: center; font-size: 13px; color: #7ec98c; font-weight: 700; flex-shrink: 0; }
+  .rank.medal { font-size: 18px; }
+  .info { flex: 1; }
+  .info .pname { font-weight: 700; font-size: 15px; color: #e8f4e8; }
+  .info .pname.gold { color: #ffd700; }
+  .info .picks { font-size: 11px; color: #7ec98c; margin-top: 2px; }
+  .pts-box { text-align: right; }
+  .pts-box .pts { font-size: 22px; font-weight: 900; color: #5aba6e; }
+  .pts-box .pts.gold { color: #ffd700; }
+  .pts-box .lbl { font-size: 10px; color: #7ec98c; }
+
+  /* picks tab */
+  .pick-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+  .pick-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+  .pick-row { display: flex; justify-content: space-between; align-items: center; border-radius: 6px; padding: 3px 6px; }
+  .pick-row.earned { background: rgba(94,186,110,0.1); }
+  .pick-team { font-size: 12px; color: #a8d5b0; }
+  .pick-pts { font-size: 12px; font-weight: 700; color: #556b60; }
+  .pick-pts.earned { color: #5aba6e; }
+  .tiebreak { margin-top: 8px; font-size: 11px; color: #7ec98c; }
+
+  /* goals tab */
+  .editor-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .editor-box label { font-size: 13px; font-weight: 700; color: #a8d5b0; display: block; margin-bottom: 10px; }
+  .editor-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  select, input[type=number] { background: #0d2a14; color: #e8f4e8; border: 1px solid #2d8a3e; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+  select { flex: 1; }
+  input[type=number] { width: 72px; text-align: center; }
+  .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .goal-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; }
+  .goal-team { font-size: 14px; font-weight: 600; }
+  .goal-meta { font-size: 11px; color: #7ec98c; margin-left: 8px; }
+  .goal-right { display: flex; align-items: center; gap: 10px; }
+  .goal-count { font-size: 18px; font-weight: 900; color: #5aba6e; }
+  .btn-minus, .btn-plus { border: none; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 16px; line-height: 1; }
+  .btn-minus { background: rgba(255,255,255,0.08); color: #e8f4e8; }
+  .btn-plus { background: #2d8a3e; color: #fff; }
+  .note { margin-top: 16px; padding: 12px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; font-size: 11px; color: #a8d5b0; }
+  .sub-label { font-size: 11px; color: #7ec98c; margin-bottom: 8px; text-align: center; }
+  .section-title { font-size: 13px; font-weight: 700; color: #a8d5b0; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="sub">⚽ FIFA World Cup 2026</div>
+  <h1>Goal Rush Leaderboard</h1>
+  <div class="desc">Points update as goals are scored</div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('leaderboard')">🏆 Leaderboard</button>
+    <button class="tab" onclick="showTab('picks')">👥 All Picks</button>
+    <button class="tab" onclick="showTab('goals')">⚽ Update Goals</button>
+  </div>
+</div>
+
+<div class="content">
+  <div id="tab-leaderboard"></div>
+  <div id="tab-picks" style="display:none"></div>
+  <div id="tab-goals" style="display:none"></div>
+</div>
+
+<script>
+const POT_PTS = {1:3, 2:6, 3:9, 4:12};
+const TEAM_POT = {
+  Argentina:1,France:1,Spain:1,England:1,Brazil:1,Portugal:1,Netherlands:1,Belgium:1,Germany:1,Croatia:1,Uruguay:1,Colombia:1,
+  "United States":2,Mexico:2,Japan:2,Morocco:2,Switzerland:2,Senegal:2,Iran:2,Sweden:2,Austria:2,"South Korea":2,Norway:2,Canada:2,
+  Paraguay:3,Czechia:3,Scotland:3,Egypt:3,"Ivory Coast":3,Algeria:3,Tunisia:3,"Saudi Arabia":3,Ecuador:3,Qatar:3,Turkey:3,Ghana:3,
+  "New Zealand":4,Haiti:4,Jordan:4,Iraq:4,Uzbekistan:4,"DR Congo":4,Curacao:4,"Bosnia and Herzegovina":4,"Cape Verde":4,"South Africa":4,Australia:4,Panama:4
+};
+const FLAGS = {
+  France:"🇫🇷",Spain:"🇪🇸",England:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",Portugal:"🇵🇹",Germany:"🇩🇪",Brazil:"🇧🇷",Argentina:"🇦🇷",
+  Netherlands:"🇳🇱",Belgium:"🇧🇪",Croatia:"🇭🇷",Uruguay:"🇺🇾",Colombia:"🇨🇴",
+  "United States":"🇺🇸",Mexico:"🇲🇽",Japan:"🇯🇵",Morocco:"🇲🇦",Switzerland:"🇨🇭",
+  Senegal:"🇸🇳",Iran:"🇮🇷",Sweden:"🇸🇪",Austria:"🇦🇹","South Korea":"🇰🇷",Norway:"🇳🇴",Canada:"🇨🇦",
+  Paraguay:"🇵🇾",Czechia:"🇨🇿",Scotland:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",Egypt:"🇪🇬","Ivory Coast":"🇨🇮",
+  Algeria:"🇩🇿",Tunisia:"🇹🇳","Saudi Arabia":"🇸🇦",Ecuador:"🇪🇨",Qatar:"🇶🇦",Turkey:"🇹🇷",Ghana:"🇬🇭",
+  "New Zealand":"🇳🇿",Haiti:"🇭🇹",Jordan:"🇯🇴",Iraq:"🇮🇶",Uzbekistan:"🇺🇿",
+  "DR Congo":"🇨🇩",Curacao:"🇨🇼","Bosnia and Herzegovina":"🇧🇦","Cape Verde":"🇨🇻",
+  "South Africa":"🇿🇦",Australia:"🇦🇺",Panama:"🇵🇦"
+};
+
+const PARTICIPANTS = [
+  {name:"Paddy",     p1:"France",   p2:"Norway",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"France"},
+  {name:"Denis",     p1:"France",   p2:"Japan",      p3:"Ivory Coast",  p4:"France",                 tb:"France"},
+  {name:"Andrei",    p1:"Portugal", p2:"Norway",     p3:"Turkey",       p4:"Australia",              tb:"Portugal"},
+  {name:"Bren Jnr",  p1:"England",  p2:"Japan",      p3:"Turkey",       p4:"Spain",                  tb:"Spain"},
+  {name:"Stephen",   p1:"France",   p2:"Morocco",    p3:"Turkey",       p4:"Australia",              tb:"Portugal"},
+  {name:"Flavius",   p1:"France",   p2:"Switzerland",p3:"Saudi Arabia", p4:"Bosnia and Herzegovina", tb:"France"},
+  {name:"Louise",    p1:"Spain",    p2:"Mexico",     p3:"Egypt",        p4:"Australia",              tb:"France"},
+  {name:"Emma",      p1:"France",   p2:"Morocco",    p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"France"},
+  {name:"Julie 1",   p1:"Spain",    p2:"Switzerland",p3:"Turkey",       p4:"Bosnia and Herzegovina", tb:"Spain"},
+  {name:"Julie 2",   p1:"Spain",    p2:"Switzerland",p3:"Turkey",       p4:"Australia",              tb:"Spain"},
+  {name:"Ian",       p1:"Argentina",p2:"Mexico",     p3:"Czechia",      p4:"Australia",              tb:"Argentina"},
+  {name:"Anto Ivers",p1:"Brazil",   p2:"Senegal",    p3:"Czechia",      p4:"South Africa",           tb:"Brazil"},
+  {name:"Dave",      p1:"France",   p2:"Sweden",     p3:"Czechia",      p4:"Bosnia and Herzegovina", tb:"Portugal"},
+  {name:"Ronaldo",   p1:"France",   p2:"Norway",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"Brazil"},
+  {name:"Cillian",   p1:"France",   p2:"Norway",     p3:"Ivory Coast",  p4:"Australia",              tb:"France"},
+  {name:"Bren 2",    p1:"Spain",    p2:"Morocco",    p3:"Paraguay",     p4:"South Africa",           tb:"Spain"},
+  {name:"Jess",      p1:"Spain",    p2:"Switzerland",p3:"Ecuador",      p4:"Bosnia and Herzegovina", tb:"Spain"},
+  {name:"Barbara",   p1:"Spain",    p2:"Morocco",    p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"Spain"},
+  {name:"Conor",     p1:"Spain",    p2:"Switzerland",p3:"Ghana",        p4:"South Africa",           tb:"Portugal"},
+  {name:"Dermot",    p1:"Spain",    p2:"Norway",     p3:"Turkey",       p4:"DR Congo",               tb:"Spain"},
+  {name:"Dan",       p1:"France",   p2:"Morocco",    p3:"Scotland",     p4:"Australia",              tb:"France"},
+  {name:"Brendan Snr",p1:"Spain",   p2:"Norway",     p3:"Egypt",        p4:"Australia",              tb:"Spain"},
+  {name:"Leah",      p1:"Germany",  p2:"Sweden",     p3:"Czechia",      p4:"Jordan",                 tb:"Germany"},
+  {name:"Ant Kav",   p1:"England",  p2:"Senegal",    p3:"Ecuador",      p4:"New Zealand",            tb:"Spain"},
+  {name:"Oisin",     p1:"France",   p2:"Norway",     p3:"Turkey",       p4:"Bosnia and Herzegovina", tb:"Brazil"},
+  {name:"Fran",      p1:"Brazil",   p2:"Norway",     p3:"Scotland",     p4:"Bosnia and Herzegovina", tb:"Brazil"},
+  {name:"Joe",       p1:"Spain",    p2:"Morocco",    p3:"Ecuador",      p4:"Australia",              tb:"Spain"},
+  {name:"Eimhin",    p1:"Spain",    p2:"Norway",     p3:"Ecuador",      p4:"Australia",              tb:"Spain"},
+  {name:"Gary",      p1:"Brazil",   p2:"Mexico",     p3:"Turkey",       p4:"Panama",                 tb:"Portugal"},
+  {name:"Gorkem",    p1:"France",   p2:"Norway",     p3:"Turkey",       p4:"Australia",              tb:"France"},
+];
+
+let goals = JSON.parse(localStorage.getItem("goalRushGoals") || "{}");
+// Set defaults if empty
+if (!Object.keys(goals).length) {
+  goals = {Mexico:2,"South Korea":2,Czechia:1};
+  saveGoals();
+}
+
+function saveGoals() {
+  localStorage.setItem("goalRushGoals", JSON.stringify(goals));
+}
+
+function calcPts(p) {
+  return [p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>{
+    return s + (goals[t]||0)*POT_PTS[TEAM_POT[t]];
+  },0);
+}
+
+function f(team){ return (FLAGS[team]||"")+" "+team; }
+
+function getLeaderboard() {
+  return PARTICIPANTS
+    .map(p=>({...p, pts:calcPts(p)}))
+    .sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name));
+}
+
+let activeTab = "leaderboard";
+function showTab(tab) {
+  activeTab = tab;
+  ["leaderboard","picks","goals"].forEach(t=>{
+    document.getElementById("tab-"+t).style.display = t===tab?"block":"none";
+    document.querySelectorAll(".tab").forEach((el,i)=>{
+      const tabs=["leaderboard","picks","goals"];
+      el.classList.toggle("active", tabs[i]===tab);
+    });
+  });
+  render();
+}
+
+function render() {
+  if (activeTab==="leaderboard") renderLeaderboard();
+  else if (activeTab==="picks") renderPicks();
+  else renderGoals();
+}
+
+function renderLeaderboard() {
+  const lb = getLeaderboard();
+  let rank=1, html="";
+  lb.forEach((p,i)=>{
+    if(i>0 && lb[i-1].pts!==p.pts) rank=i+1;
+    const medal = rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null;
+    const isTop = rank<=3;
+    html+=`<div class="card ${isTop?'top':''}">
+      <div class="rank ${medal?'medal':''}">${medal||"#"+rank}</div>
+      <div class="info">
+        <div class="pname ${isTop?'gold':''}">${p.name}</div>
+        <div class="picks">${f(p.p1)} · ${f(p.p2)} · ${f(p.p3)} · ${f(p.p4)}</div>
+      </div>
+      <div class="pts-box">
+        <div class="pts ${isTop?'gold':''}">${p.pts}</div>
+        <div class="lbl">pts</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById("tab-leaderboard").innerHTML=html;
+}
+
+function renderPicks() {
+  const lb = getLeaderboard();
+  let html=`<div class="sub-label">Pot 1 = 3pts/goal · Pot 2 = 6pts/goal · Pot 3 = 9pts/goal · Pot 4 = 12pts/goal</div>`;
+  lb.forEach(p=>{
+    const teams=[[p.p1,"Pot 1"],[p.p2,"Pot 2"],[p.p3,"Pot 3"],[p.p4,"Pot 4"]];
+    let rows="";
+    teams.forEach(([t,pot])=>{
+      const g=goals[t]||0, e=g*POT_PTS[TEAM_POT[t]];
+      rows+=`<div class="pick-row ${e>0?'earned':''}">
+        <span class="pick-team">${f(t)}</span>
+        <span class="pick-pts ${e>0?'earned':''}">+${e}</span>
+      </div>`;
+    });
+    html+=`<div class="pick-card">
+      <div class="pick-header">
+        <span style="font-weight:700;font-size:15px">${p.name}</span>
+        <span style="font-weight:900;font-size:18px;color:#5aba6e">${p.pts} pts</span>
+      </div>
+      <div class="pick-grid">${rows}</div>
+      <div class="tiebreak">🏆 Tiebreaker: ${f(p.tb)}</div>
+    </div>`;
+  });
+  document.getElementById("tab-picks").innerHTML=html;
+}
+
+function renderGoals() {
+  const allTeams = Object.keys(TEAM_POT).sort();
+  let opts = allTeams.map(t=>`<option value="${t}">${FLAGS[t]||""} ${t} (Pot ${TEAM_POT[t]})</option>`).join("");
+  
+  const scored = Object.entries(goals).filter(([,g])=>g>0).sort((a,b)=>b[1]-a[1]);
+  let rows = scored.length ? scored.map(([t,g])=>`
+    <div class="goal-row">
+      <div>
+        <span class="goal-team">${FLAGS[t]||""} ${t}</span>
+        <span class="goal-meta">Pot ${TEAM_POT[t]} · ${POT_PTS[TEAM_POT[t]]}pts/goal</span>
+      </div>
+      <div class="goal-right">
+        <span class="goal-count">${g} ⚽</span>
+        <button class="btn-minus" onclick="adjustGoal('${t}',-1)">−</button>
+        <button class="btn-plus" onclick="adjustGoal('${t}',1)">+</button>
+      </div>
+    </div>`).join("") : `<div style="color:#556b60;font-size:13px;text-align:center;padding:20px">No goals recorded yet</div>`;
+
+  document.getElementById("tab-goals").innerHTML=`
+    <div class="editor-box">
+      <label>Update Goals Scored</label>
+      <div class="editor-row">
+        <select id="editTeam"><option value="">Select team...</option>${opts}</select>
+        <input type="number" id="editVal" min="0" placeholder="Goals">
+        <button class="btn-set" onclick="setGoal()">Set</button>
+      </div>
+    </div>
+    <div class="section-title">Goals Scored So Far</div>
+    ${rows}
+    <div class="note">ℹ️ Penalty shootout goals do NOT count · Only regular time & extra time goals</div>`;
+}
+
+function setGoal() {
+  const t = document.getElementById("editTeam").value;
+  const v = parseInt(document.getElementById("editVal").value);
+  if(t && !isNaN(v) && v>=0) {
+    goals[t]=v;
+    saveGoals();
+    render();
+  }
+}
+
+function adjustGoal(team, delta) {
+  goals[team] = Math.max(0, (goals[team]||0)+delta);
+  if(goals[team]===0) delete goals[team];
+  saveGoals();
+  render();
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>
