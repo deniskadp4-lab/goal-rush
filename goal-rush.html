@@ -104,18 +104,11 @@ const FLAGS = {
   "DR Congo":"🇨🇩",Curacao:"🇨🇼","Bosnia and Herzegovina":"🇧🇦","Cape Verde":"🇨🇻",
   "South Africa":"🇿🇦",Australia:"🇦🇺",Panama:"🇵🇦"
 };
-
-// openfootball uses "Czech Republic" and "Côte d'Ivoire" etc.
 const ALIASES = {
-  "Czech Republic":"Czechia","Czechia":"Czechia",
-  "Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
-  "Korea Republic":"South Korea","South Korea":"South Korea",
-  "United States":"United States","USA":"United States",
-  "DR Congo":"DR Congo","Congo DR":"DR Congo",
-  "Bosnia and Herzegovina":"Bosnia and Herzegovina","Bosnia & Herzegovina":"Bosnia and Herzegovina",
-  "Curaçao":"Curacao","Curacao":"Curacao",
-  "Türkiye":"Turkey","Turkey":"Turkey",
-  "IR Iran":"Iran","Saudi Arabia":"Saudi Arabia"
+  "Czech Republic":"Czechia","Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast",
+  "Korea Republic":"South Korea","United States":"United States","USA":"United States",
+  "DR Congo":"DR Congo","Congo DR":"DR Congo","Bosnia and Herzegovina":"Bosnia and Herzegovina",
+  "Bosnia & Herzegovina":"Bosnia and Herzegovina","Curaçao":"Curacao","Türkiye":"Turkey","IR Iran":"Iran"
 };
 function norm(n){ if(!n) return n; if(TEAM_POT[n]) return n; if(ALIASES[n]) return ALIASES[n]; return n; }
 
@@ -152,35 +145,38 @@ const PARTICIPANTS = [
   {name:"Gorkem",     p1:"France",   p2:"Norway",      p3:"Turkey",       p4:"Australia",             tb:"France"},
 ];
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let goals = {}, matches = [], lastSync = null, syncError = null, syncing = false;
-try {
-  const s = JSON.parse(localStorage.getItem("gr2026v3")||"{}");
-  goals = s.goals||{}; matches = s.matches||[]; lastSync = s.lastSync||null;
-} catch(e){}
-function save(){ try{ localStorage.setItem("gr2026v3", JSON.stringify({goals,matches,lastSync})); }catch(e){} }
+let goals={}, matches=[], lastSync=null, syncError=null, syncing=false;
+try{ const s=JSON.parse(localStorage.getItem("gr2026v4")||"{}"); goals=s.goals||{}; matches=s.matches||[]; lastSync=s.lastSync||null; }catch(e){}
+function save(){ try{ localStorage.setItem("gr2026v4",JSON.stringify({goals,matches,lastSync})); }catch(e){} }
 
-// ── Fetch from openfootball (GitHub raw — no CORS, no key) ────────────────────
+// openfootball: score stored as { "score": { "ft": [2, 1] } }
+// et = extra time final, ft = full time (90 min), ht = half time
 const DATA_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
 
 async function fetchScores(){
   if(syncing) return;
   syncing=true; syncError=null; setSyncBtn(true);
-  try {
-    const res = await fetch(DATA_URL+"?t="+Date.now()); // cache-bust
+  try{
+    const res = await fetch(DATA_URL+"?nc="+Date.now());
     if(!res.ok) throw new Error("HTTP "+res.status);
     const data = await res.json();
-
-    // openfootball 2026 format: { "name":..., "matches": [...] }
-    // each match: { "round","date","time","team1","team2","score1","score2","group","ground" }
-    const newGoals = {}, newMatches = [];
+    const newGoals={}, newMatches=[];
     for(const m of (data.matches||[])){
       const home = norm(m.team1);
       const away = norm(m.team2);
-      const hg = (m.score1!=null && m.score1!=="") ? parseInt(m.score1) : null;
-      const ag = (m.score2!=null && m.score2!=="") ? parseInt(m.score2) : null;
+      // score.ft = [homeGoals, awayGoals] for 90min
+      // score.et = [homeGoals, awayGoals] for after extra time (use this if present, excludes penalties)
+      const sc = m.score;
+      let hg=null, ag=null;
+      if(sc){
+        // prefer et (extra time total, no penalties), else ft
+        const arr = sc.et || sc.ft;
+        if(Array.isArray(arr) && arr.length===2){
+          hg = arr[0]; ag = arr[1];
+        }
+      }
       const played = hg!==null && ag!==null;
-      newMatches.push({home, away, hg: played?hg:"-", ag: played?ag:"-", date:m.date||"", played});
+      newMatches.push({home, away, hg:played?hg:"-", ag:played?ag:"-", date:m.date||"", played});
       if(played){
         if(home && TEAM_POT[home]) newGoals[home]=(newGoals[home]||0)+hg;
         if(away && TEAM_POT[away]) newGoals[away]=(newGoals[away]||0)+ag;
@@ -189,26 +185,19 @@ async function fetchScores(){
     goals=newGoals; matches=newMatches;
     lastSync=new Date().toISOString();
     save();
-  } catch(e){
-    syncError=e.message;
-  }
+  }catch(e){ syncError=e.message; }
   syncing=false; setSyncBtn(false); render();
 }
 
 function setSyncBtn(loading){
-  const btn=document.getElementById("syncBtn");
-  if(!btn) return;
-  btn.disabled=loading;
-  btn.innerHTML=loading?`<span class="spin">⟳</span> Syncing…`:`⟳ Refresh`;
+  const btn=document.getElementById("syncBtn"); if(!btn) return;
+  btn.disabled=loading; btn.innerHTML=loading?`<span class="spin">⟳</span> Syncing…`:`⟳ Refresh`;
 }
-
-// ── Scoring ───────────────────────────────────────────────────────────────────
 function calcPts(p){ return [p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(goals[t]||0)*POT_PTS[TEAM_POT[t]],0); }
 function fl(t){ return (FLAGS[t]||"")+" "+t; }
 function getLeaderboard(){ return PARTICIPANTS.map(p=>({...p,pts:calcPts(p)})).sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name)); }
-function fmtSync(){ if(!lastSync) return "Not yet synced"; return "Updated "+new Date(lastSync).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
+function fmtSync(){ if(!lastSync) return "Not synced yet"; return "Updated "+new Date(lastSync).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
 
-// ── Tabs ──────────────────────────────────────────────────────────────────────
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
@@ -232,7 +221,7 @@ function renderLeaderboard(){
   const lb=getLeaderboard(); let rank=1,html=syncBarHTML();
   lb.forEach((p,i)=>{
     if(i>0&&lb[i-1].pts!==p.pts) rank=i+1;
-    const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null, top=rank<=3;
+    const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null,top=rank<=3;
     html+=`<div class="card ${top?"top":""}"><div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
       <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
       <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div></div>
@@ -259,7 +248,7 @@ function renderGoals(){
   const played=[...matches].filter(m=>m.played).reverse().slice(0,25);
   let matchHTML="";
   if(played.length){
-    matchHTML=`<div class="section-title">✅ Results</div>`;
+    matchHTML=`<div class="section-title">✅ Results (${played.length} matches)</div>`;
     played.forEach(m=>{ matchHTML+=`<div class="match-row">
       <span class="match-teams">${FLAGS[m.home]||""} ${m.home} vs ${FLAGS[m.away]||""} ${m.away}</span>
       <span class="match-score">${m.hg} – ${m.ag}</span>
@@ -290,7 +279,7 @@ function adj(team,delta){ goals[team]=Math.max(0,(goals[team]||0)+delta); if(!go
 
 render();
 fetchScores();
-setInterval(fetchScores, 5*60*1000);
+setInterval(fetchScores, 3*60*1000); // every 3 minutes
 </script>
 </body>
 </html>
