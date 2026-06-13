@@ -7,18 +7,14 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0a1628; color: #e8f4e8; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-
   .header { background: linear-gradient(135deg, #0d4a1a, #1a6b2e, #0d4a1a); padding: 20px 16px 0; text-align: center; border-bottom: 3px solid #2d8a3e; }
   .header .sub { font-size: 12px; color: #7ec98c; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
   .header h1 { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
   .header .desc { font-size: 12px; color: #a8d5b0; margin-bottom: 16px; }
-
   .tabs { display: flex; justify-content: center; }
   .tab { padding: 8px 18px; background: transparent; color: #a8d5b0; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 400; font-size: 13px; transition: all 0.2s; }
   .tab.active { background: #fff; color: #0d4a1a; font-weight: 700; }
-
   .content { padding: 16px; max-width: 640px; margin: 0 auto; }
-
   .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 11px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
   .card.top { background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02)); border-color: rgba(255,215,0,0.2); }
   .rank { width: 28px; text-align: center; font-size: 13px; color: #7ec98c; font-weight: 700; flex-shrink: 0; }
@@ -31,7 +27,6 @@
   .pts-box .pts { font-size: 22px; font-weight: 900; color: #5aba6e; }
   .pts-box .pts.gold { color: #ffd700; }
   .pts-box .lbl { font-size: 10px; color: #7ec98c; }
-
   .pick-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
   .pick-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
@@ -41,15 +36,6 @@
   .pick-pts { font-size: 12px; font-weight: 700; color: #556b60; }
   .pick-pts.earned { color: #5aba6e; }
   .tiebreak { margin-top: 8px; font-size: 11px; color: #7ec98c; }
-
-  .editor-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-  .editor-box label { font-size: 13px; font-weight: 700; color: #a8d5b0; display: block; margin-bottom: 10px; }
-  .editor-row { display: flex; gap: 8px; margin-bottom: 8px; }
-  select, input[type=number] { background: #0d2a14; color: #e8f4e8; border: 1px solid #2d8a3e; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
-  select { flex: 1; }
-  input[type=number] { width: 72px; text-align: center; }
-  .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
-
   .goal-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; }
   .goal-team { font-size: 14px; font-weight: 600; }
   .goal-meta { font-size: 11px; color: #7ec98c; margin-left: 8px; }
@@ -58,11 +44,9 @@
   .btn-minus, .btn-plus { border: none; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 16px; line-height: 1; }
   .btn-minus { background: rgba(255,255,255,0.08); color: #e8f4e8; }
   .btn-plus { background: #2d8a3e; color: #fff; }
-
   .note { margin-top: 16px; padding: 12px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; font-size: 11px; color: #a8d5b0; }
   .sub-label { font-size: 11px; color: #7ec98c; margin-bottom: 8px; text-align: center; }
   .section-title { font-size: 13px; font-weight: 700; color: #a8d5b0; margin-bottom: 8px; }
-
   .sync-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(45,138,62,0.12); border: 1px solid rgba(45,138,62,0.25); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
   .sync-info { font-size: 12px; color: #a8d5b0; }
   .sync-info strong { color: #5aba6e; }
@@ -72,40 +56,37 @@
   .btn-sync:disabled { opacity: 0.5; cursor: not-allowed; }
   .spin { display: inline-block; animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .match-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 7px; padding: 8px 12px; margin-bottom: 4px; font-size: 13px; }
   .match-teams { color: #c8e6cc; flex: 1; }
   .match-score { font-weight: 700; color: #5aba6e; min-width: 44px; text-align: center; }
-  .match-status { font-size: 10px; color: #556b60; min-width: 52px; text-align: right; }
-  .badge-live { background: rgba(255,80,80,0.2); color: #ff7070; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+  .match-date { font-size: 10px; color: #556b60; min-width: 60px; text-align: right; }
+  .editor-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .editor-box label { font-size: 13px; font-weight: 700; color: #a8d5b0; display: block; margin-bottom: 10px; }
+  .editor-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  select, input[type=number] { background: #0d2a14; color: #e8f4e8; border: 1px solid #2d8a3e; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+  select { flex: 1; }
+  input[type=number] { width: 72px; text-align: center; }
+  .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="sub">⚽ FIFA World Cup 2026</div>
   <h1>Goal Rush Leaderboard</h1>
-  <div class="desc">Live scores · football-data.org</div>
+  <div class="desc">Live data · openfootball · No API key</div>
   <div class="tabs">
     <button class="tab active" onclick="showTab('leaderboard')">🏆 Leaderboard</button>
     <button class="tab" onclick="showTab('picks')">👥 All Picks</button>
     <button class="tab" onclick="showTab('goals')">⚽ Goals</button>
   </div>
 </div>
-
 <div class="content">
   <div id="tab-leaderboard"></div>
   <div id="tab-picks" style="display:none"></div>
   <div id="tab-goals" style="display:none"></div>
 </div>
-
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
-const API_TOKEN = "fe67653d20c94ab4a408a1a7ecb7cea7";
-// football-data.org competition code for FIFA World Cup 2026
-const COMP_ID = 2000; // WC
-
-const POT_PTS = {1:3, 2:6, 3:9, 4:12};
+const POT_PTS = {1:3,2:6,3:9,4:12};
 const TEAM_POT = {
   Argentina:1,France:1,Spain:1,England:1,Brazil:1,Portugal:1,Netherlands:1,Belgium:1,Germany:1,Croatia:1,Uruguay:1,Colombia:1,
   "United States":2,Mexico:2,Japan:2,Morocco:2,Switzerland:2,Senegal:2,Iran:2,Sweden:2,Austria:2,"South Korea":2,Norway:2,Canada:2,
@@ -124,309 +105,192 @@ const FLAGS = {
   "South Africa":"🇿🇦",Australia:"🇦🇺",Panama:"🇵🇦"
 };
 
-// football-data.org team name → our name
+// openfootball uses "Czech Republic" and "Côte d'Ivoire" etc.
 const ALIASES = {
-  "United States":"United States","USA":"United States",
-  "Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast",
-  "Korea Republic":"South Korea","South Korea":"South Korea",
-  "DR Congo":"DR Congo","Congo, The Democratic Republic of the":"DR Congo",
-  "Bosnia and Herzegovina":"Bosnia and Herzegovina",
   "Czech Republic":"Czechia","Czechia":"Czechia",
+  "Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
+  "Korea Republic":"South Korea","South Korea":"South Korea",
+  "United States":"United States","USA":"United States",
+  "DR Congo":"DR Congo","Congo DR":"DR Congo",
+  "Bosnia and Herzegovina":"Bosnia and Herzegovina","Bosnia & Herzegovina":"Bosnia and Herzegovina",
   "Curaçao":"Curacao","Curacao":"Curacao",
-  "IR Iran":"Iran","Saudi Arabia":"Saudi Arabia",
-  "Türkiye":"Turkey","Turkey":"Turkey"
+  "Türkiye":"Turkey","Turkey":"Turkey",
+  "IR Iran":"Iran","Saudi Arabia":"Saudi Arabia"
 };
-function norm(n) {
-  if (!n) return n;
-  if (TEAM_POT[n]) return n;
-  if (ALIASES[n]) return ALIASES[n];
-  return n;
-}
+function norm(n){ if(!n) return n; if(TEAM_POT[n]) return n; if(ALIASES[n]) return ALIASES[n]; return n; }
 
 const PARTICIPANTS = [
-  {name:"Paddy",      p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"France"},
-  {name:"Denis",      p1:"France",   p2:"Japan",       p3:"Ivory Coast",  p4:"Australia",              tb:"France"},
-  {name:"Andrei",     p1:"Portugal", p2:"Norway",      p3:"Turkey",       p4:"Australia",              tb:"Portugal"},
-  {name:"Bren Jnr",   p1:"England",  p2:"Japan",       p3:"Turkey",       p4:"Australia",              tb:"Spain"},
-  {name:"Stephen",    p1:"France",   p2:"Morocco",     p3:"Turkey",       p4:"Australia",              tb:"Portugal"},
-  {name:"Flavius",    p1:"France",   p2:"Switzerland", p3:"Saudi Arabia", p4:"Bosnia and Herzegovina", tb:"France"},
-  {name:"Louise",     p1:"Spain",    p2:"Mexico",      p3:"Egypt",        p4:"Australia",              tb:"France"},
-  {name:"Emma",       p1:"France",   p2:"Morocco",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"France"},
-  {name:"Julie 1",    p1:"Spain",    p2:"Switzerland", p3:"Turkey",       p4:"Bosnia and Herzegovina", tb:"Spain"},
-  {name:"Julie 2",    p1:"Spain",    p2:"Japan",       p3:"Turkey",       p4:"Australia",              tb:"Spain"},
-  {name:"Ian",        p1:"Argentina",p2:"Mexico",      p3:"Czechia",      p4:"Australia",              tb:"Argentina"},
-  {name:"Anto Ivers", p1:"Brazil",   p2:"Senegal",     p3:"Czechia",      p4:"South Africa",           tb:"Brazil"},
-  {name:"Dave",       p1:"France",   p2:"Sweden",      p3:"Czechia",      p4:"Bosnia and Herzegovina", tb:"Portugal"},
-  {name:"Ronaldo",    p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"Brazil"},
-  {name:"Cillian",    p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Australia",              tb:"France"},
-  {name:"Bren 2",     p1:"Spain",    p2:"Morocco",     p3:"Paraguay",     p4:"South Africa",           tb:"Spain"},
-  {name:"Jess",       p1:"Spain",    p2:"Switzerland", p3:"Ecuador",      p4:"Bosnia and Herzegovina", tb:"Spain"},
-  {name:"Barbara",    p1:"Spain",    p2:"Morocco",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina", tb:"Spain"},
-  {name:"Conor",      p1:"Spain",    p2:"Switzerland", p3:"Ghana",        p4:"South Africa",           tb:"Portugal"},
-  {name:"Dermot",     p1:"Spain",    p2:"Norway",      p3:"Turkey",       p4:"DR Congo",               tb:"Spain"},
-  {name:"Dan",        p1:"France",   p2:"Morocco",     p3:"Scotland",     p4:"Australia",              tb:"France"},
-  {name:"Brendan Snr",p1:"Spain",    p2:"Norway",      p3:"Egypt",        p4:"Australia",              tb:"Spain"},
-  {name:"Leah",       p1:"Germany",  p2:"Sweden",      p3:"Czechia",      p4:"Jordan",                 tb:"Germany"},
-  {name:"Ant Kav",    p1:"England",  p2:"Senegal",     p3:"Ecuador",      p4:"New Zealand",            tb:"Spain"},
-  {name:"Oisin",      p1:"France",   p2:"Norway",      p3:"Turkey",       p4:"Bosnia and Herzegovina", tb:"Brazil"},
-  {name:"Fran",       p1:"Brazil",   p2:"Norway",      p3:"Scotland",     p4:"Bosnia and Herzegovina", tb:"Brazil"},
-  {name:"Joe",        p1:"Spain",    p2:"Morocco",     p3:"Ecuador",      p4:"Australia",              tb:"Spain"},
-  {name:"Eimhin",     p1:"Spain",    p2:"Norway",      p3:"Ecuador",      p4:"Australia",              tb:"Spain"},
-  {name:"Gary",       p1:"Brazil",   p2:"Mexico",      p3:"Turkey",       p4:"Panama",                 tb:"Portugal"},
-  {name:"Gorkem",     p1:"France",   p2:"Norway",      p3:"Turkey",       p4:"Australia",              tb:"France"},
+  {name:"Paddy",      p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Bosnia and Herzegovina",tb:"France"},
+  {name:"Denis",      p1:"France",   p2:"Japan",       p3:"Ivory Coast",  p4:"Australia",             tb:"France"},
+  {name:"Andrei",     p1:"Portugal", p2:"Norway",      p3:"Turkey",       p4:"Australia",             tb:"Portugal"},
+  {name:"Bren Jnr",   p1:"England",  p2:"Japan",       p3:"Turkey",       p4:"Australia",             tb:"Spain"},
+  {name:"Stephen",    p1:"France",   p2:"Morocco",     p3:"Turkey",       p4:"Australia",             tb:"Portugal"},
+  {name:"Flavius",    p1:"France",   p2:"Switzerland", p3:"Saudi Arabia", p4:"Bosnia and Herzegovina",tb:"France"},
+  {name:"Louise",     p1:"Spain",    p2:"Mexico",      p3:"Egypt",        p4:"Australia",             tb:"France"},
+  {name:"Emma",       p1:"France",   p2:"Morocco",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina",tb:"France"},
+  {name:"Julie 1",    p1:"Spain",    p2:"Switzerland", p3:"Turkey",       p4:"Bosnia and Herzegovina",tb:"Spain"},
+  {name:"Julie 2",    p1:"Spain",    p2:"Japan",       p3:"Turkey",       p4:"Australia",             tb:"Spain"},
+  {name:"Ian",        p1:"Argentina",p2:"Mexico",      p3:"Czechia",      p4:"Australia",             tb:"Argentina"},
+  {name:"Anto Ivers", p1:"Brazil",   p2:"Senegal",     p3:"Czechia",      p4:"South Africa",          tb:"Brazil"},
+  {name:"Dave",       p1:"France",   p2:"Sweden",      p3:"Czechia",      p4:"Bosnia and Herzegovina",tb:"Portugal"},
+  {name:"Ronaldo",    p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Bosnia and Herzegovina",tb:"Brazil"},
+  {name:"Cillian",    p1:"France",   p2:"Norway",      p3:"Ivory Coast",  p4:"Australia",             tb:"France"},
+  {name:"Bren 2",     p1:"Spain",    p2:"Morocco",     p3:"Paraguay",     p4:"South Africa",          tb:"Spain"},
+  {name:"Jess",       p1:"Spain",    p2:"Switzerland", p3:"Ecuador",      p4:"Bosnia and Herzegovina",tb:"Spain"},
+  {name:"Barbara",    p1:"Spain",    p2:"Morocco",     p3:"Ivory Coast",  p4:"Bosnia and Herzegovina",tb:"Spain"},
+  {name:"Conor",      p1:"Spain",    p2:"Switzerland", p3:"Ghana",        p4:"South Africa",          tb:"Portugal"},
+  {name:"Dermot",     p1:"Spain",    p2:"Norway",      p3:"Turkey",       p4:"DR Congo",              tb:"Spain"},
+  {name:"Dan",        p1:"France",   p2:"Morocco",     p3:"Scotland",     p4:"Australia",             tb:"France"},
+  {name:"Brendan Snr",p1:"Spain",    p2:"Norway",      p3:"Egypt",        p4:"Australia",             tb:"Spain"},
+  {name:"Leah",       p1:"Germany",  p2:"Sweden",      p3:"Czechia",      p4:"Jordan",                tb:"Germany"},
+  {name:"Ant Kav",    p1:"England",  p2:"Senegal",     p3:"Ecuador",      p4:"New Zealand",           tb:"Spain"},
+  {name:"Oisin",      p1:"France",   p2:"Norway",      p3:"Turkey",       p4:"Bosnia and Herzegovina",tb:"Brazil"},
+  {name:"Fran",       p1:"Brazil",   p2:"Norway",      p3:"Scotland",     p4:"Bosnia and Herzegovina",tb:"Brazil"},
+  {name:"Joe",        p1:"Spain",    p2:"Morocco",     p3:"Ecuador",      p4:"Australia",             tb:"Spain"},
+  {name:"Eimhin",     p1:"Spain",    p2:"Norway",      p3:"Ecuador",      p4:"Australia",             tb:"Spain"},
+  {name:"Gary",       p1:"Brazil",   p2:"Mexico",      p3:"Turkey",       p4:"Panama",                tb:"Portugal"},
+  {name:"Gorkem",     p1:"France",   p2:"Norway",      p3:"Turkey",       p4:"Australia",             tb:"France"},
 ];
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let goals = {};
-let matches = [];
-let lastSync = null;
-let syncError = null;
-let syncing = false;
-
+let goals = {}, matches = [], lastSync = null, syncError = null, syncing = false;
 try {
-  const s = JSON.parse(localStorage.getItem("gr2026fd") || "{}");
-  goals = s.goals || {};
-  matches = s.matches || [];
-  lastSync = s.lastSync || null;
-} catch(e) {}
+  const s = JSON.parse(localStorage.getItem("gr2026v3")||"{}");
+  goals = s.goals||{}; matches = s.matches||[]; lastSync = s.lastSync||null;
+} catch(e){}
+function save(){ try{ localStorage.setItem("gr2026v3", JSON.stringify({goals,matches,lastSync})); }catch(e){} }
 
-function save() {
-  try { localStorage.setItem("gr2026fd", JSON.stringify({goals, matches, lastSync})); } catch(e) {}
-}
+// ── Fetch from openfootball (GitHub raw — no CORS, no key) ────────────────────
+const DATA_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
 
-// ── API fetch ─────────────────────────────────────────────────────────────────
-async function fetchScores() {
-  if (syncing) return;
-  syncing = true;
-  syncError = null;
-  setSyncBtn(true);
-
+async function fetchScores(){
+  if(syncing) return;
+  syncing=true; syncError=null; setSyncBtn(true);
   try {
-    const res = await fetch(
-      `https://api.football-data.org/v4/competitions/${COMP_ID}/matches?status=FINISHED,IN_PLAY`,
-      { headers: { "X-Auth-Token": API_TOKEN } }
-    );
-
-    if (res.status === 403) throw new Error("API token not activated yet — check your email");
-    if (res.status === 404) throw new Error("World Cup 2026 not available yet on free tier");
-    if (!res.ok) throw new Error("HTTP " + res.status);
-
+    const res = await fetch(DATA_URL+"?t="+Date.now()); // cache-bust
+    if(!res.ok) throw new Error("HTTP "+res.status);
     const data = await res.json();
-    processMatches(data.matches || []);
-    lastSync = new Date().toISOString();
-    save();
-  } catch(e) {
-    syncError = e.message;
-    console.warn("Sync error:", e.message);
-  }
 
-  syncing = false;
-  setSyncBtn(false);
-  render();
-}
-
-function processMatches(raw) {
-  const newGoals = {};
-  const newMatches = [];
-
-  for (const m of raw) {
-    const home = norm(m.homeTeam?.name);
-    const away = norm(m.awayTeam?.name);
-    const hg = m.score?.fullTime?.home ?? null;
-    const ag = m.score?.fullTime?.away ?? null;
-    const status = m.status; // FINISHED, IN_PLAY, PAUSED, etc.
-    const date = m.utcDate ? m.utcDate.slice(0,10) : "";
-
-    const played = (status === "FINISHED" || status === "IN_PLAY" || status === "PAUSED") && hg !== null;
-
-    newMatches.push({home, away, hg: hg ?? "-", ag: ag ?? "-", status, date, played});
-
-    if (played) {
-      if (home && TEAM_POT[home]) newGoals[home] = (newGoals[home] || 0) + hg;
-      if (away && TEAM_POT[away]) newGoals[away] = (newGoals[away] || 0) + ag;
+    // openfootball 2026 format: { "name":..., "matches": [...] }
+    // each match: { "round","date","time","team1","team2","score1","score2","group","ground" }
+    const newGoals = {}, newMatches = [];
+    for(const m of (data.matches||[])){
+      const home = norm(m.team1);
+      const away = norm(m.team2);
+      const hg = (m.score1!=null && m.score1!=="") ? parseInt(m.score1) : null;
+      const ag = (m.score2!=null && m.score2!=="") ? parseInt(m.score2) : null;
+      const played = hg!==null && ag!==null;
+      newMatches.push({home, away, hg: played?hg:"-", ag: played?ag:"-", date:m.date||"", played});
+      if(played){
+        if(home && TEAM_POT[home]) newGoals[home]=(newGoals[home]||0)+hg;
+        if(away && TEAM_POT[away]) newGoals[away]=(newGoals[away]||0)+ag;
+      }
     }
+    goals=newGoals; matches=newMatches;
+    lastSync=new Date().toISOString();
+    save();
+  } catch(e){
+    syncError=e.message;
   }
-
-  goals = newGoals;
-  matches = newMatches;
+  syncing=false; setSyncBtn(false); render();
 }
 
-function setSyncBtn(loading) {
-  const btn = document.getElementById("syncBtn");
-  if (!btn) return;
-  btn.disabled = loading;
-  btn.innerHTML = loading ? `<span class="spin">⟳</span> Syncing…` : `⟳ Refresh`;
+function setSyncBtn(loading){
+  const btn=document.getElementById("syncBtn");
+  if(!btn) return;
+  btn.disabled=loading;
+  btn.innerHTML=loading?`<span class="spin">⟳</span> Syncing…`:`⟳ Refresh`;
 }
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
-function calcPts(p) {
-  return [p.p1,p.p2,p.p3,p.p4].reduce((s,t) => s + (goals[t]||0) * POT_PTS[TEAM_POT[t]], 0);
-}
-function fl(t) { return (FLAGS[t]||"") + " " + t; }
-function getLeaderboard() {
-  return PARTICIPANTS.map(p=>({...p,pts:calcPts(p)})).sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name));
-}
-function fmtSync() {
-  if (!lastSync) return "Not yet synced";
-  return "Updated " + new Date(lastSync).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-}
+function calcPts(p){ return [p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(goals[t]||0)*POT_PTS[TEAM_POT[t]],0); }
+function fl(t){ return (FLAGS[t]||"")+" "+t; }
+function getLeaderboard(){ return PARTICIPANTS.map(p=>({...p,pts:calcPts(p)})).sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name)); }
+function fmtSync(){ if(!lastSync) return "Not yet synced"; return "Updated "+new Date(lastSync).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
-let activeTab = "leaderboard";
-function showTab(tab) {
-  activeTab = tab;
-  ["leaderboard","picks","goals"].forEach((t,i) => {
-    document.getElementById("tab-"+t).style.display = t===tab?"block":"none";
-    document.querySelectorAll(".tab")[i].classList.toggle("active", t===tab);
+let activeTab="leaderboard";
+function showTab(tab){
+  activeTab=tab;
+  ["leaderboard","picks","goals"].forEach((t,i)=>{
+    document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
+    document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
   });
   render();
 }
-function render() {
-  if (activeTab==="leaderboard") renderLeaderboard();
-  else if (activeTab==="picks") renderPicks();
-  else renderGoals();
-}
+function render(){ if(activeTab==="leaderboard") renderLeaderboard(); else if(activeTab==="picks") renderPicks(); else renderGoals(); }
 
-function syncBarHTML() {
-  const errLine = syncError ? `<div class="sync-error">⚠️ ${syncError}</div>` : "";
+function syncBarHTML(){
+  const errLine=syncError?`<div class="sync-error">⚠️ ${syncError}</div>`:"";
   return `<div class="sync-bar">
-    <div class="sync-info">
-      <strong>football-data.org</strong>
-      <div class="sync-time">${fmtSync()}</div>
-      ${errLine}
-    </div>
+    <div class="sync-info"><strong>openfootball · GitHub</strong><div class="sync-time">${fmtSync()}</div>${errLine}</div>
     <button class="btn-sync" id="syncBtn" onclick="fetchScores()">⟳ Refresh</button>
   </div>`;
 }
 
-function renderLeaderboard() {
-  const lb = getLeaderboard();
-  let rank=1, html=syncBarHTML();
-  lb.forEach((p,i) => {
-    if(i>0 && lb[i-1].pts!==p.pts) rank=i+1;
-    const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null;
-    const top=rank<=3;
-    html+=`<div class="card ${top?"top":""}">
-      <div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
-      <div class="info">
-        <div class="pname ${top?"gold":""}">${p.name}</div>
-        <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div>
-      </div>
-      <div class="pts-box">
-        <div class="pts ${top?"gold":""}">${p.pts}</div>
-        <div class="lbl">pts</div>
-      </div>
-    </div>`;
+function renderLeaderboard(){
+  const lb=getLeaderboard(); let rank=1,html=syncBarHTML();
+  lb.forEach((p,i)=>{
+    if(i>0&&lb[i-1].pts!==p.pts) rank=i+1;
+    const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null, top=rank<=3;
+    html+=`<div class="card ${top?"top":""}"><div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
+      <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
+      <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div></div>
+      <div class="pts-box"><div class="pts ${top?"gold":""}">${p.pts}</div><div class="lbl">pts</div></div></div>`;
   });
-  document.getElementById("tab-leaderboard").innerHTML=html;
-  setSyncBtn(syncing);
+  document.getElementById("tab-leaderboard").innerHTML=html; setSyncBtn(syncing);
 }
 
-function renderPicks() {
+function renderPicks(){
   const lb=getLeaderboard();
   let html=`<div class="sub-label">Pot 1=3pts/goal · Pot 2=6pts · Pot 3=9pts · Pot 4=12pts</div>`+syncBarHTML();
   lb.forEach(p=>{
     let rows="";
-    [[p.p1],[p.p2],[p.p3],[p.p4]].forEach(([t])=>{
-      const g=goals[t]||0, e=g*POT_PTS[TEAM_POT[t]];
-      rows+=`<div class="pick-row ${e>0?"earned":""}">
-        <span class="pick-team">${fl(t)}</span>
-        <span class="pick-pts ${e>0?"earned":""}">+${e}</span>
-      </div>`;
-    });
-    html+=`<div class="pick-card">
-      <div class="pick-header">
-        <span style="font-weight:700;font-size:15px">${p.name}</span>
-        <span style="font-weight:900;font-size:18px;color:#5aba6e">${p.pts} pts</span>
-      </div>
-      <div class="pick-grid">${rows}</div>
-      <div class="tiebreak">🏆 Tiebreaker: ${fl(p.tb)}</div>
-    </div>`;
+    [p.p1,p.p2,p.p3,p.p4].forEach(t=>{ const g=goals[t]||0,e=g*POT_PTS[TEAM_POT[t]];
+      rows+=`<div class="pick-row ${e>0?"earned":""}"><span class="pick-team">${fl(t)}</span><span class="pick-pts ${e>0?"earned":""}">+${e}</span></div>`; });
+    html+=`<div class="pick-card"><div class="pick-header"><span style="font-weight:700;font-size:15px">${p.name}</span>
+      <span style="font-weight:900;font-size:18px;color:#5aba6e">${p.pts} pts</span></div>
+      <div class="pick-grid">${rows}</div><div class="tiebreak">🏆 Tiebreaker: ${fl(p.tb)}</div></div>`;
   });
-  document.getElementById("tab-picks").innerHTML=html;
-  setSyncBtn(syncing);
+  document.getElementById("tab-picks").innerHTML=html; setSyncBtn(syncing);
 }
 
-function renderGoals() {
-  // Recent matches
-  const played = [...matches].filter(m=>m.played).reverse().slice(0,20);
-  let matchHTML = "";
-  if (played.length) {
-    const live = played.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED");
-    const done = played.filter(m=>m.status==="FINISHED");
-    if (live.length) {
-      matchHTML += `<div class="section-title">🔴 Live Now</div>`;
-      live.forEach(m=>{
-        matchHTML+=`<div class="match-row">
-          <span class="match-teams">${FLAGS[m.home]||""} ${m.home} vs ${FLAGS[m.away]||""} ${m.away}</span>
-          <span class="match-score">${m.hg} – ${m.ag}</span>
-          <span class="match-status"><span class="badge-live">LIVE</span></span>
-        </div>`;
-      });
-    }
-    if (done.length) {
-      matchHTML += `<div class="section-title" style="margin-top:8px">✅ Results</div>`;
-      done.forEach(m=>{
-        matchHTML+=`<div class="match-row">
-          <span class="match-teams">${FLAGS[m.home]||""} ${m.home} vs ${FLAGS[m.away]||""} ${m.away}</span>
-          <span class="match-score">${m.hg} – ${m.ag}</span>
-          <span class="match-status">${m.date}</span>
-        </div>`;
-      });
-    }
+function renderGoals(){
+  const played=[...matches].filter(m=>m.played).reverse().slice(0,25);
+  let matchHTML="";
+  if(played.length){
+    matchHTML=`<div class="section-title">✅ Results</div>`;
+    played.forEach(m=>{ matchHTML+=`<div class="match-row">
+      <span class="match-teams">${FLAGS[m.home]||""} ${m.home} vs ${FLAGS[m.away]||""} ${m.away}</span>
+      <span class="match-score">${m.hg} – ${m.ag}</span>
+      <span class="match-date">${m.date}</span></div>`; });
   }
-
-  // Goals tally
   const scored=Object.entries(goals).filter(([,g])=>g>0).sort((a,b)=>b[1]-a[1]);
-  let rows=scored.length
-    ? scored.map(([t,g])=>`
-      <div class="goal-row">
-        <div>
-          <span class="goal-team">${FLAGS[t]||""} ${t}</span>
-          <span class="goal-meta">Pot ${TEAM_POT[t]} · ${POT_PTS[TEAM_POT[t]]}pts/goal</span>
-        </div>
-        <div class="goal-right">
-          <span class="goal-count">${g} ⚽</span>
-          <button class="btn-minus" onclick="adj('${t}',-1)">−</button>
-          <button class="btn-plus"  onclick="adj('${t}',1)">+</button>
-        </div>
-      </div>`).join("")
+  let rows=scored.length ? scored.map(([t,g])=>`<div class="goal-row">
+    <div><span class="goal-team">${FLAGS[t]||""} ${t}</span>
+    <span class="goal-meta">Pot ${TEAM_POT[t]} · ${POT_PTS[TEAM_POT[t]]}pts/goal</span></div>
+    <div class="goal-right"><span class="goal-count">${g} ⚽</span>
+    <button class="btn-minus" onclick="adj('${t}',-1)">−</button>
+    <button class="btn-plus" onclick="adj('${t}',1)">+</button></div></div>`).join("")
     : `<div style="color:#556b60;font-size:13px;text-align:center;padding:20px">No goals yet — press Refresh</div>`;
-
   const opts=Object.keys(TEAM_POT).sort().map(t=>`<option value="${t}">${FLAGS[t]||""} ${t} (Pot ${TEAM_POT[t]})</option>`).join("");
-
-  document.getElementById("tab-goals").innerHTML=`
-    ${syncBarHTML()}
-    ${matchHTML}
-    <div class="section-title" style="margin-top:4px">Goals Tally</div>
-    ${rows}
-    <div class="editor-box" style="margin-top:14px">
-      <label>✏️ Manual override</label>
-      <div class="editor-row">
-        <select id="editTeam"><option value="">Select team…</option>${opts}</select>
-        <input type="number" id="editVal" min="0" placeholder="Goals">
-        <button class="btn-set" onclick="setGoal()">Set</button>
-      </div>
-    </div>
+  document.getElementById("tab-goals").innerHTML=`${syncBarHTML()}${matchHTML}
+    <div class="section-title" style="margin-top:8px">Goals Tally</div>${rows}
+    <div class="editor-box" style="margin-top:14px"><label>✏️ Manual override</label>
+    <div class="editor-row"><select id="editTeam"><option value="">Select team…</option>${opts}</select>
+    <input type="number" id="editVal" min="0" placeholder="Goals">
+    <button class="btn-set" onclick="setGoal()">Set</button></div></div>
     <div class="note">ℹ️ Penalty shootout goals do NOT count · Regular time + extra time only</div>`;
   setSyncBtn(syncing);
 }
 
-function setGoal() {
-  const t=document.getElementById("editTeam").value;
-  const v=parseInt(document.getElementById("editVal").value);
-  if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); }
-}
-function adj(team,delta) {
-  goals[team]=Math.max(0,(goals[team]||0)+delta);
-  if(!goals[team]) delete goals[team];
-  save(); render();
-}
+function setGoal(){ const t=document.getElementById("editTeam").value,v=parseInt(document.getElementById("editVal").value);
+  if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); } }
+function adj(team,delta){ goals[team]=Math.max(0,(goals[team]||0)+delta); if(!goals[team]) delete goals[team]; save(); render(); }
 
-// Boot
 render();
 fetchScores();
-setInterval(fetchScores, 5 * 60 * 1000);
+setInterval(fetchScores, 5*60*1000);
 </script>
 </body>
 </html>
