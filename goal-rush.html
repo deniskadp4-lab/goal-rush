@@ -67,13 +67,12 @@
   select { flex: 1; }
   input[type=number] { width: 72px; text-align: center; }
   .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
-  /* Predictor */
-  .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.12), rgba(45,138,62,0.06)); border: 1px solid rgba(124,201,140,0.2); border-radius: 12px; padding: 14px; margin-bottom: 14px; font-size: 11.5px; color: #a8d5b0; line-height: 1.55; }
+  /* Predictor (clean) */
+  .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.1), rgba(45,138,62,0.05)); border: 1px solid rgba(124,201,140,0.18); border-radius: 12px; padding: 13px 14px; margin-bottom: 12px; font-size: 12px; color: #a8d5b0; line-height: 1.55; }
   .pred-intro b { color: #fff; }
-  .pred-formula { font-family: monospace; font-size: 10.5px; color: #7ec98c; background: rgba(0,0,0,0.25); border-radius: 6px; padding: 7px 9px; margin-top: 8px; display: block; }
-  .calib-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(90,186,110,0.07); border: 1px solid rgba(90,186,110,0.18); border-radius: 9px; padding: 8px 12px; margin-bottom: 12px; font-size: 11.5px; }
+  .pred-verdict { background: rgba(255,215,0,0.07); border-left: 3px solid #ffd700; border-radius: 7px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; color: #f3f7ee; line-height: 1.5; }
+  .calib-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(90,186,110,0.07); border: 1px solid rgba(90,186,110,0.18); border-radius: 9px; padding: 7px 12px; margin-bottom: 12px; font-size: 11px; }
   .calib-status { color: #7ec98c; }
-  .calib-status span { color: #fff; font-weight: 700; }
   .btn-recalib { background: rgba(45,138,62,0.5); color: #b0f0b8; border: none; border-radius: 7px; padding: 5px 11px; font-size: 11px; font-weight: 700; cursor: pointer; }
   .pred-top { background: linear-gradient(90deg, rgba(255,215,0,0.14), rgba(255,215,0,0.03)); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; text-align: center; }
   .pred-top-lbl { font-size: 11px; color: #ffd700; letter-spacing: 1.5px; text-transform: uppercase; }
@@ -139,12 +138,14 @@ const TEAM_POT = {
   Paraguay:3,Czechia:3,Scotland:3,Egypt:3,"Ivory Coast":3,Algeria:3,Tunisia:3,"Saudi Arabia":3,Ecuador:3,Qatar:3,Turkey:3,Ghana:3,
   "New Zealand":4,Haiti:4,Jordan:4,Iraq:4,Uzbekistan:4,"DR Congo":4,Curacao:4,"Bosnia and Herzegovina":4,"Cape Verde":4,"South Africa":4,Australia:4,Panama:4
 };
-// Bookmaker-calibrated strength PRIOR (≈ expected total goals if season ran to baseline).
-// Used to derive a per-match attack rate + round-advancement odds. Real form blends in over time.
+// My read on each nation's strength, synthesised from current bookmaker odds + the
+// general buzz around the tournament (updated 17 Jun: France clear favourite after
+// thumping Senegal, Spain cooled after the Cape Verde stalemate, Argentina & hosts rising).
+// This is the starting point; the app then nudges it automatically using real goals.
 const XGT_BASE = {
-  France:13,Spain:11.5,England:11,Brazil:11,Portugal:11,Argentina:10,Germany:11,Netherlands:9,Belgium:8,Croatia:7,Uruguay:7,Colombia:7,
-  "United States":7,Mexico:6,Japan:6,Morocco:7,Switzerland:5,Senegal:6,Iran:3,Sweden:5,Austria:5,"South Korea":5,Norway:7,Canada:4,
-  Paraguay:3,Czechia:4,Scotland:3,Egypt:4,"Ivory Coast":4,Algeria:4,Tunisia:3,"Saudi Arabia":3,Ecuador:4,Qatar:3,Turkey:5,Ghana:4,
+  France:13,Spain:10.5,England:10.5,Brazil:10.5,Portugal:11,Argentina:11,Germany:11,Netherlands:9,Belgium:8,Croatia:7,Uruguay:7,Colombia:7,
+  "United States":8,Mexico:7,Japan:6,Morocco:7,Switzerland:5,Senegal:5.5,Iran:3,Sweden:5,Austria:5,"South Korea":5,Norway:6.5,Canada:4,
+  Paraguay:3,Czechia:4,Scotland:3,Egypt:4,"Ivory Coast":4,Algeria:3.5,Tunisia:3,"Saudi Arabia":3,Ecuador:4,Qatar:3,Turkey:5,Ghana:4,
   "New Zealand":2,Haiti:2,Jordan:3,Iraq:2,Uzbekistan:3,"DR Congo":3,Curacao:2,"Bosnia and Herzegovina":4,"Cape Verde":3,"South Africa":3,Australia:3,Panama:3
 };
 const FLAGS = {
@@ -321,55 +322,35 @@ function setGoal(){ const t=document.getElementById("editTeam").value,v=parseInt
   if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); } }
 function adj(t,d){ goals[t]=Math.max(0,(goals[t]||0)+d); if(!goals[t]) delete goals[t]; save(); render(); }
 
-/* ============ PREDICTOR v2 ============
-   Expected total goals for a team = goals already scored
-     + (attack rate λ)  ×  (expected remaining matches)
-
-   λ  = Bayesian blend:  (K·priorRate + scored) / (K + played)
-        priorRate = bookmaker strength expressed as goals per match
-   remaining matches = tournament-progression model, hard-capped at 8 total games
-                       (3 group + up to 5 knockout), so no team can exceed reality.
-   ====================================================== */
+/* ============ PREDICTOR (engine hidden, result only) ============ */
 const N_SIMS = 10000;
-const PRIOR_K = 4;        // bookmaker prior carries the weight of 4 matches of data
+const PRIOR_K = 4;
 let xgtOverrides = {};
 let showStrength = false;
 let lastCalib = null;
 
 function mPlayed(team){ return matches.filter(m=>m.played&&(m.home===team||m.away===team)).length; }
 function hasMore(team){ return matches.some(m=>!m.played&&(m.home===team||m.away===team)); }
-
-// strength -> advancement odds (monotonic in XGT_BASE)
 function qualifyProb(team){ const s=XGT_BASE[team]||3; return Math.min(0.93, Math.max(0.20, 0.25 + (s-2)/11*0.67)); }
 function koWinProb(team){   const s=XGT_BASE[team]||3; return Math.min(0.65, Math.max(0.30, 0.30 + (s-2)/11*0.32)); }
-
-// expected matches across the WHOLE tournament from the very start (self-consistent with priorRate)
-function expBaseMatches(team){
-  const q=qualifyProb(team), w=koWinProb(team);
-  return 3 + q*(1-Math.pow(w,5))/(1-w);            // 3 group + Σ knockout probs (5 rounds max)
-}
-// expected REMAINING matches given current progress
+function expBaseMatches(team){ const q=qualifyProb(team), w=koWinProb(team); return 3 + q*(1-Math.pow(w,5))/(1-w); }
 function expRemainingMatches(team){
   const played=mPlayed(team);
-  if(played>=3 && !hasMore(team)) return 0;          // eliminated / tournament over
+  if(played>=3 && !hasMore(team)) return 0;
   const q=qualifyProb(team), w=koWinProb(team);
-  if(played<3) return (3-played) + q*(1-Math.pow(w,5))/(1-w);   // group stage left + future knockout
-  const r=Math.max(8-played,0);                       // in knockout: next is certain, rest by w^k
+  if(played<3) return (3-played) + q*(1-Math.pow(w,5))/(1-w);
+  const r=Math.max(8-played,0);
   return (1-Math.pow(w,r))/(1-w);
 }
-
-// MAIN dynamic expected-total-goals for a team (auto unless user override set)
 function getDyn(team){
   if(xgtOverrides[team]!==undefined) return xgtOverrides[team];
   const scored=goals[team]||0;
   const played=mPlayed(team);
-  if(played>=3 && !hasMore(team)) return scored;     // locked: no matches remain
-  const priorRate=(XGT_BASE[team]||3)/expBaseMatches(team);     // bookmaker goals-per-match
-  const lambda=(PRIOR_K*priorRate + scored)/(PRIOR_K + played); // blended with real form
+  if(played>=3 && !hasMore(team)) return scored;
+  const priorRate=(XGT_BASE[team]||3)/expBaseMatches(team);
+  const lambda=(PRIOR_K*priorRate + scored)/(PRIOR_K + played);
   return scored + lambda*expRemainingMatches(team);
 }
-
-// stable seed from current goals so identical data -> identical probabilities
 function goalsHash(){ let h=20260616; for(const[t,g]of Object.entries(goals)){ h=(h+ t.length*131*(g+1))>>>0; } return h>>>0; }
 function mulberry32(a){ return function(){ a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296; }; }
 function poisson(lam,rng){ if(lam<=0) return 0; const L=Math.exp(-lam);let k=0,p=1;do{k++;p*=rng();}while(p>L);return k-1; }
@@ -377,16 +358,13 @@ function poisson(lam,rng){ if(lam<=0) return 0; const L=Math.exp(-lam);let k=0,p
 function runSim(){
   lastCalib=new Date();
   const teams=Object.keys(TEAM_POT);
-  const dyn={}; teams.forEach(t=>dyn[t]=getDyn(t));   // compute once per sim run
+  const dyn={}; teams.forEach(t=>dyn[t]=getDyn(t));
   const rng=mulberry32(goalsHash());
   const winCount={},ptsSum={};
   PARTICIPANTS.forEach(p=>{winCount[p.name]=0;ptsSum[p.name]=0;});
   for(let s=0;s<N_SIMS;s++){
     const fg={};
-    for(const t of teams){
-      const cur=goals[t]||0;
-      fg[t]=cur+poisson(Math.max(dyn[t]-cur,0),rng);
-    }
+    for(const t of teams){ const cur=goals[t]||0; fg[t]=cur+poisson(Math.max(dyn[t]-cur,0),rng); }
     let maxP=-1;const sc={};
     for(const p of PARTICIPANTS){
       const pts=fg[p.p1]*POT_PTS[TEAM_POT[p.p1]]+fg[p.p2]*POT_PTS[TEAM_POT[p.p2]]+fg[p.p3]*POT_PTS[TEAM_POT[p.p3]]+fg[p.p4]*POT_PTS[TEAM_POT[p.p4]];
@@ -400,8 +378,26 @@ function runSim(){
     .sort((a,b)=>b.winPct-a.winPct||b.expPts-a.expPts);
 }
 
-function fmtCalib(){ return lastCalib?("Calibrated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})):"Not run yet"; }
-function countAutoTeams(){ return Object.keys(TEAM_POT).filter(t=>xgtOverrides[t]===undefined&&mPlayed(t)>0).length; }
+// Plain-language verdict, regenerated every refresh from the latest numbers
+function topTeamsByStrength(){
+  return Object.keys(TEAM_POT)
+    .filter(t=>!(mPlayed(t)>=3&&!hasMore(t)))
+    .sort((a,b)=>getDyn(b)-getDyn(a))
+    .slice(0,3);
+}
+function makeVerdict(res){
+  const a=res[0],b=res[1],c=res[2];
+  const gap=a.winPct-b.winPct;
+  let line;
+  if(a.winPct<3) line=`📣 Still wide open — no runaway favourite yet. <b>${a.name}</b> just shades it on ${a.winPct.toFixed(1)}%.`;
+  else if(gap>=5) line=`📣 <b>${a.name}</b> is the standout favourite to win the pool at ${a.winPct.toFixed(1)}%, clear of the chasing pack.`;
+  else if(gap>=2) line=`📣 <b>${a.name}</b> leads the pool on ${a.winPct.toFixed(1)}%, with <b>${b.name}</b> breathing down their neck.`;
+  else line=`📣 Too close to call: <b>${a.name}</b>, <b>${b.name}</b> and <b>${c.name}</b> are all in the fight.`;
+  const tt=topTeamsByStrength().map(t=>`${FLAGS[t]||""} ${t}`).join(", ");
+  return line+`<br><span style="color:#a8d5b0;font-size:12px">Form + odds favour these nations right now: ${tt}.</span>`;
+}
+
+function fmtCalib(){ return lastCalib?("Updated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})):"—"; }
 
 function renderPredictor(){
   try{
@@ -409,17 +405,14 @@ function renderPredictor(){
     const maxWin=Math.max(...results.map(r=>r.winPct),1);
     const top=results[0];
     let html=syncBarHTML();
-    html+=`<div class="pred-intro">🔮 <b>Title Race Predictor</b> — ${N_SIMS.toLocaleString()} Monte Carlo simulations.<br>
-      Each team's expected goals = <b>goals scored</b> + <b>attack rate</b> × <b>expected remaining matches</b>.
-      Attack rate is a Bayesian blend of bookmaker odds and real form (form gains weight as games are played); remaining matches come from a knockout-progression model capped at the real max of 8 games.
-      <span class="pred-formula">total = scored + λ × E[remaining]   ·   λ = (4·prior + scored) / (4 + played)</span></div>`;
-    html+=`<div class="calib-bar">
-      <div class="calib-status">⚡ ${fmtCalib()} · <span>${countAutoTeams()} teams on live form</span></div>
-      <button class="btn-recalib" onclick="renderPredictor()">↺ Recalibrate</button>
-    </div>`;
+    html+=`<div class="pred-intro">📊 <b>Who's winning the pool?</b><br>
+      My call, built from the bookmakers' odds on every nation plus how the teams are actually playing. It refreshes on its own after each match.</div>`;
+    html+=`<div class="pred-verdict">${makeVerdict(results)}</div>`;
+    html+=`<div class="calib-bar"><div class="calib-status">⚡ ${fmtCalib()} · auto-refresh on</div>
+      <button class="btn-recalib" onclick="renderPredictor()">↺ Refresh now</button></div>`;
     html+=`<div class="pred-top"><div class="pred-top-lbl">Favourite to win the pool</div>
       <div class="pred-top-name">${top.name}</div>
-      <div class="pred-top-sub">${top.winPct.toFixed(1)}% win chance · ~${Math.round(top.expPts)} projected pts</div></div>`;
+      <div class="pred-top-sub">${top.winPct.toFixed(1)}% chance · ~${Math.round(top.expPts)} projected pts</div></div>`;
     results.forEach((r,i)=>{
       const w=Math.max(r.winPct/maxWin*100,r.winPct>0?2:0);
       const fillBg=i===0?"linear-gradient(90deg,#ffd700,#ffaa00)":"linear-gradient(90deg,#2d8a3e,#5aba6e)";
@@ -429,11 +422,9 @@ function renderPredictor(){
         <span class="pred-exp">~${Math.round(r.expPts)}pts</span></div>
         <div class="pred-bar"><div class="pred-fill" style="width:${w}%;background:${fillBg}"></div></div></div>`;
     });
-    html+=`<button class="pred-toggle" onclick="toggleStrength()">${showStrength?'▲ Hide team strength':'▼ View / adjust team strength'}</button>`;
+    html+=`<button class="pred-toggle" onclick="toggleStrength()">${showStrength?'▲ Hide team ratings':'▼ View / tweak team ratings'}</button>`;
     if(showStrength){
-      html+=`<div class="str-help">Each team's <b>expected total goals</b> (auto-calculated). 
-        <b style="color:#5aba6e">AUTO</b> = recalculates every sync from real form · 
-        <b style="color:#f0a030">MANUAL</b> = your override (↺ to revert). Number in grey = matches played. Eliminated teams locked.</div>`;
+      html+=`<div class="str-help">My current rating for each nation (their expected goals). <b style="color:#5aba6e">AUTO</b> updates from real form · <b style="color:#f0a030">MANUAL</b> is your tweak (↺ to revert). Eliminated teams locked.</div>`;
       [1,2,3,4].forEach(pot=>{
         html+=`<div class="pot-label">POT ${pot} · ${POT_PTS[pot]}pts/goal</div>`;
         Object.keys(TEAM_POT).sort().filter(t=>TEAM_POT[t]===pot).forEach(t=>{
@@ -458,7 +449,7 @@ function renderPredictor(){
         });
       });
     }
-    html+=`<div class="note">⚠️ Probabilistic model — not a guarantee. Auto-recalibrates every 3 min with live goals (and hourly). Ties for 1st split evenly.</div>`;
+    html+=`<div class="note">⚠️ A prediction, not a guarantee. Refreshes automatically after every match (and hourly).</div>`;
     document.getElementById("tab-predictor").innerHTML=html;
     setSyncBtn(syncing);
   }catch(err){
