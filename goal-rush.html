@@ -44,7 +44,7 @@
   .btn-minus, .btn-plus { border: none; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 16px; line-height: 1; }
   .btn-minus { background: rgba(255,255,255,0.08); color: #e8f4e8; }
   .btn-plus { background: #2d8a3e; color: #fff; }
-  .note { margin-top: 16px; padding: 12px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; font-size: 11px; color: #a8d5b0; }
+  .note { margin-top: 16px; padding: 12px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; font-size: 11px; color: #a8d5b0; line-height: 1.5; }
   .sub-label { font-size: 11px; color: #7ec98c; margin-bottom: 8px; text-align: center; }
   .section-title { font-size: 13px; font-weight: 700; color: #a8d5b0; margin-bottom: 8px; }
   .sync-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(45,138,62,0.12); border: 1px solid rgba(45,138,62,0.25); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
@@ -68,8 +68,9 @@
   input[type=number] { width: 72px; text-align: center; }
   .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
   /* Predictor */
-  .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.12), rgba(45,138,62,0.06)); border: 1px solid rgba(124,201,140,0.2); border-radius: 12px; padding: 14px; margin-bottom: 14px; font-size: 11.5px; color: #a8d5b0; line-height: 1.5; }
+  .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.12), rgba(45,138,62,0.06)); border: 1px solid rgba(124,201,140,0.2); border-radius: 12px; padding: 14px; margin-bottom: 14px; font-size: 11.5px; color: #a8d5b0; line-height: 1.55; }
   .pred-intro b { color: #fff; }
+  .pred-formula { font-family: monospace; font-size: 10.5px; color: #7ec98c; background: rgba(0,0,0,0.25); border-radius: 6px; padding: 7px 9px; margin-top: 8px; display: block; }
   .calib-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(90,186,110,0.07); border: 1px solid rgba(90,186,110,0.18); border-radius: 9px; padding: 8px 12px; margin-bottom: 12px; font-size: 11.5px; }
   .calib-status { color: #7ec98c; }
   .calib-status span { color: #fff; font-weight: 700; }
@@ -94,11 +95,12 @@
   .str-row.active { background: rgba(255,255,255,0.03); }
   .str-row.elim { background: rgba(255,255,255,0.01); opacity: 0.45; }
   .str-ctrl { display: flex; align-items: center; gap: 6px; }
-  .str-val { font-size: 13px; font-weight: 700; color: #5aba6e; width: 30px; text-align: center; }
+  .str-val { font-size: 13px; font-weight: 700; color: #5aba6e; width: 34px; text-align: center; }
   .str-ctrl .btn-minus, .str-ctrl .btn-plus { width: 24px; height: 24px; font-size: 15px; border-radius: 5px; }
   .tag-auto { font-size: 9px; color: #5aba6e; font-weight: 700; background: rgba(90,186,110,0.15); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
   .tag-manual { font-size: 9px; color: #f0a030; font-weight: 700; background: rgba(240,160,48,0.15); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
   .tag-elim { font-size: 9px; color: #556b60; font-weight: 700; background: rgba(85,107,96,0.2); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
+  .meta-mini { font-size: 9.5px; color: #4a6b54; margin-left: 4px; }
   .btn-reset { background: rgba(240,160,48,0.2); color: #f0a030; border: none; border-radius: 5px; width: 22px; height: 22px; font-size: 13px; cursor: pointer; line-height: 1; }
 </style>
 </head>
@@ -137,8 +139,8 @@ const TEAM_POT = {
   Paraguay:3,Czechia:3,Scotland:3,Egypt:3,"Ivory Coast":3,Algeria:3,Tunisia:3,"Saudi Arabia":3,Ecuador:3,Qatar:3,Turkey:3,Ghana:3,
   "New Zealand":4,Haiti:4,Jordan:4,Iraq:4,Uzbekistan:4,"DR Congo":4,Curacao:4,"Bosnia and Herzegovina":4,"Cape Verde":4,"South Africa":4,Australia:4,Panama:4
 };
-// Bookmaker-calibrated baseline (pre-tournament strength proxy: deeper run = more matches = more goals).
-// Used as the PRIOR. As matches are played, actual form blends in automatically.
+// Bookmaker-calibrated strength PRIOR (≈ expected total goals if season ran to baseline).
+// Used to derive a per-match attack rate + round-advancement odds. Real form blends in over time.
 const XGT_BASE = {
   France:13,Spain:11.5,England:11,Brazil:11,Portugal:11,Argentina:10,Germany:11,Netherlands:9,Belgium:8,Croatia:7,Uruguay:7,Colombia:7,
   "United States":7,Mexico:6,Japan:6,Morocco:7,Switzerland:5,Senegal:6,Iran:3,Sweden:5,Austria:5,"South Korea":5,Norway:7,Canada:4,
@@ -319,55 +321,71 @@ function setGoal(){ const t=document.getElementById("editTeam").value,v=parseInt
   if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); } }
 function adj(t,d){ goals[t]=Math.max(0,(goals[t]||0)+d); if(!goals[t]) delete goals[t]; save(); render(); }
 
-/* ============ PREDICTOR ============ */
+/* ============ PREDICTOR v2 ============
+   Expected total goals for a team = goals already scored
+     + (attack rate λ)  ×  (expected remaining matches)
+
+   λ  = Bayesian blend:  (K·priorRate + scored) / (K + played)
+        priorRate = bookmaker strength expressed as goals per match
+   remaining matches = tournament-progression model, hard-capped at 8 total games
+                       (3 group + up to 5 knockout), so no team can exceed reality.
+   ====================================================== */
 const N_SIMS = 10000;
-const BASE_GPM = 1.45;          // avg goals per match, used to convert xGT_base → expected total matches
-let xgtOverrides = {};           // user manual overrides keyed by team name (empty = auto)
+const PRIOR_K = 4;        // bookmaker prior carries the weight of 4 matches of data
+let xgtOverrides = {};
 let showStrength = false;
 let lastCalib = null;
 
-// --- Dynamic xGT helpers ---
 function mPlayed(team){ return matches.filter(m=>m.played&&(m.home===team||m.away===team)).length; }
 function hasMore(team){ return matches.some(m=>!m.played&&(m.home===team||m.away===team)); }
 
-// Core auto-calibration: blends bookmaker prior with actual in-tournament form.
-// Logic mirrors how bookmakers adjust odds daily:
-//   • Before any match:  use baseline (pre-tournament odds proxy)
-//   • After 1-2 matches: 25-35% weight to real form, 65-75% to baseline
-//   • After 3+ matches:  up to 60% form, 40% baseline
-//   • Eliminated (group done, no scheduled matches): expected remaining = 0
-function getDyn(team){
-  if(xgtOverrides[team]!==undefined) return xgtOverrides[team]; // respect manual override
-  const scored=goals[team]||0;
+// strength -> advancement odds (monotonic in XGT_BASE)
+function qualifyProb(team){ const s=XGT_BASE[team]||3; return Math.min(0.93, Math.max(0.20, 0.25 + (s-2)/11*0.67)); }
+function koWinProb(team){   const s=XGT_BASE[team]||3; return Math.min(0.65, Math.max(0.30, 0.30 + (s-2)/11*0.32)); }
+
+// expected matches across the WHOLE tournament from the very start (self-consistent with priorRate)
+function expBaseMatches(team){
+  const q=qualifyProb(team), w=koWinProb(team);
+  return 3 + q*(1-Math.pow(w,5))/(1-w);            // 3 group + Σ knockout probs (5 rounds max)
+}
+// expected REMAINING matches given current progress
+function expRemainingMatches(team){
   const played=mPlayed(team);
-  if(played>=3&&!hasMore(team)) return scored;       // eliminated — no more goals coming
-  if(played===0) return XGT_BASE[team];              // not started — pure prior
-  const rate=scored/played;                          // actual goals per match so far
-  const expTotal=Math.max(Math.round(XGT_BASE[team]/BASE_GPM), played+1);
-  const rem=Math.max(expTotal-played, 0);
-  const fw=Math.min(played/5, 0.6);                 // form weight grows with matches played
-  const br=XGT_BASE[team]/expTotal;                 // baseline rate per match
-  return scored+(br*(1-fw)+rate*fw)*rem;
+  if(played>=3 && !hasMore(team)) return 0;          // eliminated / tournament over
+  const q=qualifyProb(team), w=koWinProb(team);
+  if(played<3) return (3-played) + q*(1-Math.pow(w,5))/(1-w);   // group stage left + future knockout
+  const r=Math.max(8-played,0);                       // in knockout: next is certain, rest by w^k
+  return (1-Math.pow(w,r))/(1-w);
 }
 
-// Stable seed derived from current goals so same data → same sim result
-function goalsHash(){ return Object.entries(goals).reduce((s,[t,g])=>s+t.charCodeAt(0)*31*g,20260616)>>>0; }
+// MAIN dynamic expected-total-goals for a team (auto unless user override set)
+function getDyn(team){
+  if(xgtOverrides[team]!==undefined) return xgtOverrides[team];
+  const scored=goals[team]||0;
+  const played=mPlayed(team);
+  if(played>=3 && !hasMore(team)) return scored;     // locked: no matches remain
+  const priorRate=(XGT_BASE[team]||3)/expBaseMatches(team);     // bookmaker goals-per-match
+  const lambda=(PRIOR_K*priorRate + scored)/(PRIOR_K + played); // blended with real form
+  return scored + lambda*expRemainingMatches(team);
+}
+
+// stable seed from current goals so identical data -> identical probabilities
+function goalsHash(){ let h=20260616; for(const[t,g]of Object.entries(goals)){ h=(h+ t.length*131*(g+1))>>>0; } return h>>>0; }
 function mulberry32(a){ return function(){ a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296; }; }
 function poisson(lam,rng){ if(lam<=0) return 0; const L=Math.exp(-lam);let k=0,p=1;do{k++;p*=rng();}while(p>L);return k-1; }
 
 function runSim(){
   lastCalib=new Date();
   const teams=Object.keys(TEAM_POT);
+  const dyn={}; teams.forEach(t=>dyn[t]=getDyn(t));   // compute once per sim run
   const rng=mulberry32(goalsHash());
   const winCount={},ptsSum={};
   PARTICIPANTS.forEach(p=>{winCount[p.name]=0;ptsSum[p.name]=0;});
   for(let s=0;s<N_SIMS;s++){
     const fg={};
     for(const t of teams){
-      const dyn=getDyn(t);
       const cur=goals[t]||0;
-      const rem=Math.max(dyn-cur,0);
-      fg[t]=cur+poisson(rem,rng);
+      fg[t]=cur+poisson(Math.max(dyn[t]-cur,0),rng);
     }
     let maxP=-1;const sc={};
     for(const p of PARTICIPANTS){
@@ -382,10 +400,7 @@ function runSim(){
     .sort((a,b)=>b.winPct-a.winPct||b.expPts-a.expPts);
 }
 
-function fmtCalib(){
-  if(!lastCalib) return "Not run yet";
-  return "Calibrated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-}
+function fmtCalib(){ return lastCalib?("Calibrated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})):"Not run yet"; }
 function countAutoTeams(){ return Object.keys(TEAM_POT).filter(t=>xgtOverrides[t]===undefined&&mPlayed(t)>0).length; }
 
 function renderPredictor(){
@@ -393,15 +408,14 @@ function renderPredictor(){
     const results=runSim();
     const maxWin=Math.max(...results.map(r=>r.winPct),1);
     const top=results[0];
-    const autoCount=countAutoTeams();
     let html=syncBarHTML();
-    html+=`<div class="pred-intro">🔮 <b>Auto-calibrating Title Race Predictor</b><br>
-      Win probabilities from <b>${N_SIMS.toLocaleString()} Monte Carlo simulations</b>.
-      Expected goals are <b>recalibrated automatically</b> after every sync: bookmaker-baseline blended with real in-tournament form.
-      As more matches are played, actual performance carries more weight — just like live bookmaker odds.</div>`;
+    html+=`<div class="pred-intro">🔮 <b>Title Race Predictor</b> — ${N_SIMS.toLocaleString()} Monte Carlo simulations.<br>
+      Each team's expected goals = <b>goals scored</b> + <b>attack rate</b> × <b>expected remaining matches</b>.
+      Attack rate is a Bayesian blend of bookmaker odds and real form (form gains weight as games are played); remaining matches come from a knockout-progression model capped at the real max of 8 games.
+      <span class="pred-formula">total = scored + λ × E[remaining]   ·   λ = (4·prior + scored) / (4 + played)</span></div>`;
     html+=`<div class="calib-bar">
-      <div class="calib-status">⚡ ${fmtCalib()} · <span>${autoCount} teams on auto-form</span></div>
-      <button class="btn-recalib" onclick="renderPredictor()">↺ Recalibrate now</button>
+      <div class="calib-status">⚡ ${fmtCalib()} · <span>${countAutoTeams()} teams on live form</span></div>
+      <button class="btn-recalib" onclick="renderPredictor()">↺ Recalibrate</button>
     </div>`;
     html+=`<div class="pred-top"><div class="pred-top-lbl">Favourite to win the pool</div>
       <div class="pred-top-name">${top.name}</div>
@@ -417,10 +431,9 @@ function renderPredictor(){
     });
     html+=`<button class="pred-toggle" onclick="toggleStrength()">${showStrength?'▲ Hide team strength':'▼ View / adjust team strength'}</button>`;
     if(showStrength){
-      html+=`<div class="str-help">Shows each team's <b>auto-calibrated expected total goals</b>. 
-        <b style="color:#5aba6e">AUTO</b> = recalculates every sync from real form.
-        <b style="color:#f0a030">MANUAL</b> = your override (tap ↺ to go back to auto).
-        Eliminated teams are greyed out.</div>`;
+      html+=`<div class="str-help">Each team's <b>expected total goals</b> (auto-calculated). 
+        <b style="color:#5aba6e">AUTO</b> = recalculates every sync from real form · 
+        <b style="color:#f0a030">MANUAL</b> = your override (↺ to revert). Number in grey = matches played. Eliminated teams locked.</div>`;
       [1,2,3,4].forEach(pot=>{
         html+=`<div class="pot-label">POT ${pot} · ${POT_PTS[pot]}pts/goal</div>`;
         Object.keys(TEAM_POT).sort().filter(t=>TEAM_POT[t]===pot).forEach(t=>{
@@ -429,12 +442,12 @@ function renderPredictor(){
           const isManual=xgtOverrides[t]!==undefined;
           const dynVal=getDyn(t);
           if(elim){
-            html+=`<div class="str-row elim"><span>${FLAGS[t]||""} ${t}<span class="tag-elim">ELIM</span></span>
+            html+=`<div class="str-row elim"><span>${FLAGS[t]||""} ${t}<span class="tag-elim">OUT</span></span>
               <span style="color:#556b60;font-size:12px">${goals[t]||0} ⚽ final</span></div>`;
           } else {
             const tag=isManual?'<span class="tag-manual">MANUAL</span>':'<span class="tag-auto">AUTO</span>';
             const resetBtn=isManual?`<button class="btn-reset" title="Reset to auto" onclick="resetXgt('${t}')">↺</button>`:'';
-            html+=`<div class="str-row active"><span>${FLAGS[t]||""} ${t}${tag}</span>
+            html+=`<div class="str-row active"><span>${FLAGS[t]||""} ${t}${tag}<span class="meta-mini">${played}p</span></span>
               <div class="str-ctrl">
                 <button class="btn-minus" onclick="adjXgt('${t}',-0.5)">−</button>
                 <span class="str-val">${dynVal.toFixed(1)}</span>
@@ -445,7 +458,7 @@ function renderPredictor(){
         });
       });
     }
-    html+=`<div class="note">⚠️ Probabilistic model — not a guarantee. Auto-recalibrates every 3 min with live goals + every hour. Ties split evenly.</div>`;
+    html+=`<div class="note">⚠️ Probabilistic model — not a guarantee. Auto-recalibrates every 3 min with live goals (and hourly). Ties for 1st split evenly.</div>`;
     document.getElementById("tab-predictor").innerHTML=html;
     setSyncBtn(syncing);
   }catch(err){
@@ -454,21 +467,17 @@ function renderPredictor(){
 }
 
 function toggleStrength(){ showStrength=!showStrength; renderPredictor(); }
-function adjXgt(team,delta){
-  const cur=getDyn(team);
-  xgtOverrides[team]=Math.max(0,Math.round((cur+delta)*2)/2);
-  renderPredictor();
-}
+function adjXgt(team,delta){ const cur=getDyn(team); xgtOverrides[team]=Math.max(0,Math.round((cur+delta)*2)/2); renderPredictor(); }
 function resetXgt(team){ delete xgtOverrides[team]; renderPredictor(); }
 
-/* ============ TIMERS ============ */
+/* ============ INIT + TIMERS ============ */
 try{ render(); }catch(err){
   var el=document.getElementById("tab-leaderboard");
   if(el) el.innerHTML='<div class="note" style="background:#3a1010;border-color:#822;color:#ff8080">⚠️ '+(err&&err.message?err.message:err)+'</div>';
 }
 fetchScores();
-setInterval(fetchScores, 3*60*1000);                         // scores every 3 min
-setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); }, 60*60*1000); // re-calibrate hourly
+setInterval(fetchScores, 3*60*1000);                                            // scores every 3 min
+setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); }, 60*60*1000); // hourly recalibrate
 </script>
 </body>
 </html>
