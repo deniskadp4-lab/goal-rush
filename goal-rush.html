@@ -297,9 +297,8 @@ function renderLeaderboard(){
     const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null,top=rank<=3;
     const isChamp=(i===0);
     const champCls=isChamp?(p.name!==prevLeader?"champion just-crowned":"champion"):"";
-    const trophy=isChamp?'<span class="champ-trophy">🏆</span>':'';
     html+=`<div class="card ${top?"top":""} ${champCls}"><div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
-      <div class="info"><div class="pname ${top?"gold":""}">${p.name}${trophy}</div>
+      <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
       <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div></div>
       <div class="pts-box"><div class="pts ${top?"gold":""}">${p.pts}</div><div class="lbl">pts</div></div></div>`;
   });
