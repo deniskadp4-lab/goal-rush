@@ -460,12 +460,30 @@ function matchProbs(lH,lA){
 /* ============ TODAY ANALYSIS ============ */
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function shortName(t){ return t.length>10 ? t.slice(0,9)+"…" : t; }
-function fmtMatchTime(dateStr, timeStr){
-  if(!timeStr) return "";
-  const dt = new Date((dateStr||todayStr())+"T"+timeStr+":00Z"); // openfootball time treated as UTC
-  if(isNaN(dt.getTime())) return timeStr;
-  try{ return dt.toLocaleTimeString('en-GB',{timeZone:'UTC',hour:'2-digit',minute:'2-digit',hour12:false}); }
-  catch(e){ return timeStr; }
+// Hard-coded kickoff times in UTC/GMT (openfootball often omits match times).
+// Key = the two team names sorted alphabetically, joined by "|". UTC = US Eastern + 4h.
+const KICKOFFS = {
+  "Australia|United States":"2026-06-19T19:00",
+  "Morocco|Scotland":"2026-06-19T22:00",
+  "Brazil|Haiti":"2026-06-20T00:30",
+  "Paraguay|Turkey":"2026-06-20T03:00",
+  "Netherlands|Sweden":"2026-06-20T17:00",
+  "Germany|Ivory Coast":"2026-06-20T20:00",
+  "Curacao|Ecuador":"2026-06-21T00:00",
+  "Brazil|Scotland":"2026-06-24T22:00",
+  "Haiti|Morocco":"2026-06-24T22:00",
+  "Turkey|United States":"2026-06-26T02:00",
+  "Australia|Paraguay":"2026-06-26T02:00"
+};
+function koKey(a,b){ return [a,b].sort().join("|"); }
+function koTime(m){ return KICKOFFS[koKey(m.home,m.away)] || (m.time ? (m.date||todayStr())+"T"+m.time : ""); }
+function fmtGMT(iso){
+  if(!iso) return "";
+  const s = iso.length===16 ? iso+":00Z" : (iso.endsWith("Z")?iso:iso+"Z");
+  const dt = new Date(s);
+  if(isNaN(dt.getTime())) return "";
+  try{ return dt.toLocaleTimeString('en-GB',{timeZone:'Europe/Dublin',hour:'2-digit',minute:'2-digit',hour12:false}); }
+  catch(e){ return ""; }
 }
 function renderToday(){
   let html=syncBarHTML();
@@ -474,7 +492,7 @@ function renderToday(){
   let heading;
   if(list.length){ heading=`📅 Today's matches · ${today}`; }
   else { list=matches.filter(m=>!m.played).slice(0,6); heading=list.length?`⏭️ No games today — next up`:`Fixtures`; }
-  list.sort((a,b)=> (a.date+"T"+a.time).localeCompare(b.date+"T"+b.time));
+  list.sort((a,b)=> (koTime(a)||"9").localeCompare(koTime(b)||"9"));
   html+=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from our team ratings. Finished games show the result.</div>`;
   html+=`<div class="section-title">${heading}</div>`;
   if(!list.length){
@@ -483,8 +501,8 @@ function renderToday(){
   }
   list.forEach(m=>{
     const H=m.home, A=m.away;
-    const gmt = fmtMatchTime(m.date, m.time);
-    const timeLine = gmt ? `<div class="mc-time">⏰ ${gmt} · GMT</div>` : "";
+    const gmt = fmtGMT(koTime(m));
+    const timeLine = gmt ? `<div class="mc-time">⏰ ${gmt} · Irish time</div>` : "";
     if(m.played){
       html+=`<div class="match-card">${timeLine}
         <div class="mc-head"><span class="mc-team">${FLAGS[H]||""} ${H}</span>
