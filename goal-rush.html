@@ -12,7 +12,7 @@
   .header h1 { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
   .header .desc { font-size: 12px; color: #a8d5b0; margin-bottom: 16px; }
   .tabs { display: flex; justify-content: center; flex-wrap: wrap; }
-  .tab { padding: 8px 13px; background: transparent; color: #a8d5b0; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 400; font-size: 12.5px; transition: all 0.2s; }
+  .tab { padding: 8px 12px; background: transparent; color: #a8d5b0; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 400; font-size: 12px; transition: all 0.2s; }
   .tab.active { background: #fff; color: #0d4a1a; font-weight: 700; }
   .content { padding: 16px; max-width: 640px; margin: 0 auto; }
   .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 11px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
@@ -46,10 +46,6 @@
   @keyframes crownPop {
     0% { transform: scale(0.9); } 45% { transform: scale(1.05); }
     75% { transform: scale(0.99); } 100% { transform: scale(1); } }
-  .champ-trophy { font-size: 20px; display: inline-block; margin-left: 6px; vertical-align: middle;
-    filter: drop-shadow(0 0 5px rgba(255,215,0,0.85)); animation: trophyPulse 1.4s ease-in-out infinite; }
-  @keyframes trophyPulse {
-    0%,100% { transform: scale(1) rotate(-7deg); } 50% { transform: scale(1.28) rotate(7deg); } }
   .pick-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
   .pick-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
@@ -90,7 +86,7 @@
   select { flex: 1; }
   input[type=number] { width: 72px; text-align: center; }
   .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
-  /* Predictor (clean) */
+  /* Predictor */
   .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.1), rgba(45,138,62,0.05)); border: 1px solid rgba(124,201,140,0.18); border-radius: 12px; padding: 13px 14px; margin-bottom: 12px; font-size: 12px; color: #a8d5b0; line-height: 1.55; }
   .pred-intro b { color: #fff; }
   .pred-verdict { background: rgba(255,215,0,0.07); border-left: 3px solid #ffd700; border-radius: 7px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; color: #f3f7ee; line-height: 1.5; }
@@ -124,6 +120,28 @@
   .tag-elim { font-size: 9px; color: #556b60; font-weight: 700; background: rgba(85,107,96,0.2); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
   .meta-mini { font-size: 9.5px; color: #4a6b54; margin-left: 4px; }
   .btn-reset { background: rgba(240,160,48,0.2); color: #f0a030; border: none; border-radius: 5px; width: 22px; height: 22px; font-size: 13px; cursor: pointer; line-height: 1; }
+  /* Today analysis */
+  .today-intro { background: linear-gradient(135deg, rgba(124,201,140,0.1), rgba(45,138,62,0.05)); border: 1px solid rgba(124,201,140,0.18); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 12px; color: #a8d5b0; line-height: 1.5; }
+  .today-intro b { color: #fff; }
+  .match-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; padding: 12px 14px; margin-bottom: 8px; }
+  .mc-time { font-size: 10px; color: #556b60; margin-bottom: 7px; text-align: center; letter-spacing: 0.5px; }
+  .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mc-team { font-size: 13.5px; font-weight: 700; flex: 1; }
+  .mc-right { text-align: right; }
+  .mc-vs { font-size: 16px; font-weight: 900; color: #ffd700; padding: 0 8px; white-space: nowrap; }
+  .mc-score { font-size: 16px; font-weight: 900; color: #5aba6e; padding: 0 8px; white-space: nowrap; }
+  .mc-probs { display: flex; align-items: flex-end; justify-content: center; gap: 16px; height: 64px; margin-bottom: 9px; }
+  .mc-prob { display: flex; flex-direction: column; align-items: center; }
+  .mcp-bar { width: 30px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 5px; display: flex; align-items: flex-end; overflow: hidden; }
+  .mcp-fill { width: 100%; border-radius: 5px 5px 0 0; transition: height 0.4s; }
+  .mcp-fill.h { background: linear-gradient(180deg,#5aba6e,#2d8a3e); }
+  .mcp-fill.d { background: linear-gradient(180deg,#9a9a4a,#5a5a2d); }
+  .mcp-fill.a { background: linear-gradient(180deg,#5a9aba,#2d5a8a); }
+  .mcp-lbl { font-size: 12px; font-weight: 800; color: #e8f4e8; margin-top: 4px; }
+  .mcp-sub { font-size: 9.5px; color: #7ec98c; margin-top: 1px; text-align: center; max-width: 60px; }
+  .mc-tag { font-size: 11.5px; color: #a8d5b0; background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 9px; text-align: center; }
+  .mc-tag.fav { color: #ffd700; }
+  .mc-tag.done { color: #5aba6e; }
 </style>
 </head>
 <body>
@@ -135,6 +153,7 @@
     <button class="tab active" onclick="showTab('leaderboard')">🏆 Leaderboard</button>
     <button class="tab" onclick="showTab('picks')">👥 All Picks</button>
     <button class="tab" onclick="showTab('goals')">⚽ Goals</button>
+    <button class="tab" onclick="showTab('today')">📅 Today</button>
     <button class="tab" onclick="showTab('predictor')">🔮 Predictor</button>
   </div>
 </div>
@@ -142,6 +161,7 @@
   <div id="tab-leaderboard">Loading…</div>
   <div id="tab-picks" style="display:none"></div>
   <div id="tab-goals" style="display:none"></div>
+  <div id="tab-today" style="display:none"></div>
   <div id="tab-predictor" style="display:none"></div>
 </div>
 <script>
@@ -244,7 +264,7 @@ async function fetchScores(){
       const sc=m.score; let hg=null,ag=null;
       if(sc){ const arr=sc.et||sc.ft; if(Array.isArray(arr)&&arr.length===2){hg=arr[0];ag=arr[1];} }
       const played=hg!==null&&ag!==null;
-      nm.push({home,away,hg:played?hg:"-",ag:played?ag:"-",date:m.date||"",played});
+      nm.push({home,away,hg:played?hg:"-",ag:played?ag:"-",date:m.date||"",time:m.time||"",played});
       if(played){
         if(home&&TEAM_POT[home]) ng[home]=(ng[home]||0)+hg;
         if(away&&TEAM_POT[away]) ng[away]=(ng[away]||0)+ag;
@@ -259,7 +279,7 @@ function setSyncBtn(loading){
   btn.disabled=loading; btn.innerHTML=loading?`<span class="spin">⟳</span> Syncing…`:`⟳ Refresh`;
 }
 
-/* ============ LEADERBOARD HELPERS ============ */
+/* ============ HELPERS ============ */
 function calcPts(p){ return [p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(goals[t]||0)*POT_PTS[TEAM_POT[t]],0); }
 function fl(t){ return (FLAGS[t]||"")+" "+t; }
 function getLeaderboard(){ return PARTICIPANTS.map(p=>({...p,pts:calcPts(p)})).sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name)); }
@@ -274,7 +294,7 @@ function syncBarHTML(){
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
-  ["leaderboard","picks","goals","predictor"].forEach((t,i)=>{
+  ["leaderboard","picks","goals","today","predictor"].forEach((t,i)=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
     document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
   });
@@ -284,6 +304,7 @@ function render(){
   if(activeTab==="leaderboard") renderLeaderboard();
   else if(activeTab==="picks") renderPicks();
   else if(activeTab==="goals") renderGoals();
+  else if(activeTab==="today") renderToday();
   else renderPredictor();
 }
 
@@ -352,6 +373,83 @@ function setGoal(){ const t=document.getElementById("editTeam").value,v=parseInt
   if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); } }
 function adj(t,d){ goals[t]=Math.max(0,(goals[t]||0)+d); if(!goals[t]) delete goals[t]; save(); render(); }
 
+/* ============ MATCH MODEL (shared) ============ */
+function teamStrength(t){ return XGT_BASE[t]||3; }
+// expected goals for each side from relative strength (Poisson means)
+function matchLambdas(home,away){
+  const sH=teamStrength(home), sA=teamStrength(away);
+  const base=1.32, ex=0.35;
+  return [Math.max(0.2, base*Math.pow(sH/sA,ex)), Math.max(0.2, base*Math.pow(sA/sH,ex))];
+}
+function factN(n){ let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
+function pmf(k,l){ return Math.exp(-l)*Math.pow(l,k)/factN(k); }
+// win/draw/win probabilities via independent double-Poisson
+function matchProbs(lH,lA){
+  let pH=0,pD=0,pA=0;
+  for(let i=0;i<=8;i++) for(let j=0;j<=8;j++){
+    const p=pmf(i,lH)*pmf(j,lA);
+    if(i>j) pH+=p; else if(i===j) pD+=p; else pA+=p;
+  }
+  const s=pH+pD+pA||1;
+  return {pH:pH/s*100, pD:pD/s*100, pA:pA/s*100};
+}
+
+/* ============ TODAY ANALYSIS ============ */
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function shortName(t){ return t.length>10 ? t.slice(0,9)+"…" : t; }
+
+function renderToday(){
+  let html=syncBarHTML();
+  const today=todayStr();
+  let list=matches.filter(m=>m.date && m.date.slice(0,10)===today);
+  let heading;
+  if(list.length){ heading=`📅 Today's matches · ${today}`; }
+  else { list=matches.filter(m=>!m.played).slice(0,6); heading=list.length?`⏭️ No games today — next up`:`Fixtures`; }
+
+  html+=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from my team ratings (bookmaker odds + live form). Finished games show the result.</div>`;
+  html+=`<div class="section-title">${heading}</div>`;
+
+  if(!list.length){
+    html+=`<div style="color:#556b60;font-size:13px;text-align:center;padding:22px">No fixtures loaded yet — press ⟳ Refresh to pull the schedule from openfootball.</div>`;
+    document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing); return;
+  }
+
+  list.forEach(m=>{
+    const H=m.home, A=m.away;
+    const timeLine = m.time ? `<div class="mc-time">⏰ ${m.time}</div>` : "";
+    if(m.played){
+      html+=`<div class="match-card">${timeLine}
+        <div class="mc-head"><span class="mc-team">${FLAGS[H]||""} ${H}</span>
+          <span class="mc-score">${m.hg} – ${m.ag}</span>
+          <span class="mc-team mc-right">${A} ${FLAGS[A]||""}</span></div>
+        <div class="mc-tag done">✅ Full time</div></div>`;
+      return;
+    }
+    const [lH,lA]=matchLambdas(H,A);
+    const pr=matchProbs(lH,lA);
+    const eH=Math.round(lH), eA=Math.round(lA);
+    let verdict;
+    if(Math.abs(pr.pH-pr.pA)<8) verdict=`⚖️ Tight — could go either way`;
+    else if(pr.pH>pr.pA) verdict=`⭐ ${H} favoured`;
+    else verdict=`⭐ ${A} favoured`;
+    html+=`<div class="match-card">${timeLine}
+      <div class="mc-head">
+        <span class="mc-team">${FLAGS[H]||""} ${H}</span>
+        <span class="mc-vs">${eH} – ${eA}</span>
+        <span class="mc-team mc-right">${A} ${FLAGS[A]||""}</span>
+      </div>
+      <div class="mc-probs">
+        <div class="mc-prob"><div class="mcp-bar"><div class="mcp-fill h" style="height:${pr.pH}%"></div></div><div class="mcp-lbl">${Math.round(pr.pH)}%</div><div class="mcp-sub">${shortName(H)}</div></div>
+        <div class="mc-prob"><div class="mcp-bar"><div class="mcp-fill d" style="height:${pr.pD}%"></div></div><div class="mcp-lbl">${Math.round(pr.pD)}%</div><div class="mcp-sub">Draw</div></div>
+        <div class="mc-prob"><div class="mcp-bar"><div class="mcp-fill a" style="height:${pr.pA}%"></div></div><div class="mcp-lbl">${Math.round(pr.pA)}%</div><div class="mcp-sub">${shortName(A)}</div></div>
+      </div>
+      <div class="mc-tag fav">${verdict} · predicted ${eH}–${eA}</div>
+    </div>`;
+  });
+  html+=`<div class="note">📊 Predictions only, not guarantees. Bars are win / draw / win; the centre number is the most likely scoreline. Recomputes as ratings and results update.</div>`;
+  document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing);
+}
+
 /* ============ PREDICTOR (engine hidden, result only) ============ */
 const N_SIMS = 10000;
 const PRIOR_K = 4;
@@ -408,12 +506,10 @@ function runSim(){
     .sort((a,b)=>b.winPct-a.winPct||b.expPts-a.expPts);
 }
 
-// Plain-language verdict, regenerated every refresh from the latest numbers
 function topTeamsByStrength(){
   return Object.keys(TEAM_POT)
     .filter(t=>!(mPlayed(t)>=3&&!hasMore(t)))
-    .sort((a,b)=>getDyn(b)-getDyn(a))
-    .slice(0,3);
+    .sort((a,b)=>getDyn(b)-getDyn(a)).slice(0,3);
 }
 function makeVerdict(res){
   const a=res[0],b=res[1],c=res[2];
@@ -426,7 +522,6 @@ function makeVerdict(res){
   const tt=topTeamsByStrength().map(t=>`${FLAGS[t]||""} ${t}`).join(", ");
   return line+`<br><span style="color:#a8d5b0;font-size:12px">Form + odds favour these nations right now: ${tt}.</span>`;
 }
-
 function fmtCalib(){ return lastCalib?("Updated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})):"—"; }
 
 function renderPredictor(){
@@ -498,7 +593,7 @@ try{ render(); }catch(err){
 }
 fetchScores();
 setInterval(fetchScores, 3*60*1000);                                            // scores every 3 min
-setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); }, 60*60*1000); // hourly recalibrate
+setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); else if(activeTab==='today') renderToday(); }, 60*60*1000);
 </script>
 </body>
 </html>
