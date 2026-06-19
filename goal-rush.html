@@ -3,155 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚽ World Cup Goal Rush 2026</title>
+<title>Gallagher · Goal Rush 2026</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a1628; color: #e8f4e8; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-  .header { background: linear-gradient(135deg, #0d4a1a, #1a6b2e, #0d4a1a); padding: 20px 16px 0; text-align: center; border-bottom: 3px solid #2d8a3e; }
-  .header .sub { font-size: 12px; color: #7ec98c; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
-  .header h1 { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
-  .header .desc { font-size: 12px; color: #a8d5b0; margin-bottom: 16px; }
-  .tabs { display: flex; justify-content: center; flex-wrap: wrap; }
-  .tab { padding: 8px 12px; background: transparent; color: #a8d5b0; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 400; font-size: 12px; transition: all 0.2s; }
-  .tab.active { background: #fff; color: #0d4a1a; font-weight: 700; }
+  :root{
+    --green-0:#0a2420; --green-1:#0d2e28; --green-2:#103a32; --green-line:#1c4a40;
+    --copper-1:#e8a87c; --copper-2:#c87f4e; --copper-3:#a35f33; --copper-soft:#d9a06f;
+    --ink:#eaf3ee; --muted:#9bc2ad; --dim:#5d7d6e;
+    --gold:#e3b878;
+  }
+  body { background:
+      radial-gradient(120% 90% at 50% -10%, #114038 0%, var(--green-1) 45%, var(--green-0) 100%) fixed,
+      var(--green-0);
+    color: var(--ink); font-family: 'Segoe UI', sans-serif; min-height: 100vh; position: relative; overflow-x: hidden; }
+  /* faint crest watermark behind everything */
+  body::before{
+    content:""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='480' viewBox='0 0 420 480'><g fill='none' stroke='%23c87f4e' stroke-width='6' stroke-linejoin='round' stroke-linecap='round' opacity='1'><path d='M40 70 L380 70 L380 300 Q380 430 210 470 Q40 430 40 300 Z'/><circle cx='185' cy='250' r='95'/><path d='M150 150 L150 175 L120 175 L120 150 M120 162 L150 162'/><path d='M150 150 L255 150 L300 120 L300 185'/><path d='M255 150 Q235 200 200 215'/><path d='M150 345 L150 175'/><path d='M300 200 Q315 230 300 270 Q288 300 300 330 L300 360'/><text x='325' y='150' font-family='Georgia' font-size='62' fill='%23c87f4e' stroke='none'>G</text></g></svg>");
+    background-repeat: no-repeat; background-position: center 120px; background-size: 460px auto;
+    opacity: 0.05;
+  }
+  .content, .header { position: relative; z-index: 1; }
+
+  .header { background:
+      linear-gradient(135deg, var(--green-2) 0%, #14463c 50%, var(--green-1) 100%);
+    padding: 18px 16px 0; text-align: center; border-bottom: 1px solid var(--green-line);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+  .crest { width: 62px; height: auto; margin: 0 auto 8px; display: block; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.45)); }
+  .crest path, .crest circle, .crest text { stroke: url(#cg); }
+  .brandname { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: 700; letter-spacing: 7px; color: #f3ece2; margin-bottom: 1px; padding-left: 7px; }
+  .brandsub { font-size: 9.5px; color: var(--copper-soft); letter-spacing: 5px; margin-bottom: 3px; }
+  .header h1 { font-size: 15px; font-weight: 600; color: var(--muted); margin-bottom: 3px; letter-spacing: 0.5px; }
+  .header .desc { font-size: 11px; color: var(--dim); margin-bottom: 14px; letter-spacing: 0.5px; }
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; }
+  .tab { padding: 8px 14px; background: transparent; color: var(--muted); border: none; border-radius: 9px 9px 0 0; cursor: pointer; font-weight: 500; font-size: 12.5px; transition: all 0.2s; }
+  .tab.active { background: linear-gradient(180deg, #fbf6ef, #efe4d6); color: #0d2e28; font-weight: 700; }
   .content { padding: 16px; max-width: 640px; margin: 0 auto; }
-  .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 11px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
-  .card.top { background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02)); border-color: rgba(255,215,0,0.2); }
-  .rank { width: 28px; text-align: center; font-size: 13px; color: #7ec98c; font-weight: 700; flex-shrink: 0; }
+
+  .lb-item { margin-bottom: 7px; }
+  .card { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 11px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: border-color 0.2s, transform 0.1s; }
+  .card:active { transform: scale(0.995); }
+  .card.top { background: linear-gradient(90deg, rgba(200,127,78,0.14), rgba(200,127,78,0.03)); border-color: rgba(216,160,111,0.35); }
+  .card.open { border-radius: 11px 11px 0 0; }
+  .rank { width: 28px; text-align: center; font-size: 13px; color: var(--copper-soft); font-weight: 700; flex-shrink: 0; }
   .rank.medal { font-size: 18px; }
-  .info { flex: 1; }
-  .info .pname { font-weight: 700; font-size: 15px; color: #e8f4e8; }
-  .info .pname.gold { color: #ffd700; }
-  .info .picks { font-size: 11px; color: #7ec98c; margin-top: 2px; }
-  .pts-box { text-align: right; }
-  .pts-box .pts { font-size: 22px; font-weight: 900; color: #5aba6e; }
-  .pts-box .pts.gold { color: #ffd700; }
-  .pts-box .lbl { font-size: 10px; color: #7ec98c; }
-  /* Champion (1st place) live animation */
+  .info { flex: 1; min-width: 0; }
+  .info .pname { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .info .pname.gold { color: var(--gold); }
+  .info .picks { font-size: 11px; color: var(--muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pts-box { text-align: right; flex-shrink: 0; }
+  .pts-box .pts { font-size: 22px; font-weight: 900; color: var(--copper-1); }
+  .pts-box .pts.gold { color: var(--gold); }
+  .pts-box .lbl { font-size: 10px; color: var(--dim); }
+  .exp-caret { font-size: 12px; color: var(--copper-soft); margin-left: 4px; flex-shrink: 0; }
+  .mv { font-size: 11px; font-weight: 800; min-width: 30px; text-align: center; flex-shrink: 0; }
+  .mv.up { color: #6fcf97; }
+  .mv.down { color: #e08070; }
+  .mv.same { color: var(--dim); }
+  .mv.newp { color: var(--copper-soft); }
+  .snap-bar { background: rgba(255,255,255,0.03); border: 1px solid var(--green-line); border-radius: 9px; padding: 8px 12px; margin-bottom: 10px; font-size: 11px; color: var(--muted); text-align: center; }
+  .lb-detail { background: rgba(0,0,0,0.18); border: 1px solid var(--green-line); border-top: none; border-radius: 0 0 11px 11px; padding: 10px 14px 12px; animation: slideDown 0.25s ease-out; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .det-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .det-row:last-of-type { border-bottom: none; }
+  .det-pot { color: var(--copper-soft); font-size: 10px; font-weight: 700; width: 38px; flex-shrink: 0; }
+  .det-team { flex: 1; color: #cfe6d8; padding: 0 6px; }
+  .det-calc { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .det-calc b { color: var(--copper-1); font-size: 12.5px; }
+  .det-foot { margin-top: 9px; padding-top: 9px; border-top: 1px solid rgba(216,160,111,0.2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .det-foot b { color: var(--gold); }
+  /* Champion */
   .card.champion { position: relative; overflow: hidden;
-    background: linear-gradient(90deg, rgba(255,215,0,0.16), rgba(255,170,0,0.05));
-    border: 1px solid rgba(255,215,0,0.5);
-    animation: championGlow 2.2s ease-in-out infinite; }
+    background: linear-gradient(90deg, rgba(200,127,78,0.2), rgba(227,184,120,0.05));
+    border: 1px solid rgba(227,184,120,0.55);
+    animation: championGlow 2.4s ease-in-out infinite; }
   .card.champion > * { position: relative; z-index: 1; }
-  .card.champion::before { content:""; position:absolute; top:0; left:0; width:50%; height:100%;
-    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.42), transparent);
-    z-index:0; animation: shimmerSweep 3.2s ease-in-out infinite; }
+  .card.champion::before { content:""; position:absolute; top:0; left:0; width:50%; height:100%; pointer-events:none;
+    background: linear-gradient(100deg, transparent, rgba(245,210,160,0.4), transparent);
+    z-index:0; animation: shimmerSweep 3.4s ease-in-out infinite; }
   @keyframes championGlow {
-    0%,100% { box-shadow: 0 0 8px rgba(255,215,0,0.25); border-color: rgba(255,215,0,0.4); }
-    50% { box-shadow: 0 0 22px rgba(255,215,0,0.65); border-color: rgba(255,215,0,0.85); } }
+    0%,100% { box-shadow: 0 0 8px rgba(216,160,111,0.25); border-color: rgba(216,160,111,0.45); }
+    50% { box-shadow: 0 0 22px rgba(232,168,124,0.6); border-color: rgba(232,168,124,0.85); } }
   @keyframes shimmerSweep {
     0% { transform: translateX(-220%) skewX(-20deg); }
     45%,100% { transform: translateX(360%) skewX(-20deg); } }
-  .card.just-crowned { animation: championGlow 2.2s ease-in-out infinite, crownPop 0.8s ease-out; }
-  @keyframes crownPop {
-    0% { transform: scale(0.9); } 45% { transform: scale(1.05); }
-    75% { transform: scale(0.99); } 100% { transform: scale(1); } }
-  .pick-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
-  .pick-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
-  .pick-row { display: flex; justify-content: space-between; align-items: center; border-radius: 6px; padding: 3px 6px; }
-  .pick-row.earned { background: rgba(94,186,110,0.1); }
-  .pick-team { font-size: 12px; color: #a8d5b0; }
-  .pick-pts { font-size: 12px; font-weight: 700; color: #556b60; }
-  .pick-pts.earned { color: #5aba6e; }
-  .tiebreak { margin-top: 8px; font-size: 11px; color: #7ec98c; }
-  .goal-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; }
+  .card.just-crowned { animation: championGlow 2.4s ease-in-out infinite, crownPop 0.8s ease-out; }
+  @keyframes crownPop { 0% { transform: scale(0.9); } 45% { transform: scale(1.05); } 75% { transform: scale(0.99); } 100% { transform: scale(1); } }
+
+  .goal-row { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 9px; padding: 10px 14px; margin-bottom: 6px; }
   .goal-team { font-size: 14px; font-weight: 600; }
-  .goal-meta { font-size: 11px; color: #7ec98c; margin-left: 8px; }
+  .goal-meta { font-size: 11px; color: var(--copper-soft); margin-left: 8px; }
   .goal-right { display: flex; align-items: center; gap: 10px; }
-  .goal-count { font-size: 18px; font-weight: 900; color: #5aba6e; }
+  .goal-count { font-size: 18px; font-weight: 900; color: var(--copper-1); }
   .btn-minus, .btn-plus { border: none; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 16px; line-height: 1; }
-  .btn-minus { background: rgba(255,255,255,0.08); color: #e8f4e8; }
-  .btn-plus { background: #2d8a3e; color: #fff; }
-  .note { margin-top: 16px; padding: 12px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; font-size: 11px; color: #a8d5b0; line-height: 1.5; }
-  .sub-label { font-size: 11px; color: #7ec98c; margin-bottom: 8px; text-align: center; }
-  .section-title { font-size: 13px; font-weight: 700; color: #a8d5b0; margin-bottom: 8px; }
-  .sync-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(45,138,62,0.12); border: 1px solid rgba(45,138,62,0.25); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
-  .sync-info { font-size: 12px; color: #a8d5b0; }
-  .sync-info strong { color: #5aba6e; }
-  .sync-time { font-size: 11px; color: #556b60; margin-top: 2px; }
-  .sync-error { font-size: 11px; color: #e07070; margin-top: 2px; }
-  .btn-sync { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .btn-minus { background: rgba(255,255,255,0.08); color: var(--ink); }
+  .btn-plus { background: var(--copper-3); color: #fff; }
+  .note { margin-top: 16px; padding: 12px; background: rgba(200,127,78,0.07); border: 1px solid rgba(216,160,111,0.2); border-radius: 10px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .section-title { font-size: 13px; font-weight: 700; color: var(--copper-soft); margin-bottom: 8px; letter-spacing: 0.5px; }
+  .sync-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(200,127,78,0.08); border: 1px solid rgba(216,160,111,0.2); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+  .sync-info { font-size: 12px; color: var(--muted); }
+  .sync-info strong { color: var(--copper-1); }
+  .sync-time { font-size: 11px; color: var(--dim); margin-top: 2px; }
+  .sync-error { font-size: 11px; color: #e08070; margin-top: 2px; }
+  .btn-sync { background: linear-gradient(180deg, var(--copper-2), var(--copper-3)); color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
   .btn-sync:disabled { opacity: 0.5; cursor: not-allowed; }
   .spin { display: inline-block; animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .match-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 7px; padding: 8px 12px; margin-bottom: 4px; font-size: 13px; }
-  .match-teams { color: #c8e6cc; flex: 1; }
-  .match-score { font-weight: 700; color: #5aba6e; min-width: 44px; text-align: center; }
-  .match-date { font-size: 10px; color: #556b60; min-width: 60px; text-align: right; }
-  .editor-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-  .editor-box label { font-size: 13px; font-weight: 700; color: #a8d5b0; display: block; margin-bottom: 10px; }
+  .match-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid var(--green-line); border-radius: 7px; padding: 8px 12px; margin-bottom: 4px; font-size: 13px; }
+  .match-teams { color: #cfe6d8; flex: 1; }
+  .match-score { font-weight: 700; color: var(--copper-1); min-width: 44px; text-align: center; }
+  .match-date { font-size: 10px; color: var(--dim); min-width: 60px; text-align: right; }
+  .editor-box { background: rgba(255,255,255,0.04); border: 1px solid var(--green-line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .editor-box label { font-size: 13px; font-weight: 700; color: var(--copper-soft); display: block; margin-bottom: 10px; }
   .editor-row { display: flex; gap: 8px; margin-bottom: 8px; }
-  select, input[type=number] { background: #0d2a14; color: #e8f4e8; border: 1px solid #2d8a3e; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+  select, input[type=number] { background: var(--green-0); color: var(--ink); border: 1px solid var(--copper-3); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
   select { flex: 1; }
   input[type=number] { width: 72px; text-align: center; }
-  .btn-set { background: #2d8a3e; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .btn-set { background: linear-gradient(180deg, var(--copper-2), var(--copper-3)); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
   /* Predictor */
-  .pred-intro { background: linear-gradient(135deg, rgba(124,201,140,0.1), rgba(45,138,62,0.05)); border: 1px solid rgba(124,201,140,0.18); border-radius: 12px; padding: 13px 14px; margin-bottom: 12px; font-size: 12px; color: #a8d5b0; line-height: 1.55; }
-  .pred-intro b { color: #fff; }
-  .pred-verdict { background: rgba(255,215,0,0.07); border-left: 3px solid #ffd700; border-radius: 7px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; color: #f3f7ee; line-height: 1.5; }
-  .calib-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(90,186,110,0.07); border: 1px solid rgba(90,186,110,0.18); border-radius: 9px; padding: 7px 12px; margin-bottom: 12px; font-size: 11px; }
-  .calib-status { color: #7ec98c; }
-  .btn-recalib { background: rgba(45,138,62,0.5); color: #b0f0b8; border: none; border-radius: 7px; padding: 5px 11px; font-size: 11px; font-weight: 700; cursor: pointer; }
-  .pred-top { background: linear-gradient(90deg, rgba(255,215,0,0.14), rgba(255,215,0,0.03)); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; text-align: center; }
-  .pred-top-lbl { font-size: 11px; color: #ffd700; letter-spacing: 1.5px; text-transform: uppercase; }
-  .pred-top-name { font-size: 26px; font-weight: 900; color: #ffd700; margin: 2px 0; }
-  .pred-top-sub { font-size: 13px; color: #a8d5b0; }
-  .pred-row-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; }
+  .pred-intro { background: linear-gradient(135deg, rgba(200,127,78,0.12), rgba(16,58,50,0.4)); border: 1px solid rgba(216,160,111,0.22); border-radius: 12px; padding: 13px 14px; margin-bottom: 12px; font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .pred-intro b { color: #f3ece2; }
+  .pred-verdict { background: rgba(227,184,120,0.08); border-left: 3px solid var(--gold); border-radius: 7px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; color: #f3f0e8; line-height: 1.5; }
+  .calib-bar { display: flex; align-items: center; justify-content: space-between; background: rgba(200,127,78,0.07); border: 1px solid rgba(216,160,111,0.18); border-radius: 9px; padding: 7px 12px; margin-bottom: 12px; font-size: 11px; }
+  .calib-status { color: var(--copper-soft); }
+  .btn-recalib { background: rgba(163,95,51,0.5); color: #f0d6bf; border: none; border-radius: 7px; padding: 5px 11px; font-size: 11px; font-weight: 700; cursor: pointer; }
+  .pred-top { background: linear-gradient(90deg, rgba(227,184,120,0.16), rgba(227,184,120,0.03)); border: 1px solid rgba(227,184,120,0.35); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; text-align: center; }
+  .pred-top-lbl { font-size: 11px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+  .pred-top-name { font-size: 26px; font-weight: 900; color: var(--gold); margin: 2px 0; }
+  .pred-top-sub { font-size: 13px; color: var(--muted); }
+  .pred-row-card { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; }
   .pred-row-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .pred-rank { width: 22px; text-align: center; font-size: 12px; color: #7ec98c; font-weight: 700; }
+  .pred-rank { width: 22px; text-align: center; font-size: 12px; color: var(--copper-soft); font-weight: 700; }
   .pred-name { flex: 1; font-weight: 700; font-size: 14px; }
   .pred-pct { font-size: 16px; font-weight: 900; }
-  .pred-exp { font-size: 11px; color: #7ec98c; }
+  .pred-exp { font-size: 11px; color: var(--copper-soft); }
   .pred-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
   .pred-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
-  .pred-toggle { width: 100%; margin-top: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 11px; color: #a8d5b0; font-size: 13px; font-weight: 700; cursor: pointer; }
-  .str-help { font-size: 11px; color: #7ec98c; margin: 10px 0; line-height: 1.5; }
-  .str-help b { color: #a8d5b0; }
-  .pot-label { font-size: 11px; color: #5aba6e; font-weight: 700; margin: 12px 0 4px; }
+  .pred-toggle { width: 100%; margin-top: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--green-line); border-radius: 10px; padding: 11px; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; }
+  .str-help { font-size: 11px; color: var(--copper-soft); margin: 10px 0; line-height: 1.5; }
+  .str-help b { color: var(--muted); }
+  .pot-label { font-size: 11px; color: var(--copper-1); font-weight: 700; margin: 12px 0 4px; }
   .str-row { display: flex; align-items: center; justify-content: space-between; border-radius: 7px; padding: 6px 10px; margin-bottom: 4px; font-size: 12.5px; }
   .str-row.active { background: rgba(255,255,255,0.03); }
   .str-row.elim { background: rgba(255,255,255,0.01); opacity: 0.45; }
   .str-ctrl { display: flex; align-items: center; gap: 6px; }
-  .str-val { font-size: 13px; font-weight: 700; color: #5aba6e; width: 34px; text-align: center; }
+  .str-val { font-size: 13px; font-weight: 700; color: var(--copper-1); width: 34px; text-align: center; }
   .str-ctrl .btn-minus, .str-ctrl .btn-plus { width: 24px; height: 24px; font-size: 15px; border-radius: 5px; }
-  .tag-auto { font-size: 9px; color: #5aba6e; font-weight: 700; background: rgba(90,186,110,0.15); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
-  .tag-manual { font-size: 9px; color: #f0a030; font-weight: 700; background: rgba(240,160,48,0.15); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
-  .tag-elim { font-size: 9px; color: #556b60; font-weight: 700; background: rgba(85,107,96,0.2); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
-  .meta-mini { font-size: 9.5px; color: #4a6b54; margin-left: 4px; }
-  .btn-reset { background: rgba(240,160,48,0.2); color: #f0a030; border: none; border-radius: 5px; width: 22px; height: 22px; font-size: 13px; cursor: pointer; line-height: 1; }
-  /* Today analysis */
-  .today-intro { background: linear-gradient(135deg, rgba(124,201,140,0.1), rgba(45,138,62,0.05)); border: 1px solid rgba(124,201,140,0.18); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 12px; color: #a8d5b0; line-height: 1.5; }
-  .today-intro b { color: #fff; }
-  .match-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; padding: 12px 14px; margin-bottom: 8px; }
-  .mc-time { font-size: 10px; color: #556b60; margin-bottom: 7px; text-align: center; letter-spacing: 0.5px; }
+  .tag-auto { font-size: 9px; color: #6fcf97; font-weight: 700; background: rgba(111,207,151,0.13); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
+  .tag-manual { font-size: 9px; color: var(--gold); font-weight: 700; background: rgba(227,184,120,0.15); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
+  .tag-elim { font-size: 9px; color: var(--dim); font-weight: 700; background: rgba(93,125,110,0.2); padding: 1px 4px; border-radius: 3px; margin-left: 4px; }
+  .meta-mini { font-size: 9.5px; color: var(--dim); margin-left: 4px; }
+  .btn-reset { background: rgba(227,184,120,0.2); color: var(--gold); border: none; border-radius: 5px; width: 22px; height: 22px; font-size: 13px; cursor: pointer; line-height: 1; }
+  /* Today */
+  .today-intro { background: linear-gradient(135deg, rgba(200,127,78,0.12), rgba(16,58,50,0.4)); border: 1px solid rgba(216,160,111,0.22); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .today-intro b { color: #f3ece2; }
+  .match-card { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 11px; padding: 12px 14px; margin-bottom: 8px; }
+  .mc-time { font-size: 10px; color: var(--dim); margin-bottom: 7px; text-align: center; letter-spacing: 0.5px; }
   .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .mc-team { font-size: 13.5px; font-weight: 700; flex: 1; }
   .mc-right { text-align: right; }
-  .mc-vs { font-size: 16px; font-weight: 900; color: #ffd700; padding: 0 8px; white-space: nowrap; }
-  .mc-score { font-size: 16px; font-weight: 900; color: #5aba6e; padding: 0 8px; white-space: nowrap; }
+  .mc-vs { font-size: 16px; font-weight: 900; color: var(--gold); padding: 0 8px; white-space: nowrap; }
+  .mc-score { font-size: 16px; font-weight: 900; color: var(--copper-1); padding: 0 8px; white-space: nowrap; }
   .mc-probs { display: flex; align-items: flex-end; justify-content: center; gap: 16px; height: 64px; margin-bottom: 9px; }
   .mc-prob { display: flex; flex-direction: column; align-items: center; }
   .mcp-bar { width: 30px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 5px; display: flex; align-items: flex-end; overflow: hidden; }
   .mcp-fill { width: 100%; border-radius: 5px 5px 0 0; transition: height 0.4s; }
-  .mcp-fill.h { background: linear-gradient(180deg,#5aba6e,#2d8a3e); }
-  .mcp-fill.d { background: linear-gradient(180deg,#9a9a4a,#5a5a2d); }
-  .mcp-fill.a { background: linear-gradient(180deg,#5a9aba,#2d5a8a); }
-  .mcp-lbl { font-size: 12px; font-weight: 800; color: #e8f4e8; margin-top: 4px; }
-  .mcp-sub { font-size: 9.5px; color: #7ec98c; margin-top: 1px; text-align: center; max-width: 60px; }
-  .mc-tag { font-size: 11.5px; color: #a8d5b0; background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 9px; text-align: center; }
-  .mc-tag.fav { color: #ffd700; }
-  .mc-tag.done { color: #5aba6e; }
+  .mcp-fill.h { background: linear-gradient(180deg,var(--copper-1),var(--copper-3)); }
+  .mcp-fill.d { background: linear-gradient(180deg,#7d9a86,#3f5a4a); }
+  .mcp-fill.a { background: linear-gradient(180deg,#6aa,#388); }
+  .mcp-lbl { font-size: 12px; font-weight: 800; color: var(--ink); margin-top: 4px; }
+  .mcp-sub { font-size: 9.5px; color: var(--copper-soft); margin-top: 1px; text-align: center; max-width: 60px; }
+  .mc-tag { font-size: 11.5px; color: var(--muted); background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 9px; text-align: center; }
+  .mc-tag.fav { color: var(--gold); }
+  .mc-tag.done { color: var(--copper-1); }
+  .footer-crest { text-align:center; margin: 22px 0 8px; opacity: 0.5; }
+  .footer-crest svg { width: 30px; height: auto; }
+  .footer-crest path, .footer-crest circle, .footer-crest text { stroke: var(--copper-3); }
+  .footer-txt { text-align:center; font-size: 10px; color: var(--dim); letter-spacing: 3px; font-family: Georgia, serif; margin-bottom: 20px; }
 </style>
 </head>
 <body>
+<!-- shared crest gradient + symbol -->
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f0c79a"/><stop offset="50%" stop-color="#c87f4e"/><stop offset="100%" stop-color="#9a5630"/>
+  </linearGradient>
+</defs></svg>
+
 <div class="header">
-  <div class="sub">⚽ FIFA World Cup 2026</div>
-  <h1>Gallagher Goal Rush Leaderboard</h1>
-  <div class="desc">Live data · openfootball · No API key</div>
+  <img class="crest" src="logo.png" alt="Gallagher" onerror="this.style.display='none'">
+  <div class="brandname">GALLAGHER</div>
+  <div class="brandsub">ESTD. 1991</div>
+  <h1>Goal Rush · World Cup 2026</h1>
+  <div class="desc">Live data · openfootball</div>
   <div class="tabs">
     <button class="tab active" onclick="showTab('leaderboard')">🏆 Leaderboard</button>
-    <button class="tab" onclick="showTab('picks')">👥 All Picks</button>
     <button class="tab" onclick="showTab('goals')">⚽ Goals</button>
     <button class="tab" onclick="showTab('today')">📅 Today</button>
     <button class="tab" onclick="showTab('predictor')">🔮 Predictor</button>
@@ -159,10 +205,10 @@
 </div>
 <div class="content">
   <div id="tab-leaderboard">Loading…</div>
-  <div id="tab-picks" style="display:none"></div>
   <div id="tab-goals" style="display:none"></div>
   <div id="tab-today" style="display:none"></div>
   <div id="tab-predictor" style="display:none"></div>
+  <div class="footer-txt">GALLAGHER · GOAL RUSH</div>
 </div>
 <script>
 window.addEventListener('error', function(e){
@@ -181,11 +227,6 @@ const TEAM_POT = {
   Paraguay:3,Czechia:3,Scotland:3,Egypt:3,"Ivory Coast":3,Algeria:3,Tunisia:3,"Saudi Arabia":3,Ecuador:3,Qatar:3,Turkey:3,Ghana:3,
   "New Zealand":4,Haiti:4,Jordan:4,Iraq:4,Uzbekistan:4,"DR Congo":4,Curacao:4,"Bosnia and Herzegovina":4,"Cape Verde":4,"South Africa":4,Australia:4,Panama:4
 };
-// My read on each nation's strength, synthesised from current bookmaker odds + the
-// general buzz around the tournament (updated 19 Jun: Portugal STUMBLED — shock 1-1
-// with DR Congo drifted them from +800 to 10-1; England rose to +600 after 4-2 v
-// Croatia; Colombia climbing; Brazil's form a worry; France still firm favourite +400).
-// Starting point only; the app auto-nudges it from real goals.
 const XGT_BASE = {
   France:13,Spain:10.5,England:11,Brazil:10,Portugal:9.5,Argentina:11,Germany:10.5,Netherlands:9,Belgium:8,Croatia:6,Uruguay:7,Colombia:7.5,
   "United States":8,Mexico:7,Japan:6,Morocco:7,Switzerland:5,Senegal:5.5,Iran:3,Sweden:5,Austria:5,"South Korea":5,Norway:7,Canada:4,
@@ -246,8 +287,10 @@ const PARTICIPANTS = [
 
 /* ============ STATE ============ */
 let goals={}, matches=[], lastSync=null, syncError=null, syncing=false;
-try{ const s=JSON.parse(localStorage.getItem("gr2026v4")||"{}"); goals=s.goals||{}; matches=s.matches||[]; lastSync=s.lastSync||null; }catch(e){}
-function save(){ try{ localStorage.setItem("gr2026v4",JSON.stringify({goals,matches,lastSync})); }catch(e){} }
+let rankSnap={}, liveRanks={}, snapDay=null;
+try{ const s=JSON.parse(localStorage.getItem("gr2026v4")||"{}"); goals=s.goals||{}; matches=s.matches||[]; lastSync=s.lastSync||null; rankSnap=s.rankSnap||{}; liveRanks=s.liveRanks||{}; snapDay=s.snapDay||null; }catch(e){}
+function save(){ try{ localStorage.setItem("gr2026v4",JSON.stringify({goals,matches,lastSync,rankSnap,liveRanks,snapDay})); }catch(e){} }
+function computeRanks(lb){ let rank=1; const r={}; lb.forEach((p,i)=>{ if(i>0&&lb[i-1].pts!==p.pts) rank=i+1; r[p.name]=rank; }); return r; }
 
 /* ============ SYNC ============ */
 const DATA_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
@@ -294,7 +337,7 @@ function syncBarHTML(){
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
-  ["leaderboard","picks","goals","today","predictor"].forEach((t,i)=>{
+  ["leaderboard","goals","today","predictor"].forEach((t,i)=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
     document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
   });
@@ -302,45 +345,67 @@ function showTab(tab){
 }
 function render(){
   if(activeTab==="leaderboard") renderLeaderboard();
-  else if(activeTab==="picks") renderPicks();
   else if(activeTab==="goals") renderGoals();
   else if(activeTab==="today") renderToday();
   else renderPredictor();
 }
 
-/* ============ LEADERBOARD ============ */
+/* ============ LEADERBOARD (tap to expand) ============ */
 let prevLeader=null;
+let expandedPlayer=null;
+function mvHTML(diff){
+  if(diff===null) return `<div class="mv newp">•</div>`;
+  if(diff>0) return `<div class="mv up">▲${diff}</div>`;
+  if(diff<0) return `<div class="mv down">▼${-diff}</div>`;
+  return `<div class="mv same">—</div>`;
+}
+function playerDetailHTML(p){
+  let rows="";
+  [["Pot 1",p.p1,1],["Pot 2",p.p2,2],["Pot 3",p.p3,3],["Pot 4",p.p4,4]].forEach(([lbl,team,pot])=>{
+    const g=goals[team]||0, pts=g*POT_PTS[pot];
+    rows+=`<div class="det-row"><span class="det-pot">${lbl}</span>
+      <span class="det-team">${FLAGS[team]||""} ${team}</span>
+      <span class="det-calc">${g}⚽ ×${POT_PTS[pot]} = <b>+${pts}</b></span></div>`;
+  });
+  return `<div class="lb-detail">${rows}
+    <div class="det-foot"><span>🏆 Winner pick: ${FLAGS[p.tb]||""} ${p.tb}</span><span>Total <b>${calcPts(p)} pts</b></span></div></div>`;
+}
+function togglePlayer(name){ expandedPlayer = (expandedPlayer===name?null:name); renderLeaderboard(); }
 function renderLeaderboard(){
-  const lb=getLeaderboard(); let rank=1,html=syncBarHTML();
+  const lb=getLeaderboard();
+  const curRanks=computeRanks(lb);
+  const today=todayStr();
+  if(snapDay===null || Object.keys(rankSnap).length===0){ rankSnap={...curRanks}; snapDay=today; }
+  else if(snapDay!==today){ rankSnap = Object.keys(liveRanks).length ? {...liveRanks} : {...curRanks}; snapDay=today; }
+  liveRanks={...curRanks};
+  save();
+
+  let html=syncBarHTML();
+  html+=`<div class="snap-bar">↕️ Moves today · resets automatically each day · tap a name for details</div>`;
+  let rank=1;
   const leaderName=lb.length?lb[0].name:null;
   lb.forEach((p,i)=>{
     if(i>0&&lb[i-1].pts!==p.pts) rank=i+1;
     const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null,top=rank<=3;
     const isChamp=(i===0);
     const champCls=isChamp?(p.name!==prevLeader?"champion just-crowned":"champion"):"";
-    html+=`<div class="card ${top?"top":""} ${champCls}"><div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
-      <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
-      <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div></div>
-      <div class="pts-box"><div class="pts ${top?"gold":""}">${p.pts}</div><div class="lbl">pts</div></div></div>`;
+    const diff = (rankSnap[p.name]===undefined) ? null : (rankSnap[p.name]-rank);
+    const open = expandedPlayer===p.name;
+    html+=`<div class="lb-item">
+      <div class="card ${top?"top":""} ${champCls} ${open?"open":""}" onclick="togglePlayer('${p.name}')">
+        <div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
+        ${mvHTML(diff)}
+        <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
+        <div class="picks">${fl(p.p1)} · ${fl(p.p2)} · ${fl(p.p3)} · ${fl(p.p4)}</div></div>
+        <div class="pts-box"><div class="pts ${top?"gold":""}">${p.pts}</div><div class="lbl">pts</div></div>
+        <span class="exp-caret">${open?"▾":"▸"}</span>
+      </div>
+      ${open?playerDetailHTML(p):""}
+    </div>`;
   });
   document.getElementById("tab-leaderboard").innerHTML=html;
   prevLeader=leaderName;
   setSyncBtn(syncing);
-}
-
-/* ============ PICKS ============ */
-function renderPicks(){
-  const lb=getLeaderboard();
-  let html=`<div class="sub-label">Pot 1=3pts/goal · Pot 2=6pts · Pot 3=9pts · Pot 4=12pts</div>`+syncBarHTML();
-  lb.forEach(p=>{
-    let rows="";
-    [p.p1,p.p2,p.p3,p.p4].forEach(t=>{ const g=goals[t]||0,e=g*POT_PTS[TEAM_POT[t]];
-      rows+=`<div class="pick-row ${e>0?"earned":""}"><span class="pick-team">${fl(t)}</span><span class="pick-pts ${e>0?"earned":""}">+${e}</span></div>`; });
-    html+=`<div class="pick-card"><div class="pick-header"><span style="font-weight:700;font-size:15px">${p.name}</span>
-      <span style="font-weight:900;font-size:18px;color:#5aba6e">${p.pts} pts</span></div>
-      <div class="pick-grid">${rows}</div><div class="tiebreak">🏆 Tiebreaker: ${fl(p.tb)}</div></div>`;
-  });
-  document.getElementById("tab-picks").innerHTML=html; setSyncBtn(syncing);
 }
 
 /* ============ GOALS ============ */
@@ -358,7 +423,7 @@ function renderGoals(){
     <div class="goal-right"><span class="goal-count">${g} ⚽</span>
     <button class="btn-minus" onclick="adj('${t}',-1)">−</button>
     <button class="btn-plus" onclick="adj('${t}',1)">+</button></div></div>`).join("")
-    :`<div style="color:#556b60;font-size:13px;text-align:center;padding:20px">No goals yet — press Refresh</div>`;
+    :`<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px">No goals yet — press Refresh</div>`;
   const opts=Object.keys(TEAM_POT).sort().map(t=>`<option value="${t}">${FLAGS[t]||""} ${t} (Pot ${TEAM_POT[t]})</option>`).join("");
   document.getElementById("tab-goals").innerHTML=`${syncBarHTML()}${matchHTML}
     <div class="section-title" style="margin-top:8px">Goals Tally</div>${rows}
@@ -373,9 +438,8 @@ function setGoal(){ const t=document.getElementById("editTeam").value,v=parseInt
   if(t&&!isNaN(v)&&v>=0){ goals[t]=v; if(!v) delete goals[t]; save(); render(); } }
 function adj(t,d){ goals[t]=Math.max(0,(goals[t]||0)+d); if(!goals[t]) delete goals[t]; save(); render(); }
 
-/* ============ MATCH MODEL (shared) ============ */
+/* ============ MATCH MODEL ============ */
 function teamStrength(t){ return XGT_BASE[t]||3; }
-// expected goals for each side from relative strength (Poisson means)
 function matchLambdas(home,away){
   const sH=teamStrength(home), sA=teamStrength(away);
   const base=1.32, ex=0.35;
@@ -383,7 +447,6 @@ function matchLambdas(home,away){
 }
 function factN(n){ let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
 function pmf(k,l){ return Math.exp(-l)*Math.pow(l,k)/factN(k); }
-// win/draw/win probabilities via independent double-Poisson
 function matchProbs(lH,lA){
   let pH=0,pD=0,pA=0;
   for(let i=0;i<=8;i++) for(let j=0;j<=8;j++){
@@ -397,7 +460,6 @@ function matchProbs(lH,lA){
 /* ============ TODAY ANALYSIS ============ */
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function shortName(t){ return t.length>10 ? t.slice(0,9)+"…" : t; }
-
 function renderToday(){
   let html=syncBarHTML();
   const today=todayStr();
@@ -405,15 +467,12 @@ function renderToday(){
   let heading;
   if(list.length){ heading=`📅 Today's matches · ${today}`; }
   else { list=matches.filter(m=>!m.played).slice(0,6); heading=list.length?`⏭️ No games today — next up`:`Fixtures`; }
-
-  html+=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from my team ratings (bookmaker odds + live form). Finished games show the result.</div>`;
+  html+=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from our team ratings. Finished games show the result.</div>`;
   html+=`<div class="section-title">${heading}</div>`;
-
   if(!list.length){
-    html+=`<div style="color:#556b60;font-size:13px;text-align:center;padding:22px">No fixtures loaded yet — press ⟳ Refresh to pull the schedule from openfootball.</div>`;
+    html+=`<div style="color:var(--dim);font-size:13px;text-align:center;padding:22px">No fixtures loaded yet — press ⟳ Refresh.</div>`;
     document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing); return;
   }
-
   list.forEach(m=>{
     const H=m.home, A=m.away;
     const timeLine = m.time ? `<div class="mc-time">⏰ ${m.time}</div>` : "";
@@ -446,11 +505,11 @@ function renderToday(){
       <div class="mc-tag fav">${verdict} · predicted ${eH}–${eA}</div>
     </div>`;
   });
-  html+=`<div class="note">📊 Predictions only, not guarantees. Bars are win / draw / win; the centre number is the most likely scoreline. Recomputes as ratings and results update.</div>`;
+  html+=`<div class="note">📊 Predictions only, not guarantees. Bars are win / draw / win; the centre number is the most likely scoreline.</div>`;
   document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing);
 }
 
-/* ============ PREDICTOR (engine hidden, result only) ============ */
+/* ============ PREDICTOR ============ */
 const N_SIMS = 10000;
 const PRIOR_K = 4;
 let xgtOverrides = {};
@@ -505,11 +564,8 @@ function runSim(){
   return PARTICIPANTS.map(p=>({name:p.name,winPct:winCount[p.name]/N_SIMS*100,expPts:ptsSum[p.name]/N_SIMS}))
     .sort((a,b)=>b.winPct-a.winPct||b.expPts-a.expPts);
 }
-
 function topTeamsByStrength(){
-  return Object.keys(TEAM_POT)
-    .filter(t=>!(mPlayed(t)>=3&&!hasMore(t)))
-    .sort((a,b)=>getDyn(b)-getDyn(a)).slice(0,3);
+  return Object.keys(TEAM_POT).filter(t=>!(mPlayed(t)>=3&&!hasMore(t))).sort((a,b)=>getDyn(b)-getDyn(a)).slice(0,3);
 }
 function makeVerdict(res){
   const a=res[0],b=res[1],c=res[2];
@@ -520,10 +576,9 @@ function makeVerdict(res){
   else if(gap>=2) line=`📣 <b>${a.name}</b> leads the pool on ${a.winPct.toFixed(1)}%, with <b>${b.name}</b> breathing down their neck.`;
   else line=`📣 Too close to call: <b>${a.name}</b>, <b>${b.name}</b> and <b>${c.name}</b> are all in the fight.`;
   const tt=topTeamsByStrength().map(t=>`${FLAGS[t]||""} ${t}`).join(", ");
-  return line+`<br><span style="color:#a8d5b0;font-size:12px">Form + odds favour these nations right now: ${tt}.</span>`;
+  return line+`<br><span style="color:var(--muted);font-size:12px">Form + odds favour these nations right now: ${tt}.</span>`;
 }
 function fmtCalib(){ return lastCalib?("Updated "+lastCalib.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})):"—"; }
-
 function renderPredictor(){
   try{
     const results=runSim();
@@ -531,7 +586,7 @@ function renderPredictor(){
     const top=results[0];
     let html=syncBarHTML();
     html+=`<div class="pred-intro">📊 <b>Who's winning the pool?</b><br>
-      My call, built from the bookmakers' odds on every nation plus how the teams are actually playing. It refreshes on its own after each match.</div>`;
+      Our call, built from the bookmakers' odds on every nation plus how the teams are actually playing. It refreshes on its own after each match.</div>`;
     html+=`<div class="pred-verdict">${makeVerdict(results)}</div>`;
     html+=`<div class="calib-bar"><div class="calib-status">⚡ ${fmtCalib()} · auto-refresh on</div>
       <button class="btn-recalib" onclick="renderPredictor()">↺ Refresh now</button></div>`;
@@ -540,16 +595,16 @@ function renderPredictor(){
       <div class="pred-top-sub">${top.winPct.toFixed(1)}% chance · ~${Math.round(top.expPts)} projected pts</div></div>`;
     results.forEach((r,i)=>{
       const w=Math.max(r.winPct/maxWin*100,r.winPct>0?2:0);
-      const fillBg=i===0?"linear-gradient(90deg,#ffd700,#ffaa00)":"linear-gradient(90deg,#2d8a3e,#5aba6e)";
+      const fillBg=i===0?"linear-gradient(90deg,#e3b878,#c87f4e)":"linear-gradient(90deg,#a35f33,#d9a06f)";
       html+=`<div class="pred-row-card"><div class="pred-row-head">
         <span class="pred-rank">#${i+1}</span><span class="pred-name">${r.name}</span>
-        <span class="pred-pct" style="color:${i===0?'#ffd700':'#5aba6e'}">${r.winPct<0.1?'&lt;0.1':r.winPct.toFixed(1)}%</span>
+        <span class="pred-pct" style="color:${i===0?'#e3b878':'#d9a06f'}">${r.winPct<0.1?'&lt;0.1':r.winPct.toFixed(1)}%</span>
         <span class="pred-exp">~${Math.round(r.expPts)}pts</span></div>
         <div class="pred-bar"><div class="pred-fill" style="width:${w}%;background:${fillBg}"></div></div></div>`;
     });
     html+=`<button class="pred-toggle" onclick="toggleStrength()">${showStrength?'▲ Hide team ratings':'▼ View / tweak team ratings'}</button>`;
     if(showStrength){
-      html+=`<div class="str-help">My current rating for each nation (their expected goals). <b style="color:#5aba6e">AUTO</b> updates from real form · <b style="color:#f0a030">MANUAL</b> is your tweak (↺ to revert). Eliminated teams locked.</div>`;
+      html+=`<div class="str-help">Our current rating for each nation (their expected goals). <b style="color:#6fcf97">AUTO</b> updates from real form · <b style="color:#e3b878">MANUAL</b> is your tweak (↺ to revert). Eliminated teams locked.</div>`;
       [1,2,3,4].forEach(pot=>{
         html+=`<div class="pot-label">POT ${pot} · ${POT_PTS[pot]}pts/goal</div>`;
         Object.keys(TEAM_POT).sort().filter(t=>TEAM_POT[t]===pot).forEach(t=>{
@@ -559,7 +614,7 @@ function renderPredictor(){
           const dynVal=getDyn(t);
           if(elim){
             html+=`<div class="str-row elim"><span>${FLAGS[t]||""} ${t}<span class="tag-elim">OUT</span></span>
-              <span style="color:#556b60;font-size:12px">${goals[t]||0} ⚽ final</span></div>`;
+              <span style="color:var(--dim);font-size:12px">${goals[t]||0} ⚽ final</span></div>`;
           } else {
             const tag=isManual?'<span class="tag-manual">MANUAL</span>':'<span class="tag-auto">AUTO</span>';
             const resetBtn=isManual?`<button class="btn-reset" title="Reset to auto" onclick="resetXgt('${t}')">↺</button>`:'';
@@ -581,7 +636,6 @@ function renderPredictor(){
     document.getElementById("tab-predictor").innerHTML='<div class="note" style="background:#3a1010;border-color:#822;color:#ff8080">⚠️ Predictor error: '+(err&&err.message?err.message:err)+'</div>';
   }
 }
-
 function toggleStrength(){ showStrength=!showStrength; renderPredictor(); }
 function adjXgt(team,delta){ const cur=getDyn(team); xgtOverrides[team]=Math.max(0,Math.round((cur+delta)*2)/2); renderPredictor(); }
 function resetXgt(team){ delete xgtOverrides[team]; renderPredictor(); }
@@ -592,7 +646,7 @@ try{ render(); }catch(err){
   if(el) el.innerHTML='<div class="note" style="background:#3a1010;border-color:#822;color:#ff8080">⚠️ '+(err&&err.message?err.message:err)+'</div>';
 }
 fetchScores();
-setInterval(fetchScores, 3*60*1000);                                            // scores every 3 min
+setInterval(fetchScores, 3*60*1000);
 setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); else if(activeTab==='today') renderToday(); }, 60*60*1000);
 </script>
 </body>
