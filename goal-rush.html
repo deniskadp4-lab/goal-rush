@@ -464,7 +464,7 @@ function fmtMatchTime(dateStr, timeStr){
   if(!timeStr) return "";
   const dt = new Date((dateStr||todayStr())+"T"+timeStr+":00Z"); // openfootball time treated as UTC
   if(isNaN(dt.getTime())) return timeStr;
-  try{ return dt.toLocaleTimeString('en-GB',{timeZone:'Europe/Dublin',hour:'2-digit',minute:'2-digit',hour12:false}); }
+  try{ return dt.toLocaleTimeString('en-GB',{timeZone:'UTC',hour:'2-digit',minute:'2-digit',hour12:false}); }
   catch(e){ return timeStr; }
 }
 function renderToday(){
@@ -483,8 +483,8 @@ function renderToday(){
   }
   list.forEach(m=>{
     const H=m.home, A=m.away;
-    const irish = fmtMatchTime(m.date, m.time);
-    const timeLine = irish ? `<div class="mc-time">⏰ ${irish} · Irish time</div>` : "";
+    const gmt = fmtMatchTime(m.date, m.time);
+    const timeLine = gmt ? `<div class="mc-time">⏰ ${gmt} · GMT</div>` : "";
     if(m.played){
       html+=`<div class="match-card">${timeLine}
         <div class="mc-head"><span class="mc-team">${FLAGS[H]||""} ${H}</span>
