@@ -219,38 +219,6 @@
   .mf-team { color: #cfe6d8; }
   .mf-team b { color: var(--gold); font-weight: 700; }
   .mf-when { font-size: 10.5px; color: var(--copper-soft); text-align: right; white-space: nowrap; }
-  /* What If */
-  .wi-intro { background: linear-gradient(135deg, rgba(200,127,78,0.12), rgba(16,58,50,0.4)); border: 1px solid rgba(216,160,111,0.22); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .wi-intro b { color: #f3ece2; }
-  .wi-banner { background: rgba(227,184,120,0.1); border: 1px solid rgba(227,184,120,0.4); border-radius: 10px; padding: 9px 13px; margin-bottom: 12px; font-size: 12px; color: var(--gold); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .wi-banner button { background: rgba(0,0,0,0.25); color: #f0d6bf; border: none; border-radius: 7px; padding: 5px 11px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-  .wi-match { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 12px; padding: 14px; margin-bottom: 8px; }
-  .wi-match.tweaked { border-color: rgba(227,184,120,0.5); background: linear-gradient(180deg, rgba(227,184,120,0.08), rgba(255,255,255,0.02)); }
-  .wim-when { font-size: 10px; color: var(--dim); text-align: center; margin-bottom: 9px; letter-spacing: 0.5px; }
-  .wim-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-  .wim-side { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
-  .wim-side.away { justify-content: flex-end; }
-  .wim-tn { font-size: 13.5px; font-weight: 700; color: #e9f4ee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .wim-pot { font-size: 9px; color: var(--dim); }
-  .wim-stepper { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .wim-sc { font-size: 22px; font-weight: 900; color: var(--copper-1); min-width: 24px; text-align: center; }
-  .wim-sc.set { color: var(--gold); }
-  .wim-vs { font-size: 12px; color: var(--dim); padding: 0 2px; }
-  .wim-impact { font-size: 11px; color: var(--copper-soft); text-align: center; background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 8px; margin-top: 4px; line-height: 1.4; }
-  .wi-board-title { font-size: 13px; font-weight: 800; color: var(--copper-soft); margin: 16px 0 9px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 7px; }
-  .wi-lb-row { display: flex; align-items: center; gap: 9px; background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); border: 1px solid var(--green-line); border-radius: 9px; padding: 9px 13px; margin-bottom: 5px; }
-  .wi-lb-row.moved-up { border-color: rgba(111,207,151,0.5); background: linear-gradient(90deg, rgba(111,207,151,0.1), rgba(255,255,255,0.015)); }
-  .wi-lb-row.moved-down { border-color: rgba(224,128,112,0.4); }
-  .wi-lb-row.is-me { border-color: rgba(227,184,120,0.55); background: linear-gradient(90deg, rgba(227,184,120,0.12), rgba(255,255,255,0.015)); }
-  .wi-rank { width: 26px; text-align: center; font-weight: 800; color: var(--copper-soft); font-size: 13px; }
-  .wi-nm { flex: 1; font-weight: 700; font-size: 14px; color: #e9f4ee; }
-  .wi-nm .me-tag { font-size: 9px; color: var(--gold); background: rgba(227,184,120,0.15); padding: 1px 5px; border-radius: 3px; margin-left: 5px; font-weight: 800; }
-  .wi-delta { font-size: 11px; font-weight: 800; min-width: 30px; text-align: center; }
-  .wi-delta.up { color: #6fcf97; }
-  .wi-delta.down { color: #e08070; }
-  .wi-delta.same { color: var(--dim); }
-  .wi-pts { font-size: 18px; font-weight: 900; color: var(--copper-1); min-width: 38px; text-align: right; }
-  .wi-pts .plus { font-size: 11px; color: #6fcf97; font-weight: 700; }
   /* Today sub-tabs */
   .subtabs { display: flex; gap: 5px; margin-bottom: 14px; background: rgba(0,0,0,0.18); padding: 4px; border-radius: 11px; border: 1px solid var(--green-line); }
   .subtab { flex: 1; padding: 9px 6px; background: transparent; color: var(--muted); border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12.5px; transition: all 0.18s; }
@@ -319,7 +287,6 @@
   <div class="tabs">
     <button class="tab active" onclick="showTab('leaderboard')">🏆 Table</button>
     <button class="tab" onclick="showTab('myrun')">👤 My Run</button>
-    <button class="tab" onclick="showTab('whatif')">🎲 What If</button>
     <button class="tab" onclick="showTab('goals')">⚽ Goals</button>
     <button class="tab" onclick="showTab('today')">📅 Today</button>
     <button class="tab" onclick="showTab('predictor')">🔮 Odds</button>
@@ -328,7 +295,6 @@
 <div class="content">
   <div id="tab-leaderboard">Loading…</div>
   <div id="tab-myrun" style="display:none"></div>
-  <div id="tab-whatif" style="display:none"></div>
   <div id="tab-goals" style="display:none"></div>
   <div id="tab-today" style="display:none"></div>
   <div id="tab-predictor" style="display:none"></div>
@@ -415,10 +381,6 @@ let rankSnap={}, liveRanks={}, snapDay=null;
 let myName=null;          // selected participant for "My Run"
 try{ const s=JSON.parse(localStorage.getItem("gr2026v5")||"{}"); goals=s.goals||{}; matches=s.matches||[]; knockout=s.knockout||[]; lastSync=s.lastSync||null; rankSnap=s.rankSnap||{}; liveRanks=s.liveRanks||{}; snapDay=s.snapDay||null; myName=s.myName||null; }catch(e){}
 function save(){ try{ localStorage.setItem("gr2026v5",JSON.stringify({goals,matches,knockout,lastSync,rankSnap,liveRanks,snapDay,myName})); }catch(e){} }
-
-/* ============ WHAT-IF SCENARIO (in-memory only) ============ */
-let whatIfGoals=null;     // when active: a clone of goals with hypothetical edits
-function activeGoals(){ return whatIfGoals || goals; }
 function computeRanks(lb){ let rank=1; const r={}; lb.forEach((p,i)=>{ if(i>0&&lb[i-1].pts!==p.pts) rank=i+1; r[p.name]=rank; }); return r; }
 
 /* ============ SYNC ============ */
@@ -480,7 +442,7 @@ function syncBarHTML(){
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
-  ["leaderboard","myrun","whatif","goals","today","predictor"].forEach((t,i)=>{
+  ["leaderboard","myrun","goals","today","predictor"].forEach((t,i)=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
     document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
   });
@@ -489,7 +451,6 @@ function showTab(tab){
 function render(){
   if(activeTab==="leaderboard") renderLeaderboard();
   else if(activeTab==="myrun") renderMyRun();
-  else if(activeTab==="whatif") renderWhatIf();
   else if(activeTab==="goals") renderGoals();
   else if(activeTab==="today") renderTodayTab();
   else renderPredictor();
@@ -969,119 +930,6 @@ function renderMyRun(){
 }
 function pickMe(n){ myName=n; save(); renderMyRun(); }
 function changeMe(){ myName=null; save(); renderMyRun(); }
-
-/* ============ WHAT IF ============ */
-// Upcoming matches the user can tweak (group + knockout, not yet played).
-function whatIfMatches(){
-  return matches.concat(knockout)
-    .filter(m=>!m.played && m.home && m.away && TEAM_POT[m.home] && TEAM_POT[m.away])
-    .sort((a,b)=>(parseKO(a)||a.date||"9").localeCompare(parseKO(b)||b.date||"9"))
-    .slice(0,12);
-}
-// Per-match hypothetical scores live here: key -> {hg,ag}
-let wiScores={};
-function wiKey(m){ return m.home+"|"+m.away+"|"+m.date; }
-function rebuildWhatIf(){
-  // Start from real goals, then add hypothetical goals from each tweaked match.
-  const base={...goals};
-  let any=false;
-  whatIfMatches().forEach(m=>{
-    const s=wiScores[wiKey(m)];
-    if(!s) return;
-    any=true;
-    base[m.home]=(base[m.home]||0)+s.hg;
-    base[m.away]=(base[m.away]||0)+s.ag;
-  });
-  whatIfGoals = any ? base : null;
-}
-function wiAdj(key,side,delta){
-  const cur=wiScores[key]||{hg:0,ag:0};
-  cur[side]=Math.max(0,Math.min(9,cur[side]+delta));
-  if(cur.hg===0&&cur.ag===0) delete wiScores[key]; else wiScores[key]=cur;
-  rebuildWhatIf(); renderWhatIf();
-}
-function wiClear(){ wiScores={}; whatIfGoals=null; renderWhatIf(); }
-function renderWhatIf(){
-  const el=document.getElementById("tab-whatif");
-  rebuildWhatIf();
-  // Baseline ranks (real) vs scenario ranks.
-  const realLb=PARTICIPANTS.map(p=>({name:p.name,pts:[p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(goals[t]||0)*POT_PTS[TEAM_POT[t]],0)}))
-    .sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name));
-  const realRank={}; { let r=1; realLb.forEach((p,i)=>{ if(i>0&&realLb[i-1].pts!==p.pts) r=i+1; realRank[p.name]=r; }); }
-  const ag=activeGoals();
-  const scenLb=PARTICIPANTS.map(p=>({name:p.name,
-      pts:[p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(ag[t]||0)*POT_PTS[TEAM_POT[t]],0),
-      realPts:[p.p1,p.p2,p.p3,p.p4].reduce((s,t)=>s+(goals[t]||0)*POT_PTS[TEAM_POT[t]],0)}))
-    .sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name));
-  const scenRank={}; { let r=1; scenLb.forEach((p,i)=>{ if(i>0&&scenLb[i-1].pts!==p.pts) r=i+1; scenRank[p.name]=r; }); }
-
-  let html=syncBarHTML();
-  html+=`<div class="wi-intro">🎲 <b>Play out the “what if”.</b> Set hypothetical scores for upcoming matches and watch the table shift live. Nothing here is saved — it's your sandbox.</div>`;
-
-  const tweakedCount=Object.keys(wiScores).length;
-  if(tweakedCount){
-    html+=`<div class="wi-banner"><span>⚡ ${tweakedCount} match${tweakedCount>1?'es':''} in play — table below is hypothetical</span>
-      <button onclick="wiClear()">Reset</button></div>`;
-  }
-
-  const list=whatIfMatches();
-  if(!list.length){
-    html+=`<div style="color:var(--dim);font-size:13px;text-align:center;padding:24px">No upcoming matches to play with yet — press ⟳ Refresh.</div>`;
-    el.innerHTML=html; setSyncBtn(syncing); return;
-  }
-  html+=`<div class="section-title">🔧 Set the scores</div>`;
-  list.forEach(m=>{
-    const key=wiKey(m);
-    const s=wiScores[key];
-    const iso=parseKO(m); const tm=fmtIrish(iso); const d=fmtIrishDate(iso);
-    const when=(d||tm)?`${d||""}${tm?(' · '+tm+' Irish'):''}`:(m.round||m.group||"");
-    const hPot=TEAM_POT[m.home], aPot=TEAM_POT[m.away];
-    // Impact line: points each goal is worth in this fixture.
-    const impact=`Each ${m.home} goal = +${POT_PTS[hPot]} · each ${m.away} goal = +${POT_PTS[aPot]}`;
-    html+=`<div class="wi-match ${s?'tweaked':''}">
-      ${when?`<div class="wim-when">⏰ ${when}</div>`:''}
-      <div class="wim-row">
-        <div class="wim-side"><div><div class="wim-tn">${FLAGS[m.home]||""} ${m.home}</div><div class="wim-pot">Pot ${hPot} · ${POT_PTS[hPot]}/goal</div></div></div>
-        <div class="wim-stepper">
-          <button class="btn-minus" onclick="wiAdj('${key}','hg',-1)">−</button>
-          <span class="wim-sc ${s?'set':''}">${s?s.hg:0}</span>
-          <span class="wim-vs">–</span>
-          <span class="wim-sc ${s?'set':''}">${s?s.ag:0}</span>
-          <button class="btn-plus" onclick="wiAdj('${key}','ag',1)">+</button>
-        </div>
-        <div class="wim-side away"><div style="text-align:right"><div class="wim-tn">${m.away} ${FLAGS[m.away]||""}</div><div class="wim-pot">Pot ${aPot} · ${POT_PTS[aPot]}/goal</div></div></div>
-      </div>
-      <div class="wim-row" style="margin-bottom:0;justify-content:center;gap:18px">
-        <button class="btn-minus" onclick="wiAdj('${key}','hg',-1)" style="visibility:hidden">−</button>
-        <span style="font-size:10px;color:var(--dim)">${m.home} goals</span>
-        <span style="font-size:10px;color:var(--dim)">${m.away} goals</span>
-        <button class="btn-plus" onclick="wiAdj('${key}','ag',1)" style="visibility:hidden">+</button>
-      </div>
-      <div class="wim-impact">${impact}</div>
-    </div>`;
-  });
-
-  // Scenario leaderboard.
-  html+=`<div class="wi-board-title">${tweakedCount?'🎲 Hypothetical table':'🏆 Current table'} <span style="font-size:10px;color:var(--dim);font-weight:600">(${tweakedCount?'with your scores':'live'})</span></div>`;
-  scenLb.slice(0,12).forEach((p,i)=>{
-    const rank=scenRank[p.name];
-    const moved=realRank[p.name]-rank;  // positive = climbed
-    const gained=p.pts-p.realPts;
-    let dcls="same",dtxt="—";
-    if(moved>0){ dcls="up"; dtxt="▲"+moved; }
-    else if(moved<0){ dcls="down"; dtxt="▼"+(-moved); }
-    const rowCls=(p.name===myName?"is-me ":"")+(moved>0?"moved-up":moved<0?"moved-down":"");
-    const meTag=p.name===myName?`<span class="me-tag">YOU</span>`:"";
-    html+=`<div class="wi-lb-row ${rowCls}">
-      <span class="wi-rank">${rank<=3?["🥇","🥈","🥉"][rank-1]:"#"+rank}</span>
-      <span class="wi-delta ${dcls}">${dtxt}</span>
-      <span class="wi-nm">${p.name}${meTag}</span>
-      <span class="wi-pts">${p.pts}${gained>0?` <span class="plus">+${gained}</span>`:''}</span>
-    </div>`;
-  });
-  html+=`<div class="note">🎲 Hypothetical only — real points update automatically from live results. Use “Reset” to clear your scenario.</div>`;
-  el.innerHTML=html; setSyncBtn(syncing);
-}
 
 /* ============ PREDICTOR ============ */
 const N_SIMS = 10000;
