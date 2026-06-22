@@ -176,6 +176,51 @@
   .mc-tag { font-size: 11.5px; color: var(--muted); background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 9px; text-align: center; }
   .mc-tag.fav { color: var(--gold); }
   .mc-tag.done { color: var(--copper-1); }
+  /* Today sub-tabs */
+  .subtabs { display: flex; gap: 5px; margin-bottom: 14px; background: rgba(0,0,0,0.18); padding: 4px; border-radius: 11px; border: 1px solid var(--green-line); }
+  .subtab { flex: 1; padding: 9px 6px; background: transparent; color: var(--muted); border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12.5px; transition: all 0.18s; }
+  .subtab.active { background: linear-gradient(180deg, var(--copper-2), var(--copper-3)); color: #fff; box-shadow: 0 2px 8px rgba(163,95,51,0.4); }
+  /* Group tables */
+  .grp-card { background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); border: 1px solid var(--green-line); border-radius: 12px; padding: 0; margin-bottom: 14px; overflow: hidden; }
+  .grp-head { background: linear-gradient(90deg, rgba(200,127,78,0.18), rgba(200,127,78,0.04)); padding: 9px 14px; font-size: 13px; font-weight: 800; color: var(--gold); letter-spacing: 1px; border-bottom: 1px solid var(--green-line); display:flex; align-items:center; justify-content:space-between; }
+  .grp-head .grp-prog { font-size: 9.5px; color: var(--dim); font-weight: 600; letter-spacing: 0.5px; }
+  table.grp-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.grp-tbl th { font-size: 9.5px; color: var(--dim); font-weight: 700; text-align: center; padding: 6px 2px; border-bottom: 1px solid var(--green-line); letter-spacing: 0.3px; }
+  table.grp-tbl th.tname { text-align: left; padding-left: 12px; }
+  table.grp-tbl td { padding: 7px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--muted); }
+  table.grp-tbl td.tname { text-align: left; padding-left: 8px; color: #d7ece0; font-weight: 600; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+  table.grp-tbl td.pts { font-weight: 900; color: var(--copper-1); font-size: 13px; }
+  table.grp-tbl tr:last-child td { border-bottom: none; }
+  table.grp-tbl tr.q-win td.pos { color: #6fcf97; font-weight: 900; }
+  table.grp-tbl tr.q-win td.pos::after { content:""; }
+  table.grp-tbl td.pos { width: 22px; font-weight: 800; color: var(--dim); font-size: 11px; }
+  .q-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:5px; vertical-align: middle; }
+  .q-dot.win { background:#6fcf97; box-shadow:0 0 6px rgba(111,207,151,0.7); }
+  .q-dot.run { background:#e3b878; box-shadow:0 0 6px rgba(227,184,120,0.6); }
+  .q-dot.third { background:#7d9a86; }
+  .q-dot.out { background:transparent; border:1px solid var(--dim); }
+  .grp-legend { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; background: rgba(255,255,255,0.03); border:1px solid var(--green-line); border-radius:10px; padding:9px 12px; margin-bottom:14px; font-size:10.5px; color:var(--muted); }
+  .grp-legend span { display:flex; align-items:center; gap:5px; }
+  .third-note { font-size: 10px; color: var(--dim); margin: -6px 0 14px; text-align:center; line-height:1.5; }
+  /* Bracket */
+  .bracket-intro { background: linear-gradient(135deg, rgba(200,127,78,0.12), rgba(16,58,50,0.4)); border: 1px solid rgba(216,160,111,0.22); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .bracket-intro b { color: #f3ece2; }
+  .rnd-label { font-size: 12px; font-weight: 800; color: var(--copper-soft); letter-spacing: 1px; margin: 18px 0 8px; text-transform: uppercase; display:flex; align-items:center; gap:8px; }
+  .rnd-label::before { content:""; flex:0 0 18px; height:2px; background: var(--copper-3); border-radius:2px; }
+  .rnd-label::after { content:""; flex:1; height:1px; background: var(--green-line); }
+  .tie { display:flex; align-items:stretch; background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); border:1px solid var(--green-line); border-radius:10px; margin-bottom:7px; overflow:hidden; }
+  .tie-meta { width: 56px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.18); border-right:1px solid var(--green-line); padding:4px; }
+  .tie-date { font-size:9px; color:var(--dim); text-align:center; line-height:1.3; }
+  .tie-teams { flex:1; }
+  .tie-team { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; font-size:13px; }
+  .tie-team:first-child { border-bottom:1px solid rgba(255,255,255,0.05); }
+  .tie-team .tt-name { color:#d7ece0; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tie-team .tt-name.tbd { color:var(--dim); font-style:italic; font-weight:500; }
+  .tie-team .tt-score { font-weight:900; color:var(--copper-1); font-size:14px; min-width:20px; text-align:center; }
+  .tie-team.win .tt-name { color:#f3ece2; }
+  .tie-team.win .tt-score { color:var(--gold); }
+  .tie-team.lose { opacity:0.5; }
+  .tie-team.win::after { content:"▸"; color:var(--gold); font-size:11px; margin-left:6px; }
   .footer-crest { text-align:center; margin: 22px 0 8px; opacity: 0.5; }
   .footer-crest svg { width: 30px; height: auto; }
   .footer-crest path, .footer-crest circle, .footer-crest text { stroke: var(--copper-3); }
@@ -286,14 +331,15 @@ const PARTICIPANTS = [
 ];
 
 /* ============ STATE ============ */
-let goals={}, matches=[], lastSync=null, syncError=null, syncing=false;
+let goals={}, matches=[], knockout=[], lastSync=null, syncError=null, syncing=false;
 let rankSnap={}, liveRanks={}, snapDay=null;
-try{ const s=JSON.parse(localStorage.getItem("gr2026v4")||"{}"); goals=s.goals||{}; matches=s.matches||[]; lastSync=s.lastSync||null; rankSnap=s.rankSnap||{}; liveRanks=s.liveRanks||{}; snapDay=s.snapDay||null; }catch(e){}
-function save(){ try{ localStorage.setItem("gr2026v4",JSON.stringify({goals,matches,lastSync,rankSnap,liveRanks,snapDay})); }catch(e){} }
+try{ const s=JSON.parse(localStorage.getItem("gr2026v5")||"{}"); goals=s.goals||{}; matches=s.matches||[]; knockout=s.knockout||[]; lastSync=s.lastSync||null; rankSnap=s.rankSnap||{}; liveRanks=s.liveRanks||{}; snapDay=s.snapDay||null; }catch(e){}
+function save(){ try{ localStorage.setItem("gr2026v5",JSON.stringify({goals,matches,knockout,lastSync,rankSnap,liveRanks,snapDay})); }catch(e){} }
 function computeRanks(lb){ let rank=1; const r={}; lb.forEach((p,i)=>{ if(i>0&&lb[i-1].pts!==p.pts) rank=i+1; r[p.name]=rank; }); return r; }
 
 /* ============ SYNC ============ */
 const DATA_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
+const GROUP_ROUNDS = /^Matchday/i;  // group games use "Matchday N"; knockout uses "Round of 32" etc.
 async function fetchScores(){
   if(syncing) return;
   syncing=true; syncError=null; setSyncBtn(true);
@@ -301,19 +347,32 @@ async function fetchScores(){
     const res=await fetch(DATA_URL+"?nc="+Date.now());
     if(!res.ok) throw new Error("HTTP "+res.status);
     const data=await res.json();
-    const ng={},nm=[];
+    const ng={},nm=[],nk=[];
     for(const m of (data.matches||[])){
       const home=norm(m.team1), away=norm(m.team2);
       const sc=m.score; let hg=null,ag=null;
       if(sc){ const arr=sc.et||sc.ft; if(Array.isArray(arr)&&arr.length===2){hg=arr[0];ag=arr[1];} }
       const played=hg!==null&&ag!==null;
-      nm.push({home,away,hg:played?hg:"-",ag:played?ag:"-",date:m.date||"",time:m.time||"",played});
-      if(played){
-        if(home&&TEAM_POT[home]) ng[home]=(ng[home]||0)+hg;
-        if(away&&TEAM_POT[away]) ng[away]=(ng[away]||0)+ag;
+      const round=m.round||"";
+      const isGroup=GROUP_ROUNDS.test(round) || /^Group/i.test(m.group||"");
+      const rec={home,away,hg:played?hg:"-",ag:played?ag:"-",date:m.date||"",time:m.time||"",played,
+                 group:m.group||"",round};
+      if(isGroup && /^Group/i.test(m.group||"")){
+        nm.push(rec);
+        if(played){
+          if(home&&TEAM_POT[home]) ng[home]=(ng[home]||0)+hg;
+          if(away&&TEAM_POT[away]) ng[away]=(ng[away]||0)+ag;
+        }
+      } else {
+        // knockout match
+        nk.push(rec);
+        if(played){
+          if(home&&TEAM_POT[home]) ng[home]=(ng[home]||0)+hg;
+          if(away&&TEAM_POT[away]) ng[away]=(ng[away]||0)+ag;
+        }
       }
     }
-    goals=ng; matches=nm; lastSync=new Date().toISOString(); save();
+    goals=ng; matches=nm; knockout=nk; lastSync=new Date().toISOString(); save();
   }catch(e){ syncError=e.message; }
   syncing=false; setSyncBtn(false); render();
 }
@@ -346,7 +405,7 @@ function showTab(tab){
 function render(){
   if(activeTab==="leaderboard") renderLeaderboard();
   else if(activeTab==="goals") renderGoals();
-  else if(activeTab==="today") renderToday();
+  else if(activeTab==="today") renderTodayTab();
   else renderPredictor();
 }
 
@@ -457,52 +516,121 @@ function matchProbs(lH,lA){
   return {pH:pH/s*100, pD:pD/s*100, pA:pA/s*100};
 }
 
-/* ============ TODAY ANALYSIS ============ */
+/* ============ GROUP TABLES ============ */
+// Build standings per group from played group-stage matches.
+function computeGroupTables(){
+  const groups={};  // groupName -> { teamName -> stats }
+  // Seed every team that appears in any group fixture (played or not).
+  for(const m of matches){
+    if(!/^Group/i.test(m.group)) continue;
+    if(!groups[m.group]) groups[m.group]={};
+    for(const t of [m.home,m.away]){
+      if(t && !groups[m.group][t]) groups[m.group][t]={team:t,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0,h2h:{}};
+    }
+  }
+  // Tally played matches.
+  for(const m of matches){
+    if(!/^Group/i.test(m.group) || !m.played) continue;
+    const g=groups[m.group]; if(!g) continue;
+    const H=g[m.home], A=g[m.away]; if(!H||!A) continue;
+    const hg=+m.hg, ag=+m.ag;
+    H.p++; A.p++; H.gf+=hg; H.ga+=ag; A.gf+=ag; A.ga+=hg;
+    if(hg>ag){ H.w++; A.l++; H.pts+=3; H.h2h[m.away]=3; A.h2h[m.home]=0; }
+    else if(hg<ag){ A.w++; H.l++; A.pts+=3; A.h2h[m.home]=3; H.h2h[m.away]=0; }
+    else { H.d++; A.d++; H.pts++; A.pts++; H.h2h[m.away]=1; A.h2h[m.home]=1; }
+  }
+  // Sort each group: pts, then GD, then GF, then goals scored, then name.
+  const out={};
+  Object.keys(groups).sort().forEach(gName=>{
+    const rows=Object.values(groups[gName]).map(r=>({...r,gd:r.gf-r.ga}));
+    rows.sort((a,b)=> b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
+    out[gName]=rows;
+  });
+  return out;
+}
+// FIFA 2026: 12 group winners + 12 runners-up + 8 best third-placed teams advance.
+function getQualifiers(tables){
+  const thirds=[];
+  Object.keys(tables).forEach(g=>{
+    const rows=tables[g];
+    if(rows[2]) thirds.push({...rows[2],group:g,gd:rows[2].gf-rows[2].ga});
+  });
+  // Rank third-placed teams: pts, GD, GF.
+  thirds.sort((a,b)=> b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
+  const bestThirds=new Set(thirds.slice(0,8).map(t=>t.group+"|"+t.team));
+  return {bestThirds, thirdsRanked:thirds};
+}
+function qualStatus(gName,rows,idx,bestThirds){
+  if(idx===0) return "win";       // group winner
+  if(idx===1) return "run";       // runner-up
+  if(idx===2) return bestThirds.has(gName+"|"+rows[2].team) ? "third" : "out";
+  return "out";
+}
+
+/* ============ TODAY (analysis cards) ============ */
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function shortName(t){ return t.length>10 ? t.slice(0,9)+"…" : t; }
-// Hard-coded kickoff times in UTC/GMT (openfootball often omits match times).
-// Key = the two team names sorted alphabetically, joined by "|". UTC = US Eastern + 4h.
-const KICKOFFS = {
-  "Australia|United States":"2026-06-19T19:00",
-  "Morocco|Scotland":"2026-06-19T22:00",
-  "Brazil|Haiti":"2026-06-20T00:30",
-  "Paraguay|Turkey":"2026-06-20T03:00",
-  "Netherlands|Sweden":"2026-06-20T17:00",
-  "Germany|Ivory Coast":"2026-06-20T20:00",
-  "Curacao|Ecuador":"2026-06-21T00:00",
-  "Brazil|Scotland":"2026-06-24T22:00",
-  "Haiti|Morocco":"2026-06-24T22:00",
-  "Turkey|United States":"2026-06-26T02:00",
-  "Australia|Paraguay":"2026-06-26T02:00"
-};
-function koKey(a,b){ return [a,b].sort().join("|"); }
-function koTime(m){ return KICKOFFS[koKey(m.home,m.away)] || (m.time ? (m.date||todayStr())+"T"+m.time : ""); }
-function fmtGMT(iso){
+// openfootball times look like "19:00 UTC-6" — parse offset and convert to Irish time.
+function parseKO(m){
+  if(!m.time || !m.date) return "";
+  const mt=m.time.match(/(\d{1,2}):(\d{2})\s*UTC([+-]\d{1,2})/i);
+  if(!mt) return "";
+  const hh=+mt[1], mm=+mt[2], off=+mt[3];
+  // Build a UTC instant: local clock minus offset.
+  const utcH = hh - off;
+  const dt = new Date(m.date+"T00:00:00Z");
+  dt.setUTCHours(utcH, mm, 0, 0);
+  return dt.toISOString();
+}
+function fmtIrish(iso){
   if(!iso) return "";
-  const s = iso.length===16 ? iso+":00Z" : (iso.endsWith("Z")?iso:iso+"Z");
-  const dt = new Date(s);
+  const dt=new Date(iso);
   if(isNaN(dt.getTime())) return "";
   try{ return dt.toLocaleTimeString('en-GB',{timeZone:'Europe/Dublin',hour:'2-digit',minute:'2-digit',hour12:false}); }
   catch(e){ return ""; }
 }
-function renderToday(){
+function fmtIrishDate(iso){
+  if(!iso) return "";
+  const dt=new Date(iso);
+  if(isNaN(dt.getTime())) return "";
+  try{ return dt.toLocaleDateString('en-GB',{timeZone:'Europe/Dublin',day:'2-digit',month:'short'}); }
+  catch(e){ return ""; }
+}
+
+let todaySub="today";  // today | groups | bracket
+function setTodaySub(s){ todaySub=s; renderTodayTab(); }
+function renderTodayTab(){
   let html=syncBarHTML();
+  html+=`<div class="subtabs">
+    <button class="subtab ${todaySub==='today'?'active':''}" onclick="setTodaySub('today')">📅 Today</button>
+    <button class="subtab ${todaySub==='groups'?'active':''}" onclick="setTodaySub('groups')">📊 Groups</button>
+    <button class="subtab ${todaySub==='bracket'?'active':''}" onclick="setTodaySub('bracket')">🏆 Bracket</button>
+  </div>`;
+  if(todaySub==='today') html+=todayMatchesHTML();
+  else if(todaySub==='groups') html+=groupsHTML();
+  else html+=bracketHTML();
+  document.getElementById("tab-today").innerHTML=html;
+  setSyncBtn(syncing);
+}
+
+function todayMatchesHTML(){
   const today=todayStr();
-  let list=matches.filter(m=>m.date && m.date.slice(0,10)===today);
+  const all=matches.concat(knockout);
+  let list=all.filter(m=>m.date && m.date.slice(0,10)===today);
   let heading;
   if(list.length){ heading=`📅 Today's matches · ${today}`; }
-  else { list=matches.filter(m=>!m.played).slice(0,6); heading=list.length?`⏭️ No games today — next up`:`Fixtures`; }
-  list.sort((a,b)=> (koTime(a)||"9").localeCompare(koTime(b)||"9"));
-  html+=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from our team ratings. Finished games show the result.</div>`;
+  else { list=all.filter(m=>!m.played).slice(0,6); heading=list.length?`⏭️ No games today — next up`:`Fixtures`; }
+  list.sort((a,b)=> (parseKO(a)||"9").localeCompare(parseKO(b)||"9"));
+  let html=`<div class="today-intro">📊 <b>Match-day read.</b> For each game: chance of each result and the most likely scoreline, from our team ratings. Finished games show the result.</div>`;
   html+=`<div class="section-title">${heading}</div>`;
   if(!list.length){
-    html+=`<div style="color:var(--dim);font-size:13px;text-align:center;padding:22px">No fixtures loaded yet — press ⟳ Refresh.</div>`;
-    document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing); return;
+    return html+`<div style="color:var(--dim);font-size:13px;text-align:center;padding:22px">No fixtures loaded yet — press ⟳ Refresh.</div>`;
   }
   list.forEach(m=>{
     const H=m.home, A=m.away;
-    const gmt = fmtGMT(koTime(m));
-    const timeLine = gmt ? `<div class="mc-time">⏰ ${gmt} · Irish time</div>` : "";
+    const iso=parseKO(m);
+    const irish=fmtIrish(iso);
+    const timeLine = irish ? `<div class="mc-time">⏰ ${irish} · Irish time${m.group?(' · '+m.group):''}</div>` : (m.group?`<div class="mc-time">${m.group}</div>`:"");
     if(m.played){
       html+=`<div class="match-card">${timeLine}
         <div class="mc-head"><span class="mc-team">${FLAGS[H]||""} ${H}</span>
@@ -533,7 +661,111 @@ function renderToday(){
     </div>`;
   });
   html+=`<div class="note">📊 Predictions only, not guarantees. Bars are win / draw / win; the centre number is the most likely scoreline.</div>`;
-  document.getElementById("tab-today").innerHTML=html; setSyncBtn(syncing);
+  return html;
+}
+
+/* ============ GROUPS VIEW ============ */
+function groupsHTML(){
+  const tables=computeGroupTables();
+  const gNames=Object.keys(tables);
+  if(!gNames.length){
+    return `<div style="color:var(--dim);font-size:13px;text-align:center;padding:30px">No group data loaded yet — press ⟳ Refresh.</div>`;
+  }
+  const {bestThirds}=getQualifiers(tables);
+  let html=`<div class="today-intro">📊 <b>Group standings.</b> Live from played matches. <span style="color:#6fcf97;font-weight:700">Green</span> = qualifying (top 2 of each group + 8 best 3rd-placed teams).</div>`;
+  html+=`<div class="grp-legend">
+    <span><i class="q-dot win"></i>Winner</span>
+    <span><i class="q-dot run"></i>Runner-up</span>
+    <span><i class="q-dot third"></i>Best 3rd (in)</span>
+    <span><i class="q-dot out"></i>Out</span>
+  </div>`;
+  gNames.forEach(gName=>{
+    const rows=tables[gName];
+    const totalGames=rows.length===4?6:Math.round(rows.length*(rows.length-1)/2);
+    const playedGames=rows.reduce((s,r)=>s+r.p,0)/2;
+    html+=`<div class="grp-card">
+      <div class="grp-head">${gName.replace(/^Group\s*/i,'GROUP ')}<span class="grp-prog">${playedGames}/${totalGames} played</span></div>
+      <table class="grp-tbl">
+        <thead><tr>
+          <th class="pos"></th><th class="tname">Team</th>
+          <th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+        </tr></thead><tbody>`;
+    rows.forEach((r,idx)=>{
+      const st=qualStatus(gName,rows,idx,bestThirds);
+      const qcls=(st==="win"||st==="run"||st==="third")?"q-win":"";
+      const dot=`<i class="q-dot ${st}"></i>`;
+      const gdStr=(r.gd>0?"+":"")+r.gd;
+      html+=`<tr class="${qcls}">
+        <td class="pos">${dot}${idx+1}</td>
+        <td class="tname">${FLAGS[r.team]||""} ${r.team}</td>
+        <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+        <td>${r.gf}</td><td>${r.ga}</td><td>${gdStr}</td><td class="pts">${r.pts}</td>
+      </tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  html+=`<div class="third-note">Tie-breakers: points → goal difference → goals scored. Best-3rd ranking recalculates as results come in, so green 3rd-place spots can change.</div>`;
+  return html;
+}
+
+/* ============ BRACKET VIEW ============ */
+const ROUND_ORDER = ["Round of 32","Round of 16","Quarter-final","Quarter-finals","Semi-final","Semi-finals","Third place","Match for third place","Final"];
+function roundRank(r){
+  const i=ROUND_ORDER.findIndex(x=>x.toLowerCase()===(r||"").toLowerCase());
+  return i<0?99:i;
+}
+function bracketHTML(){
+  let html=`<div class="bracket-intro">🏆 <b>Knockout bracket.</b> Round of 32 onward. Fills in automatically as the openfootball feed publishes knockout fixtures and results.</div>`;
+  if(!knockout.length){
+    html+=`<div style="color:var(--dim);font-size:13px;text-align:center;padding:28px;line-height:1.6">
+      🔒 Knockout stage not started yet.<br>
+      <span style="font-size:11px">Group stage ends 27 June · Round of 32 begins 28 June.<br>Ties will appear here once published.</span></div>`;
+    // Show a skeleton of the rounds so it doesn't look empty.
+    html+=`<div class="rnd-label">Round of 32</div>`;
+    for(let i=0;i<3;i++){
+      html+=`<div class="tie"><div class="tie-meta"><div class="tie-date">28–30<br>Jun</div></div>
+        <div class="tie-teams">
+          <div class="tie-team"><span class="tt-name tbd">To be decided</span></div>
+          <div class="tie-team"><span class="tt-name tbd">To be decided</span></div>
+        </div></div>`;
+    }
+    html+=`<div class="rnd-label">Round of 16</div><div class="tie"><div class="tie-meta"><div class="tie-date">4–5<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
+    html+=`<div class="rnd-label">Quarter-finals</div><div class="tie"><div class="tie-meta"><div class="tie-date">9–11<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
+    html+=`<div class="rnd-label">Semi-finals</div><div class="tie"><div class="tie-meta"><div class="tie-date">14–15<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
+    html+=`<div class="rnd-label">Final</div><div class="tie"><div class="tie-meta"><div class="tie-date">19<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">MetLife Stadium</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
+    return html;
+  }
+  // Group knockout matches by round, in tournament order.
+  const byRound={};
+  knockout.forEach(m=>{ const r=m.round||"Knockout"; (byRound[r]=byRound[r]||[]).push(m); });
+  const rounds=Object.keys(byRound).sort((a,b)=>roundRank(a)-roundRank(b));
+  rounds.forEach(rName=>{
+    html+=`<div class="rnd-label">${rName}</div>`;
+    byRound[rName].sort((a,b)=>(a.date||"").localeCompare(b.date||"")).forEach(m=>{
+      const iso=parseKO(m);
+      const dStr = iso ? fmtIrishDate(iso) : (m.date? m.date.slice(5):"");
+      const tStr = iso ? fmtIrish(iso) : "";
+      const metaInner = dStr ? `<div class="tie-date">${dStr.replace(' ','<br>')}${tStr?('<br>'+tStr):''}</div>` : `<div class="tie-date">TBD</div>`;
+      let hCls="",aCls="";
+      if(m.played){
+        const hg=+m.hg, ag=+m.ag;
+        if(hg>ag){ hCls="win"; aCls="lose"; }
+        else if(ag>hg){ aCls="win"; hCls="lose"; }
+      }
+      const hName=m.home?`${FLAGS[m.home]||""} ${m.home}`:`<span class="tbd">To be decided</span>`;
+      const aName=m.away?`${FLAGS[m.away]||""} ${m.away}`:`<span class="tbd">To be decided</span>`;
+      const hScore=m.played?`<span class="tt-score">${m.hg}</span>`:"";
+      const aScore=m.played?`<span class="tt-score">${m.ag}</span>`:"";
+      html+=`<div class="tie">
+        <div class="tie-meta">${metaInner}</div>
+        <div class="tie-teams">
+          <div class="tie-team ${hCls}"><span class="tt-name ${m.home?'':'tbd'}">${hName}</span>${hScore}</div>
+          <div class="tie-team ${aCls}"><span class="tt-name ${m.away?'':'tbd'}">${aName}</span>${aScore}</div>
+        </div>
+      </div>`;
+    });
+  });
+  return html;
 }
 
 /* ============ PREDICTOR ============ */
@@ -543,8 +775,8 @@ let xgtOverrides = {};
 let showStrength = false;
 let lastCalib = null;
 
-function mPlayed(team){ return matches.filter(m=>m.played&&(m.home===team||m.away===team)).length; }
-function hasMore(team){ return matches.some(m=>!m.played&&(m.home===team||m.away===team)); }
+function mPlayed(team){ return matches.concat(knockout).filter(m=>m.played&&(m.home===team||m.away===team)).length; }
+function hasMore(team){ return matches.concat(knockout).some(m=>!m.played&&(m.home===team||m.away===team)); }
 function qualifyProb(team){ const s=XGT_BASE[team]||3; return Math.min(0.93, Math.max(0.20, 0.25 + (s-2)/11*0.67)); }
 function koWinProb(team){   const s=XGT_BASE[team]||3; return Math.min(0.65, Math.max(0.30, 0.30 + (s-2)/11*0.32)); }
 function expBaseMatches(team){ const q=qualifyProb(team), w=koWinProb(team); return 3 + q*(1-Math.pow(w,5))/(1-w); }
@@ -674,7 +906,7 @@ try{ render(); }catch(err){
 }
 fetchScores();
 setInterval(fetchScores, 3*60*1000);
-setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); else if(activeTab==='today') renderToday(); }, 60*60*1000);
+setInterval(()=>{ if(activeTab==='predictor') renderPredictor(); else if(activeTab==='today') renderTodayTab(); }, 60*60*1000);
 </script>
 </body>
 </html>
