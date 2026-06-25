@@ -219,6 +219,35 @@
   .mf-team { color: #cfe6d8; }
   .mf-team b { color: var(--gold); font-weight: 700; }
   .mf-when { font-size: 10.5px; color: var(--copper-soft); text-align: right; white-space: nowrap; }
+  /* Prizes */
+  .prize-hero { text-align: center; margin-bottom: 18px; }
+  .prize-hero .ph-trophy { font-size: 40px; line-height: 1; margin-bottom: 8px; filter: drop-shadow(0 3px 10px rgba(227,184,120,0.4)); }
+  .prize-hero .ph-title { font-family: Georgia, serif; font-size: 26px; font-weight: 800; color: #f3ece2; letter-spacing: 1px; line-height: 1.1; }
+  .prize-hero .ph-title .gold-word { color: var(--gold); }
+  .prize-hero .ph-sub { font-size: 11px; color: var(--copper-soft); letter-spacing: 4px; margin-top: 5px; text-transform: uppercase; }
+  .prize-card { display: flex; align-items: stretch; gap: 0; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 13px; margin-bottom: 9px; overflow: hidden; position: relative; }
+  .prize-card.grand { background: linear-gradient(100deg, rgba(227,184,120,0.2), rgba(200,127,78,0.06)); border: 1px solid rgba(227,184,120,0.55); box-shadow: 0 0 18px rgba(227,184,120,0.18); }
+  .prize-card.podium { border-color: rgba(216,160,111,0.4); }
+  .prize-card.last { background: linear-gradient(100deg, rgba(125,154,134,0.12), rgba(255,255,255,0.02)); border-color: rgba(125,154,134,0.4); }
+  .pc-medal { width: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-right: 1px solid var(--green-line); padding: 12px 4px; }
+  .prize-card.grand .pc-medal { background: rgba(227,184,120,0.12); border-right-color: rgba(227,184,120,0.3); }
+  .pc-medal .pm-icon { font-size: 26px; line-height: 1; }
+  .pc-medal .pm-place { font-size: 9px; color: var(--copper-soft); font-weight: 800; margin-top: 4px; text-align: center; letter-spacing: 0.3px; }
+  .prize-card.grand .pc-medal .pm-place { color: var(--gold); }
+  .pc-body { flex: 1; padding: 13px 15px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .pc-rank { font-size: 14px; font-weight: 800; color: #e9f4ee; margin-bottom: 3px; }
+  .prize-card.grand .pc-rank { color: var(--gold); font-size: 16px; }
+  .pc-reward { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+  .pc-reward .cash { color: var(--copper-1); font-weight: 800; }
+  .prize-card.grand .pc-reward .cash { color: var(--gold); font-size: 14px; }
+  .pc-cash-big { position: absolute; top: 0; right: 0; bottom: 0; display: flex; align-items: center; padding-right: 15px; font-size: 30px; font-weight: 900; color: rgba(227,184,120,0.13); pointer-events: none; }
+  .prize-divider { display: flex; align-items: center; gap: 10px; margin: 16px 2px 12px; }
+  .prize-divider::before, .prize-divider::after { content:""; flex:1; height:1px; background: var(--green-line); }
+  .prize-divider span { font-size: 10px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; }
+  .prize-pot { background: rgba(200,127,78,0.08); border: 1px solid rgba(216,160,111,0.25); border-radius: 11px; padding: 13px 15px; margin-bottom: 14px; text-align: center; }
+  .prize-pot .pp-lbl { font-size: 10px; color: var(--copper-soft); letter-spacing: 1.5px; text-transform: uppercase; }
+  .prize-pot .pp-val { font-size: 24px; font-weight: 900; color: var(--gold); margin-top: 2px; }
+  .prize-pot .pp-note { font-size: 10.5px; color: var(--dim); margin-top: 3px; }
   /* Today sub-tabs */
   .subtabs { display: flex; gap: 5px; margin-bottom: 14px; background: rgba(0,0,0,0.18); padding: 4px; border-radius: 11px; border: 1px solid var(--green-line); }
   .subtab { flex: 1; padding: 9px 6px; background: transparent; color: var(--muted); border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12.5px; transition: all 0.18s; }
@@ -290,6 +319,7 @@
     <button class="tab" onclick="showTab('goals')">⚽ Goals</button>
     <button class="tab" onclick="showTab('today')">📅 Today</button>
     <button class="tab" onclick="showTab('predictor')">🔮 Odds</button>
+    <button class="tab" onclick="showTab('prizes')">🎁 Prizes</button>
   </div>
 </div>
 <div class="content">
@@ -298,6 +328,7 @@
   <div id="tab-goals" style="display:none"></div>
   <div id="tab-today" style="display:none"></div>
   <div id="tab-predictor" style="display:none"></div>
+  <div id="tab-prizes" style="display:none"></div>
   <div class="footer-txt">GALLAGHER · GOAL RUSH</div>
 </div>
 <script>
@@ -442,7 +473,7 @@ function syncBarHTML(){
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
-  ["leaderboard","myrun","goals","today","predictor"].forEach((t,i)=>{
+  ["leaderboard","myrun","goals","today","predictor","prizes"].forEach((t,i)=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
     document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
   });
@@ -453,7 +484,8 @@ function render(){
   else if(activeTab==="myrun") renderMyRun();
   else if(activeTab==="goals") renderGoals();
   else if(activeTab==="today") renderTodayTab();
-  else renderPredictor();
+  else if(activeTab==="predictor") renderPredictor();
+  else renderPrizes();
 }
 
 /* ============ LEADERBOARD (tap to expand) ============ */
@@ -930,6 +962,67 @@ function renderMyRun(){
 }
 function pickMe(n){ myName=n; save(); renderMyRun(); }
 function changeMe(){ myName=null; save(); renderMyRun(); }
+
+/* ============ PRIZES ============ */
+const PRIZES = [
+  {place:"Grand Prize", icon:"🏆", cash:"€200", reward:"And enjoy a bottle of whiskey to celebrate", cls:"grand",  big:"€200"},
+  {place:"2nd Place",   icon:"🥈", cash:"€50",  reward:"Bottle of red wine + chocolates",          cls:"podium", big:"€50"},
+  {place:"3rd Place",   icon:"🥉", cash:"€20",  reward:"Bottle of red wine + chocolates",          cls:"podium", big:"€20"},
+  {place:"4th Place",   icon:"🏅", cash:"€20",  reward:"Selection of chocolates",                  cls:"",       big:"€20"},
+  {place:"5th Place",   icon:"🎖️", cash:"€10",  reward:"Your money back & a selection of sweets",  cls:"",       big:"€10"},
+];
+const LAST_PRIZE = {place:"Last Place", icon:"🎁", cash:"€10", reward:"Your money back to ease the pain!!!", cls:"last", big:"€10"};
+
+function renderPrizes(){
+  const el=document.getElementById("tab-prizes");
+  let html=`<div class="prize-hero">
+    <div class="ph-trophy">🏆</div>
+    <div class="ph-title">World Cup <span class="gold-word">Gold Rush</span><br>Prize List</div>
+    <div class="ph-sub">Gallagher · 2026</div>
+  </div>`;
+
+  // Live: who currently holds each prize position (from the leaderboard).
+  const lb=getLeaderboard();
+  const ranks=computeRanks(lb);
+
+  PRIZES.forEach((pz,i)=>{
+    // Find who currently sits in this place (rank i+1), if anyone.
+    const holders=lb.filter(p=>ranks[p.name]===(i+1)).map(p=>p.name);
+    const holderLine = holders.length
+      ? `<div style="font-size:10.5px;color:var(--copper-soft);margin-top:4px">📍 Currently: ${holders.join(", ")}</div>`
+      : "";
+    html+=`<div class="prize-card ${pz.cls}">
+      <div class="pc-medal"><div class="pm-icon">${pz.icon}</div><div class="pm-place">${(i+1)}${["ST","ND","RD","TH","TH"][i]}</div></div>
+      <div class="pc-body">
+        <div class="pc-rank">${pz.place} · <span style="color:${pz.cls==='grand'?'var(--gold)':'var(--copper-1)'}">${pz.cash}</span></div>
+        <div class="pc-reward">${pz.reward}</div>
+        ${holderLine}
+      </div>
+      <div class="pc-cash-big">${pz.big}</div>
+    </div>`;
+  });
+
+  html+=`<div class="prize-divider"><span>And spare a thought for…</span></div>`;
+  // Last place holder.
+  const lastHolder = lb.length ? lb[lb.length-1] : null;
+  const lastRank = lastHolder ? ranks[lastHolder.name] : null;
+  const lastHolders = lastHolder ? lb.filter(p=>ranks[p.name]===lastRank).map(p=>p.name) : [];
+  const lastLine = lastHolders.length
+    ? `<div style="font-size:10.5px;color:var(--dim);margin-top:4px">📍 Currently: ${lastHolders.join(", ")}</div>`
+    : "";
+  html+=`<div class="prize-card ${LAST_PRIZE.cls}">
+    <div class="pc-medal"><div class="pm-icon">${LAST_PRIZE.icon}</div><div class="pm-place">LAST</div></div>
+    <div class="pc-body">
+      <div class="pc-rank">${LAST_PRIZE.place} · <span style="color:var(--copper-1)">${LAST_PRIZE.cash}</span></div>
+      <div class="pc-reward">${LAST_PRIZE.reward}</div>
+      ${lastLine}
+    </div>
+    <div class="pc-cash-big">${LAST_PRIZE.big}</div>
+  </div>`;
+
+  html+=`<div class="note" style="margin-top:16px">🎉 Prizes awarded at the end of the tournament based on final standings. “Currently” shows who'd win if the pool ended right now — plenty can still change!</div>`;
+  el.innerHTML=html;
+}
 
 /* ============ PREDICTOR ============ */
 const N_SIMS = 10000;
