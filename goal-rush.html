@@ -307,70 +307,72 @@
   .rotate-hint .rh-txt b { color:var(--gold); font-weight:800; }
   .rnd-label { font-size: 12px; font-weight: 800; color: var(--copper-soft); letter-spacing: 1px; margin: 18px 0 8px; text-transform: uppercase; display:flex; align-items:center; gap:8px; }
 
-  /* ===== LANDSCAPE: real horizontal TV-style bracket ===== */
+  /* ===== LANDSCAPE: SofaScore-style symmetric bracket (two halves -> centre) ===== */
   .bracket-grid { display:none; }
   @media (orientation: landscape){
     .rotate-hint { display:none; }
     .bracket-vertical { display:none; }          /* hide the portrait list */
-    .bracket-grid {
-      display:flex; align-items:flex-start; gap:0;
-      overflow-x:auto; -webkit-overflow-scrolling:touch;
-      padding:6px 4px 14px; }
-    /* Each column is a fixed-rhythm ladder. Slot height + gap are constants;
-       every deeper round doubles the vertical spacing so a match centres
-       exactly on the midline between its two feeders. */
-    .bcol { flex:0 0 auto; width:166px; }
-    .bcol-head { height:30px; font-size:10px; font-weight:800; color:var(--copper-soft);
-      letter-spacing:0.8px; text-transform:uppercase; text-align:center; white-space:nowrap;
-      display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:6px; }
-    .bcol-head .bch-sub { font-size:8px; color:var(--dim); font-weight:600; letter-spacing:0.3px; margin-top:1px; }
-    /* a slot = one match box + right-side connector. Fixed height; vertical
-       position controlled by margins set inline per round (--gap). */
-    .bslot { position:relative; box-sizing:border-box; height:var(--slot,52px);
-      margin-bottom:var(--gap,16px); padding-right:13px;
-      display:flex; align-items:center; }
-    .bcol.has-feed .bslot { padding-left:13px; }
-    .bcol-final .bslot, .bcol-champ .bslot { padding-right:0; margin-bottom:0; height:auto; }
-    .bmatch { flex:1; min-width:0; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-      border:1px solid var(--green-line); border-radius:8px; overflow:hidden; z-index:1; }
-    .bmatch.m-done { border-color: rgba(216,160,111,0.4); }
-    .bmatch.m-live { border-color: rgba(111,207,151,0.4); }
-    .bmatch.m-final { border-color: rgba(227,184,120,0.6); box-shadow:0 0 14px rgba(227,184,120,0.2); }
-    .brow { display:flex; align-items:center; justify-content:space-between; gap:6px; padding:5px 8px; min-height:24px; }
-    .brow:first-child { border-bottom:1px solid rgba(255,255,255,0.06); }
-    .brow .bn { color:#d7ece0; font-weight:600; font-size:10.5px; line-height:1.2; min-width:0;
-      display:flex; align-items:center; gap:5px; overflow:hidden; }
-    .brow .bn .bnt { white-space:normal; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; word-break:break-word; }
-    .brow .bn.tbd .bnt { color:var(--dim); font-style:italic; font-weight:500; }
-    .brow .bn .bflag { flex-shrink:0; font-size:12px; }
-    .brow .bs { font-weight:900; color:var(--copper-1); font-size:12px; min-width:14px; text-align:center; flex-shrink:0; }
-    .brow.win .bn .bnt { color:#f3ece2; }
-    .brow.win .bs { color:var(--gold); }
-    .brow.lose { opacity:0.45; }
-    .bdate { font-size:8px; color:var(--dim); text-align:center; padding:2px 6px 3px; }
-    /* OUTGOING connector: horizontal stub at the match midline + half of the
-       vertical bracket that joins this slot to its pair partner. The vertical
-       bar height = half the centre-to-centre distance = (slot+gap)/2. */
-    .bcol.has-next .bslot::after { content:""; position:absolute; right:0; top:50%;
-      width:13px; height:2px; background:var(--green-line); }
+    .bracket-grid { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:4px 2px 14px; }
+    .bk-wrap { display:flex; align-items:stretch; justify-content:center; gap:0; min-width:max-content; }
+    .bk-half { display:flex; align-items:stretch; gap:0; }
+    .bk-half.right { flex-direction:row-reverse; }   /* mirror: rounds grow toward centre */
+    .bcol { flex:0 0 auto; width:74px; display:flex; flex-direction:column; }
+    .bcol-head { height:24px; font-size:8.5px; font-weight:800; color:var(--copper-soft);
+      letter-spacing:0.5px; text-transform:uppercase; text-align:center; white-space:nowrap;
+      display:flex; align-items:flex-end; justify-content:center; padding-bottom:5px; }
+    .bcol-body { flex:1; display:flex; flex-direction:column; }
+    /* a slot = one match (two stacked flag circles). Fixed height; vertical
+       offset set inline per round for exact centring. */
+    .bslot { position:relative; box-sizing:border-box; height:var(--slot,56px);
+      margin-bottom:var(--gap,12px); display:flex; align-items:center; }
+    .bmatch { display:flex; flex-direction:column; gap:3px; align-items:center; z-index:1; position:relative; }
+    .bcell { display:flex; align-items:center; gap:4px; }
+    .bk-half.right .bcell { flex-direction:row-reverse; }
+    .bflagc { width:26px; height:26px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:17px; line-height:1;
+      background:#0c2a24; border:1.5px solid var(--green-line); overflow:hidden; }
+    .bflagc.tbd { background:rgba(255,255,255,0.04); border-style:dashed; }
+    .bcell.win .bflagc { border-color:var(--gold); box-shadow:0 0 7px rgba(227,184,120,0.4); }
+    .bcell.lose { opacity:0.4; }
+    .bscore { font-size:11px; font-weight:900; color:var(--copper-1); min-width:11px; text-align:center; }
+    .bcell.win .bscore { color:var(--gold); }
+    /* connectors: each slot has a horizontal stub on its inner edge (right for
+       left-half, left for right-half) + half of the vertical pair-bracket. */
+    .bcol.has-next .bslot::after { content:""; position:absolute; top:50%; right:-1px;
+      width:9px; height:2px; background:var(--green-line); }
+    .bk-half.right .bcol.has-next .bslot::after { right:auto; left:-1px; }
     .bcol.has-next .bslot.pair-top::before,
-    .bcol.has-next .bslot.pair-bot::before { content:""; position:absolute; right:0; width:2px;
-      height:calc((var(--slot,52px) + var(--gap,16px)) / 2); background:var(--green-line); }
-    .bcol.has-next .bslot.pair-top::before { top:50%; }      /* curve downward */
-    .bcol.has-next .bslot.pair-bot::before { bottom:50%; }   /* curve upward */
-    /* INCOMING stub on the left of a fed match, at its midline */
-    .bcol.has-feed .bslot::before { content:""; position:absolute; left:0; top:50%;
-      width:13px; height:2px; background:var(--green-line); }
-    /* Final + champion columns are vertically centred as a unit */
-    .bcol-final, .bcol-champ { display:flex; flex-direction:column; }
-    .bcol-final .bcol-body, .bcol-champ .bcol-body { flex:1; display:flex; flex-direction:column; justify-content:center; }
-    .champ-final { text-align:center; padding:11px 9px;
-      background: linear-gradient(180deg, rgba(227,184,120,0.18), rgba(200,127,78,0.05));
-      border:1px solid rgba(227,184,120,0.55); border-radius:10px; }
-    .champ-final .cf-crown { font-size:24px; line-height:1; }
-    .champ-final .cf-lbl { font-size:8px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
-    .champ-final .cf-name { font-size:13px; font-weight:900; color:var(--gold); margin-top:3px; line-height:1.2; word-break:break-word; }
-    .champ-final .cf-await { font-size:10px; color:var(--dim); font-style:italic; margin-top:3px; }
+    .bcol.has-next .bslot.pair-bot::before { content:""; position:absolute; right:7px; width:2px;
+      height:calc((var(--slot,56px) + var(--gap,12px)) / 2); background:var(--green-line); }
+    .bk-half.right .bcol.has-next .bslot.pair-top::before,
+    .bk-half.right .bcol.has-next .bslot.pair-bot::before { right:auto; left:7px; }
+    .bcol.has-next .bslot.pair-top::before { top:50%; }
+    .bcol.has-next .bslot.pair-bot::before { bottom:50%; }
+    .bcol.has-feed .bslot { } /* incoming stub handled by previous round's reach */
+    .bcol.has-feed .bslot::before { content:""; position:absolute; top:50%; left:-9px;
+      width:9px; height:2px; background:var(--green-line); }
+    .bk-half.right .bcol.has-feed .bslot::before { left:auto; right:-9px; }
+
+    /* ----- centre column: Final on top, 3rd place below ----- */
+    .bk-centre { flex:0 0 auto; width:120px; display:flex; flex-direction:column;
+      align-items:center; justify-content:flex-start; padding:24px 6px 0; }
+    .bk-final { text-align:center; padding:12px 12px 13px; border-radius:12px;
+      background: linear-gradient(180deg, rgba(227,184,120,0.2), rgba(200,127,78,0.05));
+      border:1px solid rgba(227,184,120,0.6); box-shadow:0 0 16px rgba(227,184,120,0.2); }
+    .bk-final .bf-lbl { font-size:9px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; font-weight:800; margin-bottom:7px; }
+    .bk-final .bf-pair { display:flex; align-items:center; justify-content:center; gap:9px; }
+    .bk-final .bflagc { width:34px; height:34px; font-size:22px; border-width:2px; }
+    .bk-champ { margin-top:11px; text-align:center; }
+    .bk-champ .bc-crown { font-size:24px; line-height:1; filter:drop-shadow(0 2px 6px rgba(227,184,120,0.5)); }
+    .bk-champ .bc-name { font-size:12px; font-weight:900; color:var(--gold); margin-top:2px; line-height:1.2; }
+    .bk-champ .bc-await { font-size:9.5px; color:var(--dim); font-style:italic; margin-top:3px; }
+    .bk-third { margin-top:26px; text-align:center; padding:9px 11px; border-radius:10px;
+      background: rgba(255,255,255,0.03); border:1px solid var(--green-line); }
+    .bk-third .b3-lbl { font-size:8px; color:var(--copper-soft); letter-spacing:1px; text-transform:uppercase; font-weight:700; margin-bottom:6px; }
+    .bk-third .b3-pair { display:flex; align-items:center; justify-content:center; gap:7px; }
+    .bk-third .bflagc { width:24px; height:24px; font-size:15px; }
+    /* vertical feed lines into the final from both semifinal sides */
+    .bk-centre .bf-feed { position:relative; width:100%; height:0; }
   }
   .footer-crest { text-align:center; margin: 22px 0 8px; opacity: 0.5; }
   .footer-crest svg { width: 30px; height: auto; }
@@ -918,28 +920,26 @@ function tieCardHTML(m){
   </div>`;
 }
 // LANDSCAPE compact match slot for the horizontal grid.
+// One match rendered SofaScore-style: two stacked flag circles + scores.
 function slotHTML(m, pairCls, styleAttr){
-  let mCls="",hCls="",aCls="";
+  let hCls="",aCls="";
   if(m && m.played){
-    mCls=" m-done";
     const hg=+m.hg, ag=+m.ag;
     if(hg>ag){ hCls="win"; aCls="lose"; }
     else if(ag>hg){ aCls="win"; hCls="lose"; }
-  } else if(m && m.home && m.away){ mCls=" m-live"; }
-  if(m && /^final$/i.test((m.round||"").trim())) mCls+=" m-final";
-  const iso = m?parseKO(m):"";
-  const dStr = iso ? fmtIrishDate(iso) : (m&&m.date? m.date.slice(5):"");
-  const row=(t,cls,score)=> `<div class="brow ${cls}">`+
-    (t ? `<span class="bn"><span class="bflag">${FLAGS[t]||""}</span><span class="bnt">${t}</span></span>`
-       : `<span class="bn tbd"><span class="bnt">TBD</span></span>`)+
-    `<span class="bs">${(score!==null&&score!==undefined)?score:""}</span>`+
-    `</div>`;
-  const hs = (m&&m.played)?m.hg:null, as=(m&&m.played)?m.ag:null;
+  }
+  const cell=(t,cls,score)=>{
+    const flag = t
+      ? `<span class="bflagc" title="${t}">${FLAGS[t]||"🏳️"}</span>`
+      : `<span class="bflagc tbd"></span>`;
+    const sc = (score!==null&&score!==undefined) ? `<span class="bscore">${score}</span>` : `<span class="bscore"></span>`;
+    return `<div class="bcell ${cls}">${flag}${sc}</div>`;
+  };
+  const hs=(m&&m.played)?m.hg:null, as=(m&&m.played)?m.ag:null;
   return `<div class="bslot ${pairCls||""}"${styleAttr||""}>
-    <div class="bmatch${mCls}">
-      ${row(m?m.home:null,hCls,hs)}
-      ${row(m?m.away:null,aCls,as)}
-      ${dStr?`<div class="bdate">${dStr}</div>`:""}
+    <div class="bmatch">
+      ${cell(m?m.home:null,hCls,hs)}
+      ${cell(m?m.away:null,aCls,as)}
     </div>
   </div>`;
 }
@@ -950,7 +950,7 @@ function bracketHTML(){
   // Tip to rotate (portrait only — hidden in landscape via CSS).
   html+=`<div class="rotate-hint">
     <span class="rh-icon">📱</span>
-    <span class="rh-txt"><b>Turn your phone sideways</b> to see the full bracket laid out left-to-right toward the Final. Upright, it shows as a simple round-by-round list.</span>
+    <span class="rh-txt"><b>Turn your phone sideways</b> to see the full bracket — both sides converging toward the Final in the centre. Upright, it shows as a round-by-round list.</span>
   </div>`;
 
   // Build rounds in tournament order (from live data, or skeleton if empty).
@@ -983,79 +983,83 @@ function bracketHTML(){
   });
   vert+=`</div>`;
 
-  /* ---- LANDSCAPE: horizontal bracket grid with connectors ---- */
-  // Deterministic vertical geometry: compute each round's slot centres so that
-  // every match sits exactly on the midline between its two feeder matches.
-  const S=52;            // slot (match box) height, must match CSS --slot default
-  const G0=16;           // base gap between first-round matches
-  // centres[round] = array of y-centres (px from top of the slot area)
-  const centres=[];
-  rounds.forEach((rName,ci)=>{
-    const n=byRound[rName].length;
-    if(ci===0){
-      const arr=[];
-      for(let i=0;i<n;i++) arr.push(S/2 + i*(S+G0));
-      centres.push(arr);
-    } else {
-      const prev=centres[ci-1], arr=[];
-      for(let j=0;j<n;j++){
-        const a=prev[2*j], b=prev[2*j+1];
-        arr.push((a!==undefined&&b!==undefined) ? (a+b)/2 : (a!==undefined?a:(b||S/2)));
-      }
-      centres.push(arr);
-    }
-  });
+  /* ---- LANDSCAPE: SofaScore-style symmetric bracket ---- */
+  const S=56, G0=12;   // slot height + base gap (must match CSS defaults)
+  // Pre-final rounds (R32..SF) in order; Final + 3rd place handled in the centre.
+  const preFinal = rounds.filter(r=>!/^final$/i.test(r) && !/third|3rd|match for third/i.test(r));
+  const thirdRound = rounds.find(r=>/third|3rd|match for third/i.test(r));
+  const finalRound = rounds.find(r=>/^final$/i.test(r));
 
-  let grid=`<div class="bracket-grid">`;
-  rounds.forEach((rName,ci)=>{
-    const isFinal = ci===rounds.length-1;
-    const hasNext = ci<rounds.length-1;
-    const hasFeed = ci>0;
-    const ties=byRound[rName].slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
-    const done=ties.filter(m=>m.played).length;
-    const sub = isSkeleton ? roundDates(rName) : (done===ties.length?`${ties.length} played`:`${done}/${ties.length}`);
-    // Per-round gap = centre-to-centre distance minus slot height.
-    const c=centres[ci];
-    const gapK = c.length>1 ? (c[1]-c[0]-S) : G0;
-    let colCls="bcol"+(isFinal?" bcol-final":"")+(hasNext?" has-next":"")+(hasFeed?" has-feed":"");
-    grid+=`<div class="${colCls}">
-      <div class="bcol-head">${roundShort(rName)}<span class="bch-sub">${sub}</span></div>`;
-    ties.forEach((m,si)=>{
-      const pairCls = hasNext ? (si%2===0?"pair-top":"pair-bot") : "";
-      // First slot carries the top offset that centres this round; all slots carry the round gap.
-      const topMargin = si===0 ? Math.max(0, c[0]-S/2) : 0;
-      const style=` style="--slot:${S}px;--gap:${gapK}px;margin-top:${topMargin}px"`;
-      grid+=slotHTML(m, pairCls, style);
+  // Compute centres for the LEFT half (right half mirrors the same numbers).
+  // Each pre-final round contributes half its matches to a side.
+  function halfCounts(){ return preFinal.map(r=>Math.max(1, Math.ceil(byRound[r].length/2))); }
+  function centresForCounts(counts){
+    const c=[];
+    counts.forEach((n,ci)=>{
+      if(ci===0){ const a=[]; for(let i=0;i<n;i++) a.push(S/2+i*(S+G0)); c.push(a); }
+      else { const p=c[ci-1], a=[]; for(let j=0;j<n;j++){ const x=p[2*j],y=p[2*j+1]; a.push((x!==undefined&&y!==undefined)?(x+y)/2:(x!==undefined?x:(y||S/2))); } c.push(a); }
     });
-    grid+=`</div>`;
-  });
-  // Champion column at the right end — vertically centred against the final.
-  const finalMatch = knockout.find(m=>/^final$/i.test((m.round||"").trim()));
+    return c;
+  }
+  const counts=halfCounts();
+  const centres=centresForCounts(counts);
+
+  // Render one half. side='left' or 'right'. Matches for each round are split:
+  // left takes the first half (in feed order), right takes the second half.
+  function renderHalf(side){
+    let h=`<div class="bk-half ${side}">`;
+    preFinal.forEach((rName,ci)=>{
+      const all=byRound[rName];               // feed order = bracket position
+      const half=Math.ceil(all.length/2);
+      const slice = side==='left' ? all.slice(0,half) : all.slice(half);
+      const hasNext = ci<preFinal.length-1;
+      const hasFeed = ci>0;
+      const c=centres[ci];
+      const gapK = c.length>1 ? (c[1]-c[0]-S) : G0;
+      const topMargin = Math.max(0, c[0]-S/2);
+      h+=`<div class="bcol ${hasNext?'has-next':''} ${hasFeed?'has-feed':''}">
+        <div class="bcol-head">${roundShort(rName)}</div><div class="bcol-body">`;
+      slice.forEach((m,si)=>{
+        const pairCls = hasNext ? (si%2===0?'pair-top':'pair-bot') : '';
+        const style=` style="--slot:${S}px;--gap:${gapK}px;margin-top:${si===0?topMargin:0}px"`;
+        h+=slotHTML(m, pairCls, style);
+      });
+      h+=`</div></div>`;
+    });
+    return h+`</div>`;
+  }
+
+  // Centre column: Final pair + champion + 3rd place.
+  const finalMatch = finalRound ? byRound[finalRound][0] : null;
   const champ = finalMatch ? tieWinner(finalMatch) : null;
-  grid+=`<div class="bcol bcol-champ has-feed">
-    <div class="bcol-head">Champion<span class="bch-sub">2026</span></div>
-    <div class="bcol-body"><div class="bslot">
-      <div class="champ-final">
-        <div class="cf-crown">🏆</div>
-        ${champ
-          ? `<div class="cf-lbl">World Champion</div><div class="cf-name">${FLAGS[champ]||""} ${champ}</div>`
-          : `<div class="cf-lbl">World Champion</div><div class="cf-await">Awaiting final</div>`}
-      </div>
-    </div></div>
-  </div>`;
-  grid+=`</div>`;
+  function pairCells(m){
+    let hC="",aC="";
+    if(m&&m.played){ const hg=+m.hg,ag=+m.ag; if(hg>ag){hC="win";aC="lose";} else if(ag>hg){aC="win";hC="lose";} }
+    const cell=(t,cls,sc)=>{
+      const fl = t?`<span class="bflagc" title="${t}">${FLAGS[t]||"🏳️"}</span>`:`<span class="bflagc tbd"></span>`;
+      const s=(sc!==null&&sc!==undefined)?`<span class="bscore">${sc}</span>`:"";
+      return `<div class="bcell ${cls}" style="flex-direction:column;gap:3px">${fl}${s}</div>`;
+    };
+    return cell(m?m.home:null,hC,(m&&m.played)?m.hg:null)+cell(m?m.away:null,aC,(m&&m.played)?m.ag:null);
+  }
+  const thirdMatch = thirdRound ? byRound[thirdRound][0] : null;
+  let centre=`<div class="bk-centre">
+    <div class="bk-final">
+      <div class="bf-lbl">Final</div>
+      <div class="bf-pair">${pairCells(finalMatch)}</div>
+    </div>
+    <div class="bk-champ">
+      <div class="bc-crown">🏆</div>
+      ${champ ? `<div class="bc-name">${FLAGS[champ]||""} ${champ}</div>` : `<div class="bc-await">Awaiting final</div>`}
+    </div>`;
+  if(thirdRound){
+    centre+=`<div class="bk-third"><div class="b3-lbl">3rd place</div><div class="b3-pair">${pairCells(thirdMatch)}</div></div>`;
+  }
+  centre+=`</div>`;
+
+  let grid=`<div class="bracket-grid"><div class="bk-wrap">${renderHalf('left')}${centre}${renderHalf('right')}</div></div>`;
 
   return html+vert+grid;
-}
-// Date range label per round, for the skeleton/landscape sub-header.
-function roundDates(rName){
-  const x=roundShort(rName);
-  if(x==="Round of 32") return "28–30 Jun";
-  if(x==="Round of 16") return "4–5 Jul";
-  if(x==="Quarter-finals") return "9–11 Jul";
-  if(x==="Semi-finals") return "14–15 Jul";
-  if(x==="Final") return "19 Jul";
-  return "";
 }
 
 /* ============ MY RUN ============ */
