@@ -293,6 +293,74 @@
   .tie-team.win .tt-score { color:var(--gold); }
   .tie-team.lose { opacity:0.5; }
   .tie-team.win::after { content:"▸"; color:var(--gold); font-size:11px; margin-left:6px; }
+  .tie.t-live { border-color: rgba(111,207,151,0.4); }
+  .tie.t-done { border-color: rgba(216,160,111,0.35); }
+  .tie-team .tt-flag { margin-right:7px; }
+
+  /* ===== PORTRAIT: rotate-phone prompt + vertical fallback list ===== */
+  .rotate-hint { display:flex; align-items:center; gap:13px; text-align:left;
+    background: linear-gradient(135deg, rgba(227,184,120,0.16), rgba(16,58,50,0.5));
+    border:1px solid rgba(227,184,120,0.4); border-radius:13px; padding:14px 16px; margin-bottom:14px; }
+  .rotate-hint .rh-icon { font-size:30px; line-height:1; flex-shrink:0; animation: rotateNudge 2.6s ease-in-out infinite; transform-origin:center; }
+  @keyframes rotateNudge { 0%,62%,100%{ transform:rotate(0deg); } 74%{ transform:rotate(-88deg); } 90%{ transform:rotate(-88deg); } }
+  .rotate-hint .rh-txt { font-size:12.5px; color:var(--ink); line-height:1.5; }
+  .rotate-hint .rh-txt b { color:var(--gold); font-weight:800; }
+  .rnd-label { font-size: 12px; font-weight: 800; color: var(--copper-soft); letter-spacing: 1px; margin: 18px 0 8px; text-transform: uppercase; display:flex; align-items:center; gap:8px; }
+
+  /* ===== LANDSCAPE: real horizontal TV-style bracket ===== */
+  .bracket-grid { display:none; }
+  @media (orientation: landscape){
+    .rotate-hint { display:none; }
+    .bracket-vertical { display:none; }          /* hide the portrait list */
+    .bracket-grid {
+      display:flex; align-items:stretch; gap:0;
+      overflow-x:auto; -webkit-overflow-scrolling:touch;
+      padding:6px 2px 12px; }
+    .bcol { display:flex; flex-direction:column;
+      flex:0 0 auto; width:152px; min-width:152px; }
+    .bcol-final { justify-content:center; }
+    .bcol-head { font-size:10px; font-weight:800; color:var(--copper-soft); letter-spacing:1px;
+      text-transform:uppercase; text-align:center; margin-bottom:8px; white-space:nowrap; flex:0 0 auto; }
+    .bcol-head .bch-sub { display:block; font-size:8px; color:var(--dim); font-weight:600; letter-spacing:0.3px; margin-top:1px; }
+    /* a slot = one match. Connectors drawn with borders on the slot's right edge. */
+    .bslot { position:relative; display:flex; align-items:center; flex:1 1 0; min-height:46px; padding:0 11px 0 0; }
+    .bcol.has-feed .bslot { padding-left:11px; }
+    .bcol-final .bslot { flex:0 0 auto; }
+    .bmatch { flex:1; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border:1px solid var(--green-line); border-radius:8px; overflow:hidden; z-index:1; }
+    .bmatch.m-done { border-color: rgba(216,160,111,0.4); }
+    .bmatch.m-live { border-color: rgba(111,207,151,0.4); }
+    .bmatch.m-final { border-color: rgba(227,184,120,0.6); box-shadow:0 0 14px rgba(227,184,120,0.2); }
+    .brow { display:flex; align-items:center; justify-content:space-between; padding:5px 8px; font-size:11px; }
+    .brow:first-child { border-bottom:1px solid rgba(255,255,255,0.06); }
+    .brow .bn { color:#d7ece0; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; }
+    .brow .bn.tbd { color:var(--dim); font-style:italic; font-weight:500; }
+    .brow .bn .bflag { flex-shrink:0; }
+    .brow .bs { font-weight:900; color:var(--copper-1); font-size:12px; min-width:14px; text-align:center; }
+    .brow.win .bn { color:#f3ece2; }
+    .brow.win .bs { color:var(--gold); }
+    .brow.lose { opacity:0.45; }
+    .bdate { font-size:8px; color:var(--dim); text-align:center; padding:2px 0 0; }
+    /* OUTGOING connector: horizontal stub + half of the vertical bracket.
+       Upper slot of a pair curves down; lower slot curves up. */
+    .bcol.has-next .bslot::after { content:""; position:absolute; right:0; top:50%;
+      width:11px; height:2px; background:var(--green-line); }
+    .bcol.has-next .bslot.pair-top::before,
+    .bcol.has-next .bslot.pair-bot::before { content:""; position:absolute; right:0; width:2px;
+      background:var(--green-line); }
+    .bcol.has-next .bslot.pair-top::before { top:50%; bottom:0; }      /* down to the pair midline */
+    .bcol.has-next .bslot.pair-bot::before { top:0; bottom:50%; }      /* up to the pair midline */
+    /* INCOMING stub on the left of a fed match */
+    .bcol.has-feed .bslot::before { content:""; position:absolute; left:0; top:50%;
+      width:11px; height:2px; background:var(--green-line); }
+    .champ-final { text-align:center; margin-top:10px; padding:10px 8px;
+      background: linear-gradient(180deg, rgba(227,184,120,0.18), rgba(200,127,78,0.05));
+      border:1px solid rgba(227,184,120,0.55); border-radius:10px; }
+    .champ-final .cf-crown { font-size:22px; line-height:1; }
+    .champ-final .cf-lbl { font-size:8px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
+    .champ-final .cf-name { font-size:14px; font-weight:900; color:var(--gold); margin-top:2px; white-space:nowrap; }
+    .champ-final .cf-await { font-size:10px; color:var(--dim); font-style:italic; margin-top:3px; }
+  }
   .footer-crest { text-align:center; margin: 22px 0 8px; opacity: 0.5; }
   .footer-crest svg { width: 30px; height: auto; }
   .footer-crest path, .footer-crest circle, .footer-crest text { stroke: var(--copper-3); }
@@ -793,58 +861,162 @@ function roundRank(r){
   const i=ROUND_ORDER.findIndex(x=>x.toLowerCase()===(r||"").toLowerCase());
   return i<0?99:i;
 }
+// Pretty short label for a round (handles singular/plural variants).
+function roundShort(r){
+  const x=(r||"").toLowerCase();
+  if(x.includes("round of 32")) return "Round of 32";
+  if(x.includes("round of 16")) return "Round of 16";
+  if(x.includes("quarter")) return "Quarter-finals";
+  if(x.includes("semi")) return "Semi-finals";
+  if(x.includes("third")||x.includes("match for third")) return "3rd place";
+  if(x.includes("final")) return "Final";
+  return r||"Knockout";
+}
+// Winner of a played tie (score as in feed: FT/ET).
+function tieWinner(m){
+  if(!m||!m.played) return null;
+  const hg=+m.hg, ag=+m.ag;
+  if(hg>ag) return m.home;
+  if(ag>hg) return m.away;
+  return null;
+}
+// PORTRAIT card (existing .tie structure, used in the vertical fallback list).
+function tieCardHTML(m){
+  const iso=parseKO(m);
+  const dStr = iso ? fmtIrishDate(iso) : (m.date? m.date.slice(5):"");
+  const tStr = iso ? fmtIrish(iso) : "";
+  const metaInner = dStr ? `<div class="tie-date">${dStr.replace(' ','<br>')}${tStr?('<br>'+tStr):''}</div>` : `<div class="tie-date">TBD</div>`;
+  let hCls="",aCls="",tieCls="";
+  if(m.played){
+    tieCls=" t-done";
+    const hg=+m.hg, ag=+m.ag;
+    if(hg>ag){ hCls="win"; aCls="lose"; }
+    else if(ag>hg){ aCls="win"; hCls="lose"; }
+  } else if(m.home && m.away){ tieCls=" t-live"; }
+  const nameCell=(t)=> t
+    ? `<span class="tt-name"><span class="tt-flag">${FLAGS[t]||""}</span>${t}</span>`
+    : `<span class="tt-name tbd">To be decided</span>`;
+  const hScore=m.played?`<span class="tt-score">${m.hg}</span>`:"";
+  const aScore=m.played?`<span class="tt-score">${m.ag}</span>`:"";
+  return `<div class="tie${tieCls}">
+    <div class="tie-meta">${metaInner}</div>
+    <div class="tie-teams">
+      <div class="tie-team ${hCls}">${nameCell(m.home)}${hScore}</div>
+      <div class="tie-team ${aCls}">${nameCell(m.away)}${aScore}</div>
+    </div>
+  </div>`;
+}
+// LANDSCAPE compact match slot for the horizontal grid.
+function slotHTML(m, pairCls){
+  let mCls="",hCls="",aCls="";
+  if(m && m.played){
+    mCls=" m-done";
+    const hg=+m.hg, ag=+m.ag;
+    if(hg>ag){ hCls="win"; aCls="lose"; }
+    else if(ag>hg){ aCls="win"; hCls="lose"; }
+  } else if(m && m.home && m.away){ mCls=" m-live"; }
+  if(m && /^final$/i.test((m.round||"").trim())) mCls+=" m-final";
+  const iso = m?parseKO(m):"";
+  const dStr = iso ? fmtIrishDate(iso) : (m&&m.date? m.date.slice(5):"");
+  const row=(t,cls,score)=> `<div class="brow ${cls}">`+
+    (t ? `<span class="bn"><span class="bflag">${FLAGS[t]||""}</span>${t}</span>` : `<span class="bn tbd">TBD</span>`)+
+    (score!==null&&score!==undefined ? `<span class="bs">${score}</span>` : `<span class="bs"></span>`)+
+    `</div>`;
+  const hs = (m&&m.played)?m.hg:null, as=(m&&m.played)?m.ag:null;
+  return `<div class="bslot ${pairCls||""}">
+    <div class="bmatch${mCls}">
+      ${row(m?m.home:null,hCls,hs)}
+      ${row(m?m.away:null,aCls,as)}
+      ${dStr?`<div class="bdate">${dStr}</div>`:""}
+    </div>
+  </div>`;
+}
+
 function bracketHTML(){
-  let html=`<div class="bracket-intro">🏆 <b>Knockout bracket.</b> Round of 32 onward. Fills in automatically as the openfootball feed publishes knockout fixtures and results.</div>`;
-  if(!knockout.length){
-    html+=`<div style="color:var(--dim);font-size:13px;text-align:center;padding:28px;line-height:1.6">
-      🔒 Knockout stage not started yet.<br>
-      <span style="font-size:11px">Group stage ends 27 June · Round of 32 begins 28 June.<br>Ties will appear here once published.</span></div>`;
-    // Show a skeleton of the rounds so it doesn't look empty.
-    html+=`<div class="rnd-label">Round of 32</div>`;
-    for(let i=0;i<3;i++){
-      html+=`<div class="tie"><div class="tie-meta"><div class="tie-date">28–30<br>Jun</div></div>
-        <div class="tie-teams">
-          <div class="tie-team"><span class="tt-name tbd">To be decided</span></div>
-          <div class="tie-team"><span class="tt-name tbd">To be decided</span></div>
-        </div></div>`;
-    }
-    html+=`<div class="rnd-label">Round of 16</div><div class="tie"><div class="tie-meta"><div class="tie-date">4–5<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
-    html+=`<div class="rnd-label">Quarter-finals</div><div class="tie"><div class="tie-meta"><div class="tie-date">9–11<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
-    html+=`<div class="rnd-label">Semi-finals</div><div class="tie"><div class="tie-meta"><div class="tie-date">14–15<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">—</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
-    html+=`<div class="rnd-label">Final</div><div class="tie"><div class="tie-meta"><div class="tie-date">19<br>Jul</div></div><div class="tie-teams"><div class="tie-team"><span class="tt-name tbd">MetLife Stadium</span></div><div class="tie-team"><span class="tt-name tbd">—</span></div></div></div>`;
-    return html;
+  let html=`<div class="bracket-intro">🏆 <b>Knockout bracket.</b> Round of 32 down to the Final. Scores are full-time (incl. extra time) straight from the feed.</div>`;
+
+  // Tip to rotate (portrait only — hidden in landscape via CSS).
+  html+=`<div class="rotate-hint">
+    <span class="rh-icon">📱</span>
+    <span class="rh-txt"><b>Turn your phone sideways</b> to see the full bracket laid out left-to-right toward the Final. Upright, it shows as a simple round-by-round list.</span>
+  </div>`;
+
+  // Build rounds in tournament order (from live data, or skeleton if empty).
+  let rounds, byRound={}, isSkeleton=false;
+  if(knockout.length){
+    knockout.forEach(m=>{ const r=m.round||"Knockout"; (byRound[r]=byRound[r]||[]).push(m); });
+    rounds=Object.keys(byRound).sort((a,b)=>roundRank(a)-roundRank(b));
+  } else {
+    isSkeleton=true;
+    // Skeleton: empty matches so the shape is visible before fixtures publish.
+    const plan=[["Round of 32",16],["Round of 16",8],["Quarter-finals",4],["Semi-finals",2],["Final",1]];
+    rounds=plan.map(p=>p[0]);
+    plan.forEach(([name,n])=>{ byRound[name]=Array.from({length:n},()=>({round:name,home:null,away:null,played:false})); });
   }
-  // Group knockout matches by round, in tournament order.
-  const byRound={};
-  knockout.forEach(m=>{ const r=m.round||"Knockout"; (byRound[r]=byRound[r]||[]).push(m); });
-  const rounds=Object.keys(byRound).sort((a,b)=>roundRank(a)-roundRank(b));
+
+  /* ---- PORTRAIT: vertical round-by-round list (existing .tie cards) ---- */
+  let vert=`<div class="bracket-vertical">`;
+  if(isSkeleton){
+    vert+=`<div style="color:var(--dim);font-size:12.5px;text-align:center;padding:6px 10px 12px;line-height:1.6">
+      🔒 Knockout stage not started yet.<br>
+      <span style="font-size:11px">Round of 32 begins 28 June — ties appear here once published.</span></div>`;
+  }
   rounds.forEach(rName=>{
-    html+=`<div class="rnd-label">${rName}</div>`;
-    byRound[rName].sort((a,b)=>(a.date||"").localeCompare(b.date||"")).forEach(m=>{
-      const iso=parseKO(m);
-      const dStr = iso ? fmtIrishDate(iso) : (m.date? m.date.slice(5):"");
-      const tStr = iso ? fmtIrish(iso) : "";
-      const metaInner = dStr ? `<div class="tie-date">${dStr.replace(' ','<br>')}${tStr?('<br>'+tStr):''}</div>` : `<div class="tie-date">TBD</div>`;
-      let hCls="",aCls="";
-      if(m.played){
-        const hg=+m.hg, ag=+m.ag;
-        if(hg>ag){ hCls="win"; aCls="lose"; }
-        else if(ag>hg){ aCls="win"; hCls="lose"; }
-      }
-      const hName=m.home?`${FLAGS[m.home]||""} ${m.home}`:`<span class="tbd">To be decided</span>`;
-      const aName=m.away?`${FLAGS[m.away]||""} ${m.away}`:`<span class="tbd">To be decided</span>`;
-      const hScore=m.played?`<span class="tt-score">${m.hg}</span>`:"";
-      const aScore=m.played?`<span class="tt-score">${m.ag}</span>`:"";
-      html+=`<div class="tie">
-        <div class="tie-meta">${metaInner}</div>
-        <div class="tie-teams">
-          <div class="tie-team ${hCls}"><span class="tt-name ${m.home?'':'tbd'}">${hName}</span>${hScore}</div>
-          <div class="tie-team ${aCls}"><span class="tt-name ${m.away?'':'tbd'}">${aName}</span>${aScore}</div>
-        </div>
-      </div>`;
-    });
+    const ties=byRound[rName].slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+    const done=ties.filter(m=>m.played).length;
+    const prog = isSkeleton ? "" : (done===ties.length?`${ties.length} played`:`${done}/${ties.length} played`);
+    vert+=`<div class="rnd-label">${roundShort(rName)}${prog?`<span style="flex:0;color:var(--dim);font-size:9px;font-weight:700;letter-spacing:0.5px;margin-left:auto;text-transform:none">${prog}</span>`:""}</div>`;
+    // In skeleton mode, only show a couple of placeholder ties per round to keep the list short.
+    (isSkeleton ? ties.slice(0, rName==="Round of 32"?3:1) : ties).forEach(m=>{ vert+=tieCardHTML(m); });
   });
-  return html;
+  vert+=`</div>`;
+
+  /* ---- LANDSCAPE: horizontal bracket grid with connectors ---- */
+  let grid=`<div class="bracket-grid">`;
+  rounds.forEach((rName,ci)=>{
+    const isFinal = ci===rounds.length-1;
+    const hasNext = ci<rounds.length-1;
+    const hasFeed = ci>0;
+    const ties=byRound[rName].slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+    const done=ties.filter(m=>m.played).length;
+    const sub = isSkeleton ? roundDates(rName) : (done===ties.length?`${ties.length} played`:`${done}/${ties.length}`);
+    let colCls="bcol"+(isFinal?" bcol-final":"")+(hasNext?" has-next":"")+(hasFeed?" has-feed":"");
+    grid+=`<div class="${colCls}">
+      <div class="bcol-head">${roundShort(rName)}<span class="bch-sub">${sub}</span></div>`;
+    ties.forEach((m,si)=>{
+      // Pair slots so each adjacent pair brackets into one next-round match.
+      const pairCls = hasNext ? (si%2===0?"pair-top":"pair-bot") : "";
+      grid+=slotHTML(m, pairCls);
+    });
+    grid+=`</div>`;
+  });
+  // Champion column at the right end.
+  const finalMatch = knockout.find(m=>/^final$/i.test((m.round||"").trim()));
+  const champ = finalMatch ? tieWinner(finalMatch) : null;
+  grid+=`<div class="bcol bcol-final has-feed">
+    <div class="bcol-head">Champion<span class="bch-sub">2026</span></div>
+    <div class="bslot">
+      <div class="champ-final">
+        <div class="cf-crown">🏆</div>
+        ${champ
+          ? `<div class="cf-lbl">World Champion</div><div class="cf-name">${FLAGS[champ]||""} ${champ}</div>`
+          : `<div class="cf-lbl">World Champion</div><div class="cf-await">Awaiting final</div>`}
+      </div>
+    </div>
+  </div>`;
+  grid+=`</div>`;
+
+  return html+vert+grid;
+}
+// Date range label per round, for the skeleton/landscape sub-header.
+function roundDates(rName){
+  const x=roundShort(rName);
+  if(x==="Round of 32") return "28–30 Jun";
+  if(x==="Round of 16") return "4–5 Jul";
+  if(x==="Quarter-finals") return "9–11 Jul";
+  if(x==="Semi-finals") return "14–15 Jul";
+  if(x==="Final") return "19 Jul";
+  return "";
 }
 
 /* ============ MY RUN ============ */
