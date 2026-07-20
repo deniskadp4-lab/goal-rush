@@ -90,6 +90,39 @@
   .card.just-crowned { animation: championGlow 2.4s ease-in-out infinite, crownPop 0.8s ease-out; }
   @keyframes crownPop { 0% { transform: scale(0.9); } 45% { transform: scale(1.05); } 75% { transform: scale(0.99); } 100% { transform: scale(1); } }
 
+  /* ===== PODIUM REVEAL (top-3 entry animation) ===== */
+  @keyframes podiumIn {
+    0%   { opacity:0; transform: translateY(18px) scale(0.96); }
+    60%  { opacity:1; transform: translateY(-3px) scale(1.02); }
+    100% { opacity:1; transform: translateY(0) scale(1); }
+  }
+  @keyframes podiumFlash {
+    0%   { box-shadow: 0 0 0 rgba(227,184,120,0); }
+    40%  { box-shadow: 0 0 26px rgba(227,184,120,0.75); }
+    100% { box-shadow: 0 0 0 rgba(227,184,120,0); }
+  }
+  @keyframes medalPop {
+    0%   { transform: scale(0) rotate(-25deg); }
+    70%  { transform: scale(1.25) rotate(6deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .card.reveal { animation: podiumIn 0.55s cubic-bezier(.2,.8,.3,1.2) backwards,
+                            podiumFlash 1.1s ease-out backwards; }
+  .card.reveal.r3 { animation-delay: 0.05s, 0.05s; }
+  .card.reveal.r2 { animation-delay: 0.30s, 0.30s; }
+  .card.reveal.r1 { animation-delay: 0.55s, 0.55s; }
+  /* champion card keeps its glow/shimmer: re-declare so reveal wins on entry */
+  .card.champion.reveal { animation: podiumIn 0.55s cubic-bezier(.2,.8,.3,1.2) backwards,
+                                     championGlow 2.4s ease-in-out infinite 0.6s; }
+  .card.champion.reveal.r1 { animation-delay: 0.55s, 1.1s; }
+  .card.reveal .rank.medal { animation: medalPop 0.5s ease-out backwards; }
+  .card.reveal.r3 .rank.medal { animation-delay: 0.25s; }
+  .card.reveal.r2 .rank.medal { animation-delay: 0.50s; }
+  .card.reveal.r1 .rank.medal { animation-delay: 0.75s; }
+  @media (prefers-reduced-motion: reduce){
+    .card.reveal, .card.champion.reveal, .card.reveal .rank.medal { animation: none !important; }
+  }
+
   .goal-row { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border: 1px solid var(--green-line); border-radius: 9px; padding: 10px 14px; margin-bottom: 6px; }
   .goal-team { font-size: 14px; font-weight: 600; }
   .goal-meta { font-size: 11px; color: var(--copper-soft); margin-left: 8px; }
@@ -554,6 +587,7 @@ function syncBarHTML(){
 let activeTab="leaderboard";
 function showTab(tab){
   activeTab=tab;
+  podiumReveal = (tab==="leaderboard");   // replay top-3 animation on entering the table
   ["leaderboard","myrun","goals","today","predictor","prizes"].forEach((t,i)=>{
     document.getElementById("tab-"+t).style.display=t===tab?"block":"none";
     document.querySelectorAll(".tab")[i].classList.toggle("active",t===tab);
@@ -572,6 +606,7 @@ function render(){
 /* ============ LEADERBOARD (tap to expand) ============ */
 let prevLeader=null;
 let expandedPlayer=null;
+let podiumReveal=false;   // true = play the 1-2-3 entry animation on next render
 function mvHTML(diff){
   if(diff===null) return `<div class="mv newp">•</div>`;
   if(diff>0) return `<div class="mv up">▲${diff}</div>`;
@@ -608,10 +643,11 @@ function renderLeaderboard(){
     const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":null,top=rank<=3;
     const isChamp=(i===0);
     const champCls=isChamp?(p.name!==prevLeader?"champion just-crowned":"champion"):"";
+    const revealCls=(podiumReveal && rank<=3) ? `reveal r${rank}` : "";
     const diff = (rankSnap[p.name]===undefined) ? null : (rankSnap[p.name]-rank);
     const open = expandedPlayer===p.name;
     html+=`<div class="lb-item">
-      <div class="card ${top?"top":""} ${champCls} ${open?"open":""}" onclick="togglePlayer('${p.name}')">
+      <div class="card ${top?"top":""} ${champCls} ${revealCls} ${open?"open":""}" onclick="togglePlayer('${p.name}')">
         <div class="rank ${medal?"medal":""}">${medal||"#"+rank}</div>
         ${mvHTML(diff)}
         <div class="info"><div class="pname ${top?"gold":""}">${p.name}</div>
@@ -624,6 +660,7 @@ function renderLeaderboard(){
   });
   document.getElementById("tab-leaderboard").innerHTML=html;
   prevLeader=leaderName;
+  podiumReveal=false;   // play once per entry, not on every re-render (taps, sync)
   setSyncBtn(syncing);
 }
 
@@ -1371,7 +1408,7 @@ function adjXgt(team,delta){ const cur=getDyn(team); xgtOverrides[team]=Math.max
 function resetXgt(team){ delete xgtOverrides[team]; renderPredictor(); }
 
 /* ============ INIT + TIMERS ============ */
-try{ render(); }catch(err){
+try{ podiumReveal=true; render(); }catch(err){
   var el=document.getElementById("tab-leaderboard");
   if(el) el.innerHTML='<div class="note" style="background:#3a1010;border-color:#822;color:#ff8080">⚠️ '+(err&&err.message?err.message:err)+'</div>';
 }
